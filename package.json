@@ -1,7 +1,7 @@
 {
   "name": "sssfe",
   "version": "0.1.0",
-  "proxy": "http://localhost:8001",
+  "proxy": "https://sacredsoundstudiobackend.herokuapp.com/",
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^2.0.1",
