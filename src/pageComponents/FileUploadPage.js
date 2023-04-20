@@ -12,7 +12,7 @@ const FileUploadPage = () => {
     const { user, isAuthenticated } = useAuth0();
 
     const postVideoMetaData = (videoId, fileUrl, originalFileName) => {
-        fetch('/api/postVideoMetaData', {
+        fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postVideoMetaData', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

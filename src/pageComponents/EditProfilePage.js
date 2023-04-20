@@ -23,7 +23,7 @@ export default function EditProfilePage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/api/getUserProfile/${userId}`);
+                const response = await axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/getUserProfile/${userId}`);
                 setInitialBio(response.data.bio || '');
                 setInitialArtistLink(response.data.artistLink || '');
                 setPreviewProfilePicture(response.data.profileImageUrl || '');
@@ -37,7 +37,7 @@ export default function EditProfilePage() {
     useEffect(() => {
         const checkAccountName = async () => {
             try {
-                const response = await axios.get(`/api/checkAccountName/${accountName}`);
+                const response = await axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/checkAccountName/${accountName}`);
                 if (response.data.taken) {
 
                     setAccountAvailableAlert(response.data.message);
@@ -78,7 +78,7 @@ export default function EditProfilePage() {
 
     //change this to update user profile with image URL.
     const postProfileImage = (url) => {
-        fetch('/api/postProfileImage', {
+        fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postProfileImage', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export default function EditProfilePage() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-        await axios.post('/api/updateUserProfile', {
+        await axios.post('https://jellyfish-app-tj9ha.ondigitalocean.app/api/updateUserProfile', {
             email: userId,
             bio: bio,
             artistLink: artistLink,

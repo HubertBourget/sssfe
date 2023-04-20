@@ -25,7 +25,7 @@ const PrepareForQA = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-        await axios.post('/api/updateVideoMetaData', {
+        await axios.post('https://jellyfish-app-tj9ha.ondigitalocean.app/api/updateVideoMetaData', {
             videoId: videoId,
             videoOwner: user.name,
             b_isPreparedForReview: true,
