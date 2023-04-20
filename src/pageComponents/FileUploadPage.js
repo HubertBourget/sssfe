@@ -52,7 +52,7 @@ const FileUploadPage = () => {
     useEffect(() => {
         const fetchVideos = async () => {
         if (user && user.name) {
-            const response = await axios.get('/api/getPreReviewedVideoList', {
+            const response = await axios.get('https://jellyfish-app-tj9ha.ondigitalocean.app/api/getPreReviewedVideoList', {
             params: {
                 videoOwner: user.name,
                 b_isPreparedForReview: false,
