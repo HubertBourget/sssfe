@@ -91,7 +91,7 @@ const FileUploadPage = () => {
             </div>
         ) : (
             <div>
-            <p>Please log in to upload files.</p>
+            <p>Please log in to use the Cloud Studio.</p>
             </div>
         )}
         </>

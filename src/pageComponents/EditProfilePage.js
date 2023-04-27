@@ -60,7 +60,7 @@ export default function EditProfilePage() {
     }, [accountName]);
 
 
-        const uploadFile = () => {
+        const uploadProfilePicture = () => {
         if (profilePicture == null) {
             console.log("profilePicture was null")
         return;
@@ -103,10 +103,11 @@ export default function EditProfilePage() {
 
     const handleProfilePictureChange = (event) => {
         setProfilePicture(event.target.files[0]);
+        console.log(event.target.files[0])
         setPreviewProfilePicture(URL.createObjectURL(event.target.files[0]));
     };
 
-    const handleSubmit = async (event) => {
+    const handleProfileSubmit = async (event) => {
         event.preventDefault();
         try {
         await axios.post('https://jellyfish-app-tj9ha.ondigitalocean.app/api/updateUserProfile', {
@@ -128,7 +129,7 @@ export default function EditProfilePage() {
         </div>
         )}
         {isAuthenticated && (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleProfileSubmit}>
             <label>
                 Account Name:
                 <input
@@ -156,7 +157,7 @@ export default function EditProfilePage() {
             Profile Picture:
             <input type="file" onChange={handleProfilePictureChange} />
             </label>
-            <button type="button" onClick={uploadFile}>
+            <button type="button" onClick={uploadProfilePicture}>
             Upload Profile Picture
             </button>
             {previewProfilePicture && (

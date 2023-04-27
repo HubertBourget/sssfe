@@ -9,16 +9,8 @@ export default function HomePage() {
       {user?.name ? (
         <div>
         <div>
-          HomePage
-        </div>
-        <div>
-          <Link to="/upload">
-            <button>Upload</button>
-          </Link>
-        </div>
-        <div>
-          <Link to={`/editProfile/${user.name}`}>
-            <button>Artist Profile</button>
+          <Link to={"/studio"}>
+            <button>Studio</button>
           </Link>
         </div>
         </div>
