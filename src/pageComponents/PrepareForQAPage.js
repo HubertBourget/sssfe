@@ -132,7 +132,6 @@ const uploadImageThumbnail = () => {
         return (
         <div style={{display:"flex", flexDirection:'column', width:'30%', alignItems:'center'}}>
             <p>Please log in to access the Cloud Studio.</p>
-            <LoginButton></LoginButton>
         </div>
         );
     }
