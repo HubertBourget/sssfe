@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { storage } from '../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
@@ -13,19 +14,34 @@ import FaceImg from '../assets/Face.png';
 import MusicIcon from '../assets/MusicIcon.png';
 import CircleMandala from '../assets/CircleMandala.png';
 import ProfileEditSection from '../components/ProfileEditSection';
+import LoginButton from '../components/LoginButton';
 
 export default function CloudStudioPage() {
-    const [uploadType, setUploadType] = useState('');
-    const [title, setTitle] = useState('');
+
     const [fileUpload, setFileUpload] = useState(null);
     const [fileList, setFileList] = useState([]);
     const { user, isAuthenticated } = useAuth0();
-    const [bio, setBio] = useState('');
-    const [artistLink, setArtistLink] = useState('');
-    const [profilePicture, setProfilePicture] = useState('');
-    const [accountName, setAccountName] = useState('');
-    const [accountAvailableAlert, setAccountAvailableAlert] = useState('');
     const [activeComponent, setActiveComponent] = useState('component1');
+    const [isOnlyAudio, setIsOnlyAudio] = useState('');
+    const navigate = useNavigate();
+
+    //Verify via the Auth0 Hook if the user has an account inside MongoDb, if not it redirect the user toward the AccountNameSelectionPage
+    useEffect(() => {
+        const fetchUser = async () => {
+        try {
+            if (user && user.name) {
+            const response = await axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/b_getUserExist/${user.name}`);
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+            navigate('/AccountNameSelection');
+            } else {
+            console.log('Error:', error.message);
+            }
+        }
+    };
+    fetchUser();
+    }, [user?.name]);
 
     useEffect(() => {
         if (fileUpload !== null) {
@@ -34,22 +50,30 @@ export default function CloudStudioPage() {
     }, [fileUpload]);
 
     useEffect(() => {
-        const fetchVideos = async () => {
+    const fetchVideos = async () => {
         if (user && user.name) {
-            const response = await axios.get('https://jellyfish-app-tj9ha.ondigitalocean.app/api/getPreReviewedVideoList', {
+        const response = await axios.get('https://jellyfish-app-tj9ha.ondigitalocean.app/api/getPreReviewedVideoList', {
             params: {
-                videoOwner: user.name,
-                b_isPreparedForReview: false,
+            videoOwner: user.name,
+            b_isPreparedForReview: false,
             },
-            });
-            setFileList(response.data);
+        });
+        setFileList(response.data);
         }
-        };
-        fetchVideos();
-    }, [user?.name, fileUpload]); // add fileUpload to the dependency array
+    };
 
-        const postGenerateThumbnailImage = (video_url, video_id) => {
-        fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/createImageThumbnail', {
+    // Call fetchVideos once when the component mounts
+    fetchVideos();
+    // Use setInterval to call fetchVideos every 10 seconds
+    const intervalId = setInterval(fetchVideos, 5000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+}, [user?.name, fileUpload]);
+
+
+    const postGenerateThumbnailImage = (video_url, video_id) => {
+    fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postCreateImageThumbnail', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -57,11 +81,11 @@ export default function CloudStudioPage() {
         },
         body: JSON.stringify({
             video_url: video_url,
-            video_id: video_id
+            video_id: video_id,
+            email: user.name
         }),
-        })
-        .then((res) => res.json())
-        .then((data) => console.log("postGenerateThumbnailImage: " + data));
+    })
+    .then((res) => res.json())
     };
 
     const handleSectionChange = (componentName) => {
@@ -72,10 +96,12 @@ export default function CloudStudioPage() {
 const handleFileChange = (event) => {
     const files = event.target.files;
     const latestFile = files[files.length - 1]; //always select the last file uploaded in the array.
+    setIsOnlyAudio(event.target.accept.includes('audio'));
     setFileUpload(latestFile);
     event.target.value = ''; // clear the input field
 };
 
+// Reviewed Mai 1st
     const uploadFile = () => {
         if (fileUpload == null) {
         return;
@@ -83,18 +109,23 @@ const handleFileChange = (event) => {
         const fileUploadName = v4();
         const fileRef = ref(storage, `Uploads/${user.name}/${fileUploadName}`);
         uploadBytes(fileRef, fileUpload).then(() => {
-        getDownloadURL(fileRef).then((url) => {
+        getDownloadURL(fileRef).then((fileUrl) => {
             const videoId = fileUploadName;
-            postVideoMetaData(videoId, url);
-            postGenerateThumbnailImage(url, videoId);
+            if(!isOnlyAudio){
+                postGenerateThumbnailImage(fileUrl, videoId);
+            }
+            postContentMetaData(videoId, fileUrl);
             alert('Upload Successful!');
             setFileUpload(null); // clear the selected file after successful upload
+            
         });
         });
     };
 
-    const postVideoMetaData = (videoId, fileUrl) => {
-        fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postVideoMetaData', {
+    // Reviewed Mai 1st
+    const postContentMetaData = (videoId, fileUrl) => {
+        const timestamp = new Date().toISOString();
+        fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postContentMetaData', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -102,21 +133,30 @@ const handleFileChange = (event) => {
         },
         body: JSON.stringify({
             videoOwner: user.name,
-            title: title,
             videoId: videoId,
+            timestamp: timestamp,
+            fileUrl: fileUrl,
+            isOnlyAudio: isOnlyAudio,
             b_isPreparedForReview: false,
             b_hasBeenReviewed: false,
             b_isApproved: false,
-            fileUrl: fileUrl,
         }),
         })
         .then((res) => res.json())
-        .then((data) => console.log(data));
     };
 
+
+    //Conditionnal rendering to make sure the user is authenticated.
+    if (!isAuthenticated) {
+        return (
+        <div style={{display:"flex", flexDirection:'column', width:'30%', alignItems:'center'}}>
+            <p>Please log in to access the Cloud Studio.</p>
+            <LoginButton></LoginButton>
+        </div>
+        );
+    }
+
     return (
-    <>
-    {/* {isAuthenticated ? ( */}
     <>
         <GlobalStyle/>
         <HeaderDiv>
@@ -129,7 +169,6 @@ const handleFileChange = (event) => {
                     <UploadButtonColumnDiv>
                         <UploadStyledLabel>
                             <h1 style={{color: "#F5F5F5", lineHeight: "0", padding:"11px"}}>Upload Video</h1>
-                            {uploadType.charAt(0).toUpperCase() + uploadType.slice(1)}
                             <input type="file" accept={`video/*`} onChange={handleFileChange} />
                         </UploadStyledLabel>
                         <p style={{lineHeight: "0"}}>MP4 or MOV files.</p>
@@ -137,7 +176,6 @@ const handleFileChange = (event) => {
                     <UploadButtonColumnDiv>
                         <UploadStyledLabel>
                             <h1 style={{color: "#F5F5F5", lineHeight: "0", padding:"11px"}}>Upload Audio</h1>
-                            {uploadType.charAt(0).toUpperCase() + uploadType.slice(1)}
                             <input type="file" accept={`audio/*`} onChange={handleFileChange} />
                         </UploadStyledLabel>
                         <p style={{lineHeight: "0"}}>WAV or MP3 files.</p>
@@ -148,20 +186,25 @@ const handleFileChange = (event) => {
             </UploadDiv>
             {fileList.length > 0 ? (
                 <UploadedContentDivContainer>
-                    {fileList.map((video) => (
-                        <UploadedContentDiv key={video.VideoMetaData.videoId} backgroundImage={CircleMandala}>
-                            <Link to={`/PrepareForQA/${video.VideoMetaData.videoId}`}>
-                                <CenteredButton><h1 style={{color: "#F5F5F5", lineHeight: "0", padding:"11px 33px"}}>Prepare for Review</h1></CenteredButton>
-                            </Link>
-                            <p style={{marginTop: "130px"}}>Add metadata to get found easily!</p>
-                        </UploadedContentDiv>
-                    ))}
+                    {fileList.map((video) => {
+                            return (
+                                <UploadedContentDiv key={video.videoId} backgroundImage={CircleMandala}>
+                                    <UploadedContentImgDiv backgroundImage={video.ImageThumbnailURL0}>
+                                        <Link to={`/PrepareForQA/${video.videoId}`}>
+                                            <CenteredButton><h1 style={{color: "#F5F5F5", lineHeight: "0", padding:"11px 33px"}}>Prepare for Review</h1></CenteredButton>
+                                        </Link>
+                                        <p style={{position: "relative", marginTop: "210px"}}>Add metadata to get found easily!</p>
+                                    </UploadedContentImgDiv>
+                                </UploadedContentDiv>
+                            );
+                    })}
                 </UploadedContentDivContainer>
             ) : (
-                    <EmptyUploadedContentDiv style={{width:"333px", }}>
-                        <h1>As a token of thanks, you’ll unlock 1 hour of studio time at Sacred Sound Studio once you upload your first content!</h1>
-                    </EmptyUploadedContentDiv>
+                <EmptyUploadedContentDiv style={{width:"333px", }}>
+                    <h1>As a token of thanks, you’ll unlock 1 hour of studio time at Sacred Sound Studio once you upload your first content!</h1>
+                </EmptyUploadedContentDiv>
             )}
+
             </UploadAndPreviewDivContainer>
             <div style={{display: "flex"}}>
                 <ProfileSidebarDiv>
@@ -177,13 +220,6 @@ const handleFileChange = (event) => {
                 </ProfileSidebarDiv>
                 <ProfileEditSection/>
             </div>
-        </>
-        {/* ) : (
-        <div>
-            <p>Please log in to access the Cloud Studio.</p>
-        </div>
-        )
-        } */}
     </>
 );
 }
@@ -268,6 +304,7 @@ const CenteredButton = styled.button`
     top: 50%; /* added */
     left: 50%; /* added */
     transform: translate(-50%, -50%); /* added */
+    z-index: 3;
 `;
 
 const DefaultButton = styled.button`
@@ -295,6 +332,7 @@ const UploadedContentDivContainer = styled.div`
 `;
 
 const UploadedContentDiv = styled.div`
+    position: relative;
     background-image: url(${props => props.backgroundImage});
     background-repeat: no-repeat;
     background-position: 50%;
@@ -311,7 +349,20 @@ const UploadedContentDiv = styled.div`
     height: 222px;
     min-width: 333px;
     text-align: center;
-    position: relative; //needed to have button perfectly centered
+`;
+
+const UploadedContentImgDiv = styled.div`
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url(${props => props.backgroundImage});
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border-radius: 33px;
+    z-index: 2;
 `;
 
 const EmptyUploadedContentDiv = styled.div`

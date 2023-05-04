@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { GlobalStyle } from '../components/GlobalStyle';
+import MandalaBG from '../assets/MandalaAlpha.png';
 
-function Popup() {
+function AccountNamePopup() {
   const [showPopup, setShowPopup] = useState(false);
 
   const togglePopup = () => {
@@ -17,7 +18,7 @@ function Popup() {
         <PopupContainer>
           <PopupBackground />
           <div style={{backgroundColor:'white', zIndex:'1', borderRadius:'33px'}}>
-            <PopupWrapper>
+            <PopupWrapper backgroundImage={MandalaBG}>
               <h2 style={{color: "black"}}>Welcome, friend, to Sacred Sound.</h2>
               <h2 style={{color: "black", marginTop:"25px"}}>Enter the name for your public profile, and get <br/>started uploading your beest quality sacred sound.</h2>
               <p style={{color: "#434289", lineHeight: "0", marginTop:"25px"}}>Choose your account name.</p>
@@ -31,7 +32,7 @@ function Popup() {
   );
 }
 
-export default Popup;
+export default AccountNamePopup;
 
 const PopupContainer = styled.div`
   position: fixed;
@@ -55,6 +56,7 @@ const PopupBackground = styled.div`
 `;
 
 const PopupWrapper = styled.div`
+    background-image: url(${props => props.backgroundImage});
   position: relative;
   z-index: 3;
   border-radius: 33px;

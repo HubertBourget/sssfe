@@ -16,7 +16,7 @@ export default function ProfileEditSection() {
     const { user, isAuthenticated } = useAuth0();
     const [bio, setBio] = useState('');
     const [artistLink, setArtistLink] = useState('');
-    const [profilePicture, setProfilePicture] = useState('');
+    const [profilePicture, setProfilePicture] = useState(null);
     const [accountName, setAccountName] = useState('');
     const [accountAvailableAlert, setAccountAvailableAlert] = useState('');
     const [previewProfilePicture, setPreviewProfilePicture] = useState(null);
@@ -28,6 +28,7 @@ export default function ProfileEditSection() {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/getUserProfile/${user.name}`);
+                setAccountName(response.data.accountName || '');
                 setInitialBio(response.data.bio || '');
                 setInitialArtistLink(response.data.artistLink || '');
                 setPreviewProfilePicture(response.data.profileImageUrl || '');
@@ -39,9 +40,15 @@ export default function ProfileEditSection() {
     }, [user?.name]);
 
     useEffect(() => {
-        const checkAccountName = async () => {
+        const getCheckAccountName = async () => {
             try {
-                const response = await axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/checkAccountName/${accountName}`);
+            const response = await axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/getCheckAccountName`, {
+                params: {
+                email: user.name,
+                accountName: accountName,
+                },
+            });
+
                 if (response.data.taken) {
 
                     setAccountAvailableAlert(response.data.message);
@@ -59,7 +66,7 @@ export default function ProfileEditSection() {
             }
         };
         if (accountName) {
-            checkAccountName();
+            getCheckAccountName();
         }
     }, [accountName]);
 
@@ -102,7 +109,6 @@ export default function ProfileEditSection() {
         uploadBytes(fileRef, profilePicture).then(() => {
         getDownloadURL(fileRef).then((url) => {
             postProfileImage(url);
-            alert('Image Profile Upload Successful!');
             setProfilePicture(null); // clear the selected file after successful upload
         });
         });
@@ -187,16 +193,6 @@ const ProfileEditDiv = styled.div`
     padding: 15px;
     overflow:"hidden"
 `;
-const DefaultButton = styled.button`
-background-color: transparent;
-color: #434289;
-border: none;
-padding: 11px;
-cursor: pointer;
-display: flex;
-align-items: center;
-border-radius: 33px;
-`;
 
 const ImageUploadStyledLabel = styled.label`
     display: inline-block;
@@ -207,6 +203,7 @@ const ImageUploadStyledLabel = styled.label`
     margin-top: 15px;
     padding: 11px;
     margin-bottom: 11px;
+    z-index: 0;
 & input[type="file"] {
     position: absolute;
     font-size: 100px;
@@ -230,8 +227,8 @@ const ProfileInputField = styled.input`
     margin-right: 5%;
     padding-left: 2%;
     padding-right: 2%;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 11px;
+    padding-bottom: 11px;
 `;
 
 const BioTextArea = styled.textarea`
