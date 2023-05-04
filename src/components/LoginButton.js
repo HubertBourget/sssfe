@@ -8,7 +8,7 @@ const LoginButton = () => {
     return (
         !isAuthenticated && (
             <SingupButton onClick={() => loginWithRedirect({
-                redirectUri: "http://sacredsound.app/studio", // Change this for dev: "http://localhost:3000/studio"
+                redirectUri: "https://sacredsound.app/studio", // Change this for dev: "http://localhost:3000/studio"
 })}>
                 <LoginFonts>Become a Resident Artist</LoginFonts>
             </SingupButton>
