@@ -49,7 +49,15 @@ const LogoImageStyled = styled.img`
     left: 50%;
     top: 10%;
     transform: translateX(-50%);
+
+    @media (max-height: 800px) {
+        height: 250px;
+    }
+    @media (max-height: 670px) {
+        height: 120px; // or any other desired height
+    }
 `;
+
 
 const ErrorMessageStyled = styled.div`
     display: none;
