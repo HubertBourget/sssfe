@@ -147,13 +147,13 @@ const handleFileChange = (event) => {
 
 
     //Conditionnal rendering to make sure the user is authenticated.
-    if (!isAuthenticated) {
-        return (
-        <div style={{display:"flex", flexDirection:'column', width:'30%', alignItems:'center'}}>
-            <p>Please log in to access the Cloud Studio.</p>
-        </div>
-        );
-    }
+    // if (!isAuthenticated) {
+    //     return (
+    //     <div style={{display:"flex", flexDirection:'column', width:'30%', alignItems:'center'}}>
+    //         <p>Please log in to access the Cloud Studio.</p>
+    //     </div>
+    //     );
+    // }
 
     return (
     <>
@@ -167,20 +167,22 @@ const handleFileChange = (event) => {
                 <ButtonMainContainer>
                     <UploadButtonColumnDiv>
                         <UploadStyledLabel>
-                            <h1 style={{color: "#F5F5F5", lineHeight: "0", padding:"11px"}}>Upload Video</h1>
+                            <h1 style={{color: "#F5F5F5", lineHeight: "0", padding:"11px"}}>
+                                {window.innerWidth < 1050 ? 'Video' : 'Upload Video'}
+                            </h1>
                             <input type="file" accept={`video/*`} onChange={handleFileChange} />
                         </UploadStyledLabel>
                         <p style={{lineHeight: "0"}}>MP4 or MOV files.</p>
                     </UploadButtonColumnDiv>
                     <UploadButtonColumnDiv>
                         <UploadStyledLabel>
-                            <h1 style={{color: "#F5F5F5", lineHeight: "0", padding:"11px"}}>Upload Audio</h1>
+                            <h1 style={{color: "#F5F5F5", lineHeight: "0", padding:"11px"}}>
+                                {window.innerWidth < 1050 ? 'Audio' : 'Upload Audio'}
+                            </h1>
                             <input type="file" accept={`audio/*`} onChange={handleFileChange} />
                         </UploadStyledLabel>
                         <p style={{lineHeight: "0"}}>WAV or MP3 files.</p>
                     </UploadButtonColumnDiv>
-                    
-                    
                 </ButtonMainContainer>
             </UploadDiv>
             {fileList.length > 0 ? (
