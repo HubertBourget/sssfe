@@ -20,7 +20,7 @@ export default function CloudStudioPage() {
 
     const [fileUpload, setFileUpload] = useState(null);
     const [fileList, setFileList] = useState([]);
-    const { user, isAuthenticated } = useAuth0();
+    const { user, isAuthenticated, loginWithRedirect } = useAuth0();
     const [activeComponent, setActiveComponent] = useState('component1');
     const [isOnlyAudio, setIsOnlyAudio] = useState('');
     const navigate = useNavigate();
@@ -146,11 +146,17 @@ const handleFileChange = (event) => {
     };
 
 
+
     //Conditionnal rendering to make sure the user is authenticated.
     if (!isAuthenticated) {
         return (
         <div style={{display:"flex", flexDirection:'column', width:'30%', alignItems:'center'}}>
             <p>Please log in to access the Cloud Studio.</p>
+            <button onClick={() => loginWithRedirect({
+                redirectUri: "https://sacredsound.app/studio", // Change this for dev: "http://localhost:3000/studio"
+})}>
+                <p>Log back into the App</p>
+            </button>
         </div>
         );
     }
