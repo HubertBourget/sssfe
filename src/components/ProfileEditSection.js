@@ -145,7 +145,7 @@ export default function ProfileEditSection() {
                             <div>
                             <img
                                 src={previewProfilePicture}
-                                style={{ width: '100px', height:"100px" }}
+                                style={{ width: '100px', height:"100px", borderRadius:'33px' }}
                             />
                         </div>
                         )}
