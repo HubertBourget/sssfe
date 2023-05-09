@@ -111,9 +111,7 @@ const handleFileChange = (event) => {
         uploadBytes(fileRef, fileUpload).then(() => {
         getDownloadURL(fileRef).then((fileUrl) => {
             const videoId = fileUploadName;
-            if(!isOnlyAudio){
-                postGenerateThumbnailImage(fileUrl, videoId);
-            }
+            postGenerateThumbnailImage(fileUrl, videoId);
             postContentMetaData(videoId, fileUrl);
             alert('Upload Successful!');
             setFileUpload(null); // clear the selected file after successful upload
