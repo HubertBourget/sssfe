@@ -28,7 +28,7 @@ const PrepareForQA = () => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [uploadedImageThumbnail, setUploadedImageThumbnail] = useState('');
     const [previewImageThumbnail, setPreviewImageThumbnail] = useState(null);
-    const [isOnlyAudio, setIsOnlyAudio] = useState(false);
+    const [isOnlyAudio, setIsOnlyAudio] = useState(true);
 
 
 useEffect(() => {
@@ -126,8 +126,6 @@ const uploadImageThumbnail = () => {
     const handleImageClick = (image, index) => {
         setSelectedImage(image);
         setSelectedImageIndex(index);
-        console.log(index);
-        console.log(selectedImage);
     };
 
     //Conditionnal rendering to make sure the user is authenticated.
@@ -314,6 +312,7 @@ const DefaultButton = styled.button`
     background-color: #434289;
     border-radius: 333px;
     padding: 7px 60px;
+    margin-top: 3%;
 `;
 
 const RightDiv = styled.div`
