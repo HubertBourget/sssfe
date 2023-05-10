@@ -155,7 +155,7 @@ const uploadImageThumbnail = () => {
                 <CustomLabel><h3>Add a video description including #hashtags.</h3></CustomLabel>
                 <DescriptionTextArea id="description" name="description" value={formData.description} onChange={handleInputChange} required />
 
-                {isOnlyAudio ? (
+                {!isOnlyAudio ? (
                     <>
                     <CustomLabel><h3>Select the content's category.</h3></CustomLabel>
                     <CustomSelect id="category" name="category" value={formData.category} onChange={handleInputChange}>
