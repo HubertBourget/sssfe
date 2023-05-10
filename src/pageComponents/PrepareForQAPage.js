@@ -45,6 +45,7 @@ useEffect(() => {
         setVideoURL(response.data.contentDocument.fileUrl);
         setVideoUrlRetrived(true);
         setIsOnlyAudio(response.data.contentDocument.isOnlyAudio)
+        console.log(response.data.contentDocument.isOnlyAudio);
         setImageThumbnail0(response.data.contentDocument.ImageThumbnailURL0);
         setImageThumbnail1(response.data.contentDocument.ImageThumbnailURL1);
         setImageThumbnail2(response.data.contentDocument.ImageThumbnailURL2);
