@@ -217,10 +217,10 @@ const handleFileChange = (event) => {
                         <ButtonInnerImg src={FaceImg}/>
                         <h1>Your Profile</h1>
                     </DefaultButton>
-                    <DefaultButton onClick={() => handleSectionChange('component2')} style={{ backgroundColor: activeComponent === 'component2' ? '#A3C4A338' : 'transparent', marginBottom: "100px" }}>
+                    {/* <DefaultButton onClick={() => handleSectionChange('component2')} style={{ backgroundColor: activeComponent === 'component2' ? '#A3C4A338' : 'transparent', marginBottom: "100px" }}>
                         <ButtonInnerImg src={MusicIcon}/>
                         <h1>Your Content</h1>
-                    </DefaultButton>
+                    </DefaultButton> */}
                     <LogoutButton></LogoutButton>
                 </ProfileSidebarDiv>
                 <ProfileEditSection/>
@@ -234,6 +234,7 @@ const HeaderDiv = styled.div`
     justify-content: center;
     background-color: #A3C4A338;
     margin-bottom: 5%;
+    border-radius: 0px 0px 33px 33px;
 `;
 
 const UploadAndPreviewDivContainer = styled.div`

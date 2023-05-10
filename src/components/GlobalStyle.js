@@ -36,4 +36,21 @@ export const GlobalStyle = createGlobalStyle`
         font-weight: 500;
         line-height: 1.5;
     }
+    input[type=text] {
+        font-family: 'Outfit', sans-serif;
+        font-size: 14px;
+        border: none;
+        padding: 22px;;
+        :focus {
+            outline: none;
+            border: 2px solid #434289;
+        }
+    }
+    textarea {
+        border: none;
+        :focus {
+            outline: none;
+            border: 2px solid #434289;
+        }
+    }
 `;

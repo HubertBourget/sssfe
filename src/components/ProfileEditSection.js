@@ -237,6 +237,7 @@ const BioTextArea = styled.textarea`
     height: 200px;
     padding: 2%;
     margin-right: 5%;
+    border: none;
     resize: none;
 `;
 

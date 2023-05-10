@@ -28,6 +28,7 @@ const PrepareForQA = () => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [uploadedImageThumbnail, setUploadedImageThumbnail] = useState('');
     const [previewImageThumbnail, setPreviewImageThumbnail] = useState(null);
+    const [isOnlyAudio, setIsOnlyAudio] = useState(false);
 
 
 useEffect(() => {
@@ -43,6 +44,7 @@ useEffect(() => {
         );
         setVideoURL(response.data.contentDocument.fileUrl);
         setVideoUrlRetrived(true);
+        setIsOnlyAudio(response.data.contentDocument.isOnlyAudio)
         setImageThumbnail0(response.data.contentDocument.ImageThumbnailURL0);
         setImageThumbnail1(response.data.contentDocument.ImageThumbnailURL1);
         setImageThumbnail2(response.data.contentDocument.ImageThumbnailURL2);
@@ -94,7 +96,7 @@ const uploadImageThumbnail = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if(selectedImage == null){ 
+        if(selectedImage == null && !isOnlyAudio){ 
             alert("please select an imageThumbnail");
             return;
         }
@@ -143,55 +145,60 @@ const uploadImageThumbnail = () => {
             <LeftDiv>
                 <div style={{display:"flex", flexDirection:"row"}}>
                     <HeaderDiv>
-                        <h1>Add Metadata to get discovered easily.</h1>
-                        <h3>Allow the sacred sound recommendation engine to expand your reach.</h3>
+                        <h1>Add metadata to get discovered easily.</h1>
+                        <h3 style={{whiteSpace:"nowrap"}}>Allow the sacred sound recommendation engine to expand your reach.</h3>
                     </HeaderDiv>
                 </div>
                 <CustomForm onSubmit={handleSubmit}>
                 <CustomLabel><h3>Write a catchy title for the content.</h3></CustomLabel>
                 <CustomInput id="title" name="title" value={formData.title} onChange={handleInputChange} required ></CustomInput>
                 <CustomLabel><h3>Add a video description including #hashtags.</h3></CustomLabel>
-                    <DescriptionTextArea id="description" name="description" value={formData.description} onChange={handleInputChange} required />
-                <CustomLabel><h3>Select the content's category.</h3></CustomLabel>
-                <CustomSelect id="category" name="category" value={formData.category} onChange={handleInputChange}>
-                    <option value="Music video">Music video</option>
-                    <option value="Integration support">Integration support</option>
-                    <option value="Live in the studio">Live in the studio</option>
-                    <option value="Spoken words">Spoken words</option>
-                    <option value="Meditation music">Meditation music</option>
-                    <option value="Behind the scenes">Behind the scenes</option>
-                    <option value="Concert">Concert</option>
-                </CustomSelect>
-                <ThumbnailContainerDiv>
-                    {previewImageThumbnail && (
-                    <ThumbnailImageDiv style={{border: selectedImageIndex === 0 ? "4px solid #434289" : "none",}}>
-                        <ThumbnailImg
-                        src={previewImageThumbnail}
-                        onClick={() => handleImageClick(`${imageThumbnail2}`, 0)}
-                        />
-                    </ThumbnailImageDiv>
-                    )}
-                    <ThumbnailImageDiv style={{border: selectedImageIndex === 1 ? "4px solid #434289" : "none",}}>
-                        <ThumbnailImg
-                        src={imageThumbnail0}
-                        onClick={() => handleImageClick(`${imageThumbnail0}`, 1)}
-                        
-                        />
-                    </ThumbnailImageDiv>
-                    <ThumbnailImageDiv style={{border: selectedImageIndex === 2 ? "4px solid #434289" : "none",}}>
-                        <ThumbnailImg
-                        src={imageThumbnail1}
-                        onClick={() => handleImageClick(`${imageThumbnail1}`, 2)}
-                        />
-                    </ThumbnailImageDiv>
-                    <ThumbnailImageDiv style={{border: selectedImageIndex === 3 ? "4px solid #434289" : "none",}}>
-                        <ThumbnailImg
-                        src={imageThumbnail2}
-                        onClick={() => handleImageClick(`${imageThumbnail2}`, 3)}
-                        />
-                    </ThumbnailImageDiv>
-                </ThumbnailContainerDiv>
-                <input type="file" onChange={handleImageThumbnailChange} style={{marginBottom:"3%"}}/>
+                <DescriptionTextArea id="description" name="description" value={formData.description} onChange={handleInputChange} required />
+
+                {isOnlyAudio ? (
+                    <>
+                    <CustomLabel><h3>Select the content's category.</h3></CustomLabel>
+                    <CustomSelect id="category" name="category" value={formData.category} onChange={handleInputChange}>
+                        <option value="Music video">Music video</option>
+                        <option value="Integration support">Integration support</option>
+                        <option value="Live in the studio">Live in the studio</option>
+                        <option value="Spoken words">Spoken word</option>
+                        <option value="Meditation music">Meditation music</option>
+                        <option value="Behind the scenes">Behind the scenes</option>
+                        <option value="Concert">Concert</option>
+                    </CustomSelect>
+                    <ThumbnailContainerDiv>
+                        {previewImageThumbnail && (
+                        <ThumbnailImageDiv style={{border: selectedImageIndex === 0 ? "4px solid #434289" : "none",}}>
+                            <ThumbnailImg
+                            src={previewImageThumbnail}
+                            onClick={() => handleImageClick(`${imageThumbnail2}`, 0)}
+                            />
+                        </ThumbnailImageDiv>
+                        )}
+                        <ThumbnailImageDiv style={{border: selectedImageIndex === 1 ? "4px solid #434289" : "none",}}>
+                            <ThumbnailImg
+                            src={imageThumbnail0}
+                            onClick={() => handleImageClick(`${imageThumbnail0}`, 1)}
+                            
+                            />
+                        </ThumbnailImageDiv>
+                        <ThumbnailImageDiv style={{border: selectedImageIndex === 2 ? "4px solid #434289" : "none",}}>
+                            <ThumbnailImg
+                            src={imageThumbnail1}
+                            onClick={() => handleImageClick(`${imageThumbnail1}`, 2)}
+                            />
+                        </ThumbnailImageDiv>
+                        <ThumbnailImageDiv style={{border: selectedImageIndex === 3 ? "4px solid #434289" : "none",}}>
+                            <ThumbnailImg
+                            src={imageThumbnail2}
+                            onClick={() => handleImageClick(`${imageThumbnail2}`, 3)}
+                            />
+                        </ThumbnailImageDiv>
+                    </ThumbnailContainerDiv>
+                    <input type="file" onChange={handleImageThumbnailChange} style={{marginBottom:"3%"}}/>
+                    </>
+                ) : null }
                 
                 {formError && <p style={{ color: 'red' }}>{formError}</p>}
                 <div>
@@ -253,9 +260,14 @@ const CustomForm = styled.form`
 
 const CustomInput = styled.input`
     border-radius: 33px;
-    padding: 2%;
+    padding: 22px;
     width: 100%;
     margin-top: 2%;
+    border: none;
+    :focus {
+            outline: none;
+            border: 2px solid #434289;
+        }
 `;
 
 const CustomLabel = styled.label`
@@ -266,14 +278,14 @@ const DescriptionTextArea = styled.textarea`
     border-radius: 33px;
     width: 100%;
     height: 70px;
-    padding: 2%;
+    padding: 22px;
     resize: none;
 `;
 
 const CustomSelect = styled.select`
     border-radius: 33px;
-    padding: 2%;
-    width: 105%;
+    padding: 22px;
+    width: 110%;
     margin-top: 2%;
 `;
 
