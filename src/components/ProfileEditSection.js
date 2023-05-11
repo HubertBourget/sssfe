@@ -16,14 +16,13 @@ export default function ProfileEditSection() {
     const { user, isAuthenticated } = useAuth0();
     const [bio, setBio] = useState('');
     const [artistLink, setArtistLink] = useState('');
-    const [profilePicture, setProfilePicture] = useState(null);
+    const [profilePicture, setProfilePicture] = useState(ProfileCircle);
     const [accountName, setAccountName] = useState('');
     const [accountAvailableAlert, setAccountAvailableAlert] = useState('');
     const [previewProfilePicture, setPreviewProfilePicture] = useState(null);
     const [initialBio, setInitialBio] = useState('');
     const [initialArtistLink, setInitialArtistLink] = useState('');
     const [accountNameTaken, setAccountNameTaken] = useState(false);
-    const [profilePictureLoaded, setProfilePictureLoaded] = useState(false);
 
 
     useEffect(() => {
@@ -40,11 +39,6 @@ export default function ProfileEditSection() {
         };
         fetchData();
     }, [user?.name]);
-
-    useEffect(() => {
-        // Set profilePictureLoaded to false whenever the profilePicture changes
-        setProfilePictureLoaded(false);
-    }, [profilePicture]);
 
     useEffect(() => {
         const getCheckAccountName = async () => {
@@ -141,15 +135,7 @@ export default function ProfileEditSection() {
         <ProfileEditDiv>
                     <h1>Your Profile</h1>
                     <div style={{display:"flex", flexDirection:"row"}}>
-                        <ProfilePictureWrapper>
-                            <ProfilePicture
-                            src={profilePicture || ProfileCircle}
-                            alt="Profile Picture"
-                            onLoad={() => setProfilePictureLoaded(true)}
-                            onError={() => setProfilePictureLoaded(true)} // Handle error cases as well
-                            />
-                            {!profilePictureLoaded && <ProfilePicturePlaceholder />}
-                        </ProfilePictureWrapper>
+                        <ProfilePicture src={profilePicture} alt="Profile Picture" />
                         <ImageUploadStyledLabel>
                             <h2 style={{color: "#434289"}}>Upload Profile Picture</h2>
                             {uploadType.charAt(0).toUpperCase() + uploadType.slice(1)}
@@ -274,31 +260,12 @@ const SaveButton = styled.button`
     margin-top: 3%;
 `;
 
-const ProfilePictureWrapper = styled.div`
-  position: relative;
-  width: 100px;
-  height: 100px;
-`;
-
 const ProfilePicture = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center center;
 `;
 
-const ProfilePicturePlaceholder = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: lightgray;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: white;
-  text-transform: uppercase;
-`;
