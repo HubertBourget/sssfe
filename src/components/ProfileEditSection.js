@@ -23,6 +23,7 @@ export default function ProfileEditSection() {
     const [initialBio, setInitialBio] = useState('');
     const [initialArtistLink, setInitialArtistLink] = useState('');
     const [accountNameTaken, setAccountNameTaken] = useState(false);
+    const [profilePictureLoaded, setProfilePictureLoaded] = useState(false);
 
 
     useEffect(() => {
@@ -39,6 +40,11 @@ export default function ProfileEditSection() {
         };
         fetchData();
     }, [user?.name]);
+
+    useEffect(() => {
+        // Set profilePictureLoaded to false whenever the profilePicture changes
+        setProfilePictureLoaded(false);
+    }, [profilePicture]);
 
     useEffect(() => {
         const getCheckAccountName = async () => {
@@ -135,11 +141,15 @@ export default function ProfileEditSection() {
         <ProfileEditDiv>
                     <h1>Your Profile</h1>
                     <div style={{display:"flex", flexDirection:"row"}}>
-                        {profilePicture ? (
-                        <ProfilePicture src={profilePicture} alt="Profile Picture" />
-                        ) : (
-                        <ProfilePicture src={ProfileCircle} alt="Profile Circle" />
-                        )}
+                        <ProfilePictureWrapper>
+                            <ProfilePicture
+                            src={profilePicture || ProfileCircle}
+                            alt="Profile Picture"
+                            onLoad={() => setProfilePictureLoaded(true)}
+                            onError={() => setProfilePictureLoaded(true)} // Handle error cases as well
+                            />
+                            {!profilePictureLoaded && <ProfilePicturePlaceholder />}
+                        </ProfilePictureWrapper>
                         <ImageUploadStyledLabel>
                             <h2 style={{color: "#434289"}}>Upload Profile Picture</h2>
                             {uploadType.charAt(0).toUpperCase() + uploadType.slice(1)}
@@ -264,11 +274,31 @@ const SaveButton = styled.button`
     margin-top: 3%;
 `;
 
-const ProfilePicture = styled.img`
-  display: inline-block;
+const ProfilePictureWrapper = styled.div`
+  position: relative;
   width: 100px;
   height: 100px;
-  border-radius: 50%;
+`;
+
+const ProfilePicture = styled.img`
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: center center;
+  object-position: center;
+  border-radius: 50%;
+`;
+
+const ProfilePicturePlaceholder = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: lightgray;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  text-transform: uppercase;
 `;
