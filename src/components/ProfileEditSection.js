@@ -135,7 +135,11 @@ export default function ProfileEditSection() {
         <ProfileEditDiv>
                     <h1>Your Profile</h1>
                     <div style={{display:"flex", flexDirection:"row"}}>
-                        <ProfilePicture src={profilePicture || ProfileCircle} alt="Profile Picture" />
+                        {profilePicture ? (
+                        <ProfilePicture src={profilePicture} alt="Profile Picture" />
+                        ) : (
+                        <ProfilePicture src={ProfileCircle} alt="Profile Circle" />
+                        )}
                         <ImageUploadStyledLabel>
                             <h2 style={{color: "#434289"}}>Upload Profile Picture</h2>
                             {uploadType.charAt(0).toUpperCase() + uploadType.slice(1)}
