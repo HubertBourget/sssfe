@@ -24,6 +24,7 @@ export default function ProfileEditSection() {
     const [initialArtistLink, setInitialArtistLink] = useState('');
     const [accountNameTaken, setAccountNameTaken] = useState(false);
 
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -31,7 +32,7 @@ export default function ProfileEditSection() {
                 setAccountName(response.data.accountName || '');
                 setInitialBio(response.data.bio || '');
                 setInitialArtistLink(response.data.artistLink || '');
-                setPreviewProfilePicture(response.data.profileImageUrl || '');
+                setProfilePicture(response.data.profileImageUrl || '');
             } catch (error) {
                 console.error(error);
             }
@@ -134,21 +135,26 @@ export default function ProfileEditSection() {
         <ProfileEditDiv>
                     <h1>Your Profile</h1>
                     <div style={{display:"flex", flexDirection:"row"}}>
-                        <img src={ProfileCircle} alt="ProfileCircle" style={{marginBottom:"10px"}} />
+                        <ProfilePicture src={profilePicture || ProfileCircle} alt="Profile Picture" />
                         <ImageUploadStyledLabel>
                             <h2 style={{color: "#434289"}}>Upload Profile Picture</h2>
                             {uploadType.charAt(0).toUpperCase() + uploadType.slice(1)}
-                            <input type="file" onChange={handleProfilePictureChange} />
-                        </ImageUploadStyledLabel>
-                        
-                        {previewProfilePicture && (
-                            <div>
-                            <img
-                                src={previewProfilePicture}
-                                style={{ width: 'auto', height:"100px", borderRadius:'33px' }}
+                            <input
+                            type="file"
+                            id="profilePictureInput"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                const reader = new FileReader();
+                                reader.addEventListener("load", () => {
+                                    setProfilePicture(reader.result);
+                                });
+                                reader.readAsDataURL(file);
+                                }
+                            }}
                             />
-                        </div>
-                        )}
+                        </ImageUploadStyledLabel>
                     </div>
                     
                     <form onSubmit={handleProfileSubmit} style={{display:"flex", flexDirection:"column"}}>
@@ -252,4 +258,13 @@ const SaveButton = styled.button`
     cursor: pointer;
     width: fit-content;
     margin-top: 3%;
+`;
+
+const ProfilePicture = styled.img`
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center center;
 `;
