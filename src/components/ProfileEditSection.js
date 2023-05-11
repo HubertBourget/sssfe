@@ -32,7 +32,7 @@ export default function ProfileEditSection() {
                 setAccountName(response.data.accountName || '');
                 setInitialBio(response.data.bio || '');
                 setInitialArtistLink(response.data.artistLink || '');
-                setProfilePicture(response.data.profileImageUrl || '');
+                setProfilePicture(response.data.profileImageUrl || ProfileCircle);
             } catch (error) {
                 console.error(error);
             }
