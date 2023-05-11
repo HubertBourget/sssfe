@@ -9,7 +9,6 @@ import { storage } from '../firebase';
 import ProfileCircle from '../assets/ProfileCircle.png';
 
 export default function ProfileEditSection() {
-    const [uploadType, setUploadType] = useState('');
     const [title, setTitle] = useState('');
     const [fileUpload, setFileUpload] = useState(null);
     const [fileList, setFileList] = useState([]);
@@ -54,12 +53,10 @@ export default function ProfileEditSection() {
 
                     setAccountAvailableAlert(response.data.message);
                     setAccountNameTaken(true);
-                    console.log(accountAvailableAlert);
                 }
                 else {
                     setAccountAvailableAlert(response.data.message);
                     setAccountNameTaken(false);
-                    console.log(accountAvailableAlert);
                 }
                 
             } catch (error) {
@@ -85,6 +82,7 @@ export default function ProfileEditSection() {
         setProfilePicture(latestFile);
         setPreviewProfilePicture(URL.createObjectURL(latestFile));
     };
+
         const handleProfileSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -138,20 +136,12 @@ export default function ProfileEditSection() {
                         <ProfilePicture src={profilePicture} alt="Profile Picture" />
                         <ImageUploadStyledLabel>
                             <h2 style={{color: "#434289"}}>Upload Profile Picture</h2>
-                            {uploadType.charAt(0).toUpperCase() + uploadType.slice(1)}
                             <input
-                            type="file"
+                            type="image"
                             id="profilePictureInput"
                             accept="image/*"
                             onChange={(e) => {
-                                const file = e.target.files[0];
-                                if (file) {
-                                const reader = new FileReader();
-                                reader.addEventListener("load", () => {
-                                    setProfilePicture(reader.result);
-                                });
-                                reader.readAsDataURL(file);
-                                }
+                                handleProfilePictureChange(e);
                             }}
                             />
                         </ImageUploadStyledLabel>
