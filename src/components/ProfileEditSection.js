@@ -9,10 +9,7 @@ import { storage } from '../firebase';
 import ProfileCircle from '../assets/ProfileCircle.png';
 
 export default function ProfileEditSection() {
-    const [title, setTitle] = useState('');
-    const [fileUpload, setFileUpload] = useState(null);
-    const [fileList, setFileList] = useState([]);
-    const { user, isAuthenticated } = useAuth0();
+    const { user } = useAuth0();
     const [bio, setBio] = useState('');
     const [artistLink, setArtistLink] = useState('');
     const [profilePicture, setProfilePicture] = useState(ProfileCircle);
@@ -79,7 +76,7 @@ export default function ProfileEditSection() {
         const files = event.target.files;
         const latestFile = files[files.length - 1]; //always select the last file uploaded in the array.
         setProfilePicture(URL.createObjectURL(latestFile));
-        uploadProfilePicture();
+        uploadProfilePicture(URL.createObjectURL(latestFile));
     };
 
         const handleProfileSubmit = async (event) => {
@@ -111,22 +108,19 @@ export default function ProfileEditSection() {
     //     });
     // };
 
-    const uploadProfilePicture = () => {
-    if (profilePicture == null) {
+    const uploadProfilePicture = (uploadingPicture) => {
+    if (uploadingPicture == null) {
         console.log("profilePicture was null");
         return;
     }
-
     const fileUploadName = v4();
     const fileRef = ref(storage, `ProfilePictures/${user.name}/${fileUploadName}`);
-
     // Set the content type of the file to image/jpeg
     const metadata = {
         contentType: 'image/jpeg',
     };
-
     // Upload the file with the specified metadata
-    uploadBytes(fileRef, profilePicture, metadata)
+    uploadBytes(fileRef, uploadingPicture, metadata)
         .then(() => {
         // Get the download URL of the uploaded file
         getDownloadURL(fileRef)
