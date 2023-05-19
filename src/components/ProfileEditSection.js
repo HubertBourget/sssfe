@@ -126,7 +126,6 @@ export default function ProfileEditSection() {
         getDownloadURL(fileRef)
             .then((url) => {
             postProfileImage(url);
-            setProfilePicture(null); // clear the selected file after successful upload
         });
     });
 };
