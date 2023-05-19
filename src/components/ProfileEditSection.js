@@ -108,27 +108,55 @@ export default function ProfileEditSection() {
     //     });
     // };
 
-    const uploadProfilePicture = (uploadingPicture) => {
+//     const uploadProfilePicture = (uploadingPicture) => {
+//     if (uploadingPicture == null) {
+//         console.log("profilePicture was null");
+//         return;
+//     }
+//     const fileUploadName = v4();
+//     const fileRef = ref(storage, `ProfilePictures/${user.name}/${fileUploadName}`);
+//     // Set the content type of the file to image/jpeg
+//     const metadata = {
+//         contentType: 'image/jpeg',
+//     };
+//     // Upload the file with the specified metadata
+//     uploadBytes(fileRef, uploadingPicture, metadata)
+//         .then(() => {
+//         // Get the download URL of the uploaded file
+//         getDownloadURL(fileRef)
+//             .then((url) => {
+//             postProfileImage(url);
+//         });
+//     });
+// };
+
+const uploadProfilePicture = (uploadingPicture) => {
     if (uploadingPicture == null) {
         console.log("profilePicture was null");
         return;
     }
     const fileUploadName = v4();
     const fileRef = ref(storage, `ProfilePictures/${user.name}/${fileUploadName}`);
-    // Set the content type of the file to image/jpeg
     const metadata = {
         contentType: 'image/jpeg',
     };
-    // Upload the file with the specified metadata
+
     uploadBytes(fileRef, uploadingPicture, metadata)
         .then(() => {
-        // Get the download URL of the uploaded file
         getDownloadURL(fileRef)
             .then((url) => {
             postProfileImage(url);
+            setProfilePicture(url); // Update the profilePicture state with the new URL
+            })
+            .catch((error) => {
+            console.error(error);
+            });
+        })
+        .catch((error) => {
+        console.error(error);
         });
-    });
 };
+
 
     const postProfileImage = (url) => {
         fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postProfileImage', {
