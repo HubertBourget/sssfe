@@ -96,20 +96,46 @@ export default function ProfileEditSection() {
         }
     };
 
+    // const uploadProfilePicture = () => {
+    //     if (profilePicture == null) {
+    //         console.log("profilePicture was null")
+    //     return;
+    //     }
+    //     const fileUploadName = v4();
+    //     const fileRef = ref(storage, `ProfilePictures/${user.name}/${fileUploadName}`);
+    //     uploadBytes(fileRef, profilePicture).then(() => {
+    //     getDownloadURL(fileRef).then((url) => {
+    //         postProfileImage(url);
+    //         setProfilePicture(null); // clear the selected file after successful upload
+    //     });
+    //     });
+    // };
+
     const uploadProfilePicture = () => {
-        if (profilePicture == null) {
-            console.log("profilePicture was null")
+    if (profilePicture == null) {
+        console.log("profilePicture was null");
         return;
-        }
-        const fileUploadName = v4();
-        const fileRef = ref(storage, `ProfilePictures/${user.name}/${fileUploadName}`);
-        uploadBytes(fileRef, profilePicture).then(() => {
-        getDownloadURL(fileRef).then((url) => {
+    }
+
+    const fileUploadName = v4();
+    const fileRef = ref(storage, `ProfilePictures/${user.name}/${fileUploadName}`);
+
+    // Set the content type of the file to image/jpeg
+    const metadata = {
+        contentType: 'image/jpeg',
+    };
+
+    // Upload the file with the specified metadata
+    uploadBytes(fileRef, profilePicture, metadata)
+        .then(() => {
+        // Get the download URL of the uploaded file
+        getDownloadURL(fileRef)
+            .then((url) => {
             postProfileImage(url);
             setProfilePicture(null); // clear the selected file after successful upload
         });
-        });
-    };
+    });
+};
 
     const postProfileImage = (url) => {
         fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postProfileImage', {
