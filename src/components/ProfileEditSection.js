@@ -18,7 +18,6 @@ export default function ProfileEditSection() {
     const [profilePicture, setProfilePicture] = useState(ProfileCircle);
     const [accountName, setAccountName] = useState('');
     const [accountAvailableAlert, setAccountAvailableAlert] = useState('');
-    const [previewProfilePicture, setPreviewProfilePicture] = useState(null);
     const [initialBio, setInitialBio] = useState('');
     const [initialArtistLink, setInitialArtistLink] = useState('');
     const [accountNameTaken, setAccountNameTaken] = useState(false);
@@ -79,8 +78,8 @@ export default function ProfileEditSection() {
     const handleProfilePictureChange = (event) => {
         const files = event.target.files;
         const latestFile = files[files.length - 1]; //always select the last file uploaded in the array.
-        setProfilePicture(latestFile);
-        setPreviewProfilePicture(URL.createObjectURL(latestFile));
+        setProfilePicture(URL.createObjectURL(latestFile));
+        uploadProfilePicture();
     };
 
         const handleProfileSubmit = async (event) => {
@@ -91,7 +90,6 @@ export default function ProfileEditSection() {
             bio: bio,
             artistLink: artistLink,
         });
-        uploadProfilePicture();
         alert('Profile updated successfully');
         } catch (error) {
         console.error(error);
@@ -137,7 +135,7 @@ export default function ProfileEditSection() {
                         <ImageUploadStyledLabel>
                             <h2 style={{color: "#434289"}}>Upload Profile Picture</h2>
                             <input
-                            type="image"
+                            type="file"
                             id="profilePictureInput"
                             accept="image/*"
                             onChange={(e) => {
