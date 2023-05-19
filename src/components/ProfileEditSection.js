@@ -76,7 +76,7 @@ export default function ProfileEditSection() {
         const files = event.target.files;
         const latestFile = files[files.length - 1]; //always select the last file uploaded in the array.
         setProfilePicture(URL.createObjectURL(latestFile));
-        uploadProfilePicture(URL.createObjectURL(latestFile));
+        uploadProfilePicture(latestFile);
     };
 
         const handleProfileSubmit = async (event) => {
