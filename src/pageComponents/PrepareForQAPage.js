@@ -301,8 +301,11 @@ margin-right: 33px;
 `;
 
 const ThumbnailImg = styled.img`
-height: 100%;
-width: 100%;
+    height: 100%;
+    width: 100%;
+    display: inline-block;
+    object-fit: cover;
+    object-position: center center;
 `;
 
 const DefaultButton = styled.button`
