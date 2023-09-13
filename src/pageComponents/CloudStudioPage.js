@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { storage } from '../firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
@@ -23,6 +23,10 @@ export default function CloudStudioPage() {
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
     const [activeComponent, setActiveComponent] = useState('component1');
     const [isOnlyAudio, setIsOnlyAudio] = useState('');
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [showProgress, setShowProgress] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);  
     const navigate = useNavigate();
 
     //Verify via the Auth0 Hook if the user has an account inside MongoDb, if not it redirect the user toward the AccountNameSelectionPage
@@ -69,8 +73,27 @@ export default function CloudStudioPage() {
 
     // Clear the interval when the component unmounts
     return () => clearInterval(intervalId);
-}, [user?.name, fileUpload]);
+    }, [user?.name, fileUpload]);
 
+    useEffect(() => {
+        if (fileUpload !== null) {
+        resetUploadStatus(); // Reset the upload status when a new upload is initiated
+        setShowProgress(true); // Show progress bar when an upload is initiated
+        uploadFile();
+        }
+    }, [fileUpload]);
+
+    useEffect(() => {
+        if (uploadProgress === 100) {
+        // When uploadProgress reaches 100, show the success message
+        setShowSuccessMessage(true);
+        setShowProgress(false); // Hide the progress bar when the upload is successful
+        }
+    }, [uploadProgress]);
+
+    const resetUploadStatus = () => {
+        setShowSuccessMessage(false);
+    };
 
     const postGenerateThumbnailImage = (video_url, video_id) => {
     fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postCreateImageThumbnail', {
@@ -101,24 +124,42 @@ const handleFileChange = (event) => {
     event.target.value = ''; // clear the input field
 };
 
-// Reviewed Mai 1st
-    const uploadFile = () => {
-        if (fileUpload == null) {
+//Updated September 12th
+const uploadFile = () => {
+    if (fileUpload == null) {
         return;
+    }
+    const fileUploadName = v4();
+    const fileRef = ref(storage, `Uploads/${user.name}/${fileUploadName}`);
+    const uploadTask = uploadBytesResumable(fileRef, fileUpload);
+
+    setIsUploading(true);
+
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on('state_changed',
+        (snapshot) => {
+            // Calculate the upload percentage
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            setUploadProgress(progress);
+        },
+        (error) => {
+            console.error('Upload error:', error);
+            // Handle the error here if needed
+        },
+        () => {
+            // Upload completed successfully
+            getDownloadURL(fileRef).then((fileUrl) => {
+                const videoId = fileUploadName;
+                postGenerateThumbnailImage(fileUrl, videoId);
+                postContentMetaData(videoId, fileUrl);
+                setUploadProgress(100); // Set progress to 100% when completed
+                setFileUpload(null); // Clear the selected file after successful upload
+            });
         }
-        const fileUploadName = v4();
-        const fileRef = ref(storage, `Uploads/${user.name}/${fileUploadName}`);
-        uploadBytes(fileRef, fileUpload).then(() => {
-        getDownloadURL(fileRef).then((fileUrl) => {
-            const videoId = fileUploadName;
-            postGenerateThumbnailImage(fileUrl, videoId);
-            postContentMetaData(videoId, fileUrl);
-            alert('Upload Successful!');
-            setFileUpload(null); // clear the selected file after successful upload
-            
-        });
-        });
-    };
+    );
+};
+
+
 
     // Reviewed Mai 1st
     const postContentMetaData = (videoId, fileUrl) => {
@@ -165,6 +206,24 @@ const handleFileChange = (event) => {
         <HeaderDiv>
             <h1>Cloud Studio</h1>
         </HeaderDiv>
+
+        {showProgress && isUploading && (
+            <SuccessMessage>
+            <div>
+                <p>Uploading: {uploadProgress.toFixed(3)}%</p>
+                <progress max="100" value={uploadProgress}></progress>
+            </div>
+            </SuccessMessage>
+        )}
+
+        {showSuccessMessage && (
+            <SuccessMessage>
+            <div>
+                <p>Upload Successful!</p>
+            </div>
+            </SuccessMessage>
+        )}
+        
         <UploadAndPreviewDivContainer>
             <UploadDiv backgroundImage={MandalaBG}>
             <h1 style={{marginBottom:"33px"}}>Upload your best quality content here.</h1>
@@ -233,7 +292,7 @@ const HeaderDiv = styled.div`
     display: flex;
     justify-content: center;
     background-color: #A3C4A338;
-    margin-bottom: 5%;
+    margin-bottom: 2%;
     border-radius: 0px 0px 33px 33px;
 `;
 
@@ -394,4 +453,14 @@ const ProfileSidebarDiv = styled.div`
     flex-direction:column;
     border-radius: 33px;
     padding: 10px;
+`;
+const SuccessMessage = styled.p`
+    font-size: 24px;
+    background-color: #A3C4A338;
+    text-align: center;
+    width: 33%;
+    margin-left: 33%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 33px;
 `;
