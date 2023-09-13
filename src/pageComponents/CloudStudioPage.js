@@ -151,7 +151,7 @@ const handleFileChange = (event) => {
         <div style={{display:"flex", flexDirection:'column', width:'30%', alignItems:'center'}}>
             <p>Please log in to access the Cloud Studio.</p>
             <button onClick={() => loginWithRedirect({
-                redirectUri: "https://sacredsound.app/studio", // Change this for dev: "http://localhost:3000/studio"
+                redirectUri: "http://localhost:3000/studio", // Change this for prod: "https://sacredsound.app/studio"
 })}>
                 <p>Log back into the App</p>
             </button>

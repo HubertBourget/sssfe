@@ -29,6 +29,7 @@ const PrepareForQA = () => {
     const [uploadedImageThumbnail, setUploadedImageThumbnail] = useState('');
     const [previewImageThumbnail, setPreviewImageThumbnail] = useState(null);
     const [isOnlyAudio, setIsOnlyAudio] = useState(true);
+    const [selectedImageSource, setSelectedImageSource] = useState("previewImage");
 
 
 useEffect(() => {
@@ -78,12 +79,14 @@ const uploadImageThumbnail = () => {
 };
 
 
-        const handleImageThumbnailChange = (event) => {
+    const handleImageThumbnailChange = (event) => {
         const files = event.target.files;
-        const latestFile = files[files.length - 1]; //always select the last file uploaded in the array.
+        const latestFile = files[files.length - 1];
         setUploadedImageThumbnail(latestFile);
         setPreviewImageThumbnail(URL.createObjectURL(latestFile));
+        setSelectedImageSource("fileInput"); // Set the source to file input
     };
+
 
 
     const handleInputChange = (event) => {
@@ -94,17 +97,25 @@ const uploadImageThumbnail = () => {
         }));
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        if(selectedImage == null && !isOnlyAudio){ 
-            alert("please select an imageThumbnail");
-            return;
-        }
-        let imageThumbnailURL = selectedImage;
-        if (selectedImageIndex === 0) {
-            imageThumbnailURL = await uploadImageThumbnail();
-        }
-        try {
+const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    let imageThumbnailURL;
+    
+    if (selectedImageSource === "fileInput") {
+        // User selected an image through the file input
+        imageThumbnailURL = await uploadImageThumbnail();
+    } else if (selectedImageSource === "previewImage") {
+        // User selected a preview image
+        //Change to selectedImage when switching back the Thumbnails on:
+        imageThumbnailURL = "Null"; //selectedImage;
+    } else {
+        // Handle the case where no image is selected
+        alert("Please select an imageThumbnail");
+        return;
+    }
+
+    try {
         await axios.post('https://jellyfish-app-tj9ha.ondigitalocean.app/api/updateContentMetaData', {
             videoId: videoId,
             b_isPreparedForReview: true,
@@ -115,17 +126,20 @@ const uploadImageThumbnail = () => {
         });
         console.log('ContentMetaData updated successfully');
         navigate('/studio');
-        } catch (error) {
+    } catch (error) {
         setFormError('An error occurred while updating the ContentMetaData');
         console.error(error);
-        }
-    };
+    }
+};
+
 
 
     const handleImageClick = (image, index) => {
         setSelectedImage(image);
         setSelectedImageIndex(index);
+        setSelectedImageSource("previewImage"); // Set the source to preview image
     };
+
 
     //Conditionnal rendering to make sure the user is authenticated.
     if (!isAuthenticated) {
@@ -165,7 +179,8 @@ const uploadImageThumbnail = () => {
                         <option value="Behind the scenes">Behind the scenes</option>
                         <option value="Concert">Concert</option>
                     </CustomSelect>
-                    <ThumbnailContainerDiv>
+                    {/* Temporary disabling ImageThumbnails: */}
+                    {/*<ThumbnailContainerDiv>
                         {previewImageThumbnail && (
                         <ThumbnailImageDiv style={{border: selectedImageIndex === 0 ? "4px solid #434289" : "none",}}>
                             <ThumbnailImg
@@ -193,7 +208,7 @@ const uploadImageThumbnail = () => {
                             onClick={() => handleImageClick(`${imageThumbnail2}`, 3)}
                             />
                         </ThumbnailImageDiv>
-                    </ThumbnailContainerDiv>
+                    </ThumbnailContainerDiv> */}
                     <input type="file" onChange={handleImageThumbnailChange} style={{marginBottom:"3%"}}/>
                     </>
                 ) : null }
@@ -285,6 +300,7 @@ const CustomSelect = styled.select`
     padding: 22px;
     width: 110%;
     margin-top: 2%;
+    margin-bottom: 5%; //Adjustement for disabling ImageThumbnails
 `;
 
 const ThumbnailContainerDiv = styled.div`
