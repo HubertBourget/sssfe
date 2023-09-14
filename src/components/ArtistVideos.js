@@ -9,7 +9,7 @@ function ArtistVideos(props) {
     useEffect(() => {
         const fetchContentByArtist = async () => {
             try {
-                const response = await Axios.get(`/api/getContentByArtist`) //?artistId=${artistId}
+                const response = await Axios.get(`/api/getContentByArtist?artistId=${artistId}`)
 
                 if (response.status === 200) {
                     const fetchedContentDocuments = response.data.contentDocuments;
