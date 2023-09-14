@@ -11,7 +11,6 @@ function ArtistVideos(props) {
             try {
                 const response = await Axios.get(`/api/getContentByArtist`) //?artistId=${artistId}
 
-
                 if (response.status === 200) {
                     const fetchedContentDocuments = response.data.contentDocuments;
                     setContentDocuments(fetchedContentDocuments);
@@ -30,9 +29,8 @@ function ArtistVideos(props) {
     return (
         <>
             <div>
-                HOLA
-                {/* Render contentDocuments here */}
-                {contentDocuments.map((contentDocument) => (
+                {/* Check if contentDocuments is defined before mapping */}
+                {contentDocuments && contentDocuments.map((contentDocument) => (
                     <div key={contentDocument.videoId}>
                         {/* Render contentDocument details */}
                         <h2>{contentDocument.title}</h2>
