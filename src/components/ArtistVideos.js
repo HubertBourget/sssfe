@@ -3,7 +3,6 @@ import Axios from 'axios';
 
 function ArtistVideos(props) {
     const artistId = props.artistId;
-    console.log(artistId);
     const [contentDocuments, setContentDocuments] = useState([]);
 
     useEffect(() => {
@@ -14,6 +13,7 @@ function ArtistVideos(props) {
                 if (response.status === 200) {
                     const fetchedContentDocuments = response.data.contentDocuments;
                     setContentDocuments(fetchedContentDocuments);
+                    console.log(fetchedContentDocuments);
                 } else {
                     console.error(response.statusText);
                 }
