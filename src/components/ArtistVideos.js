@@ -8,18 +8,19 @@ function ArtistVideos(props) {
     useEffect(() => {
         const fetchContentByArtist = async () => {
             try {
-                const response = await Axios.get(`/api/getContentByArtist?artistId=${artistId}`)
-
+                const response = await Axios.get(`/api/getContentByArtist?artistId=${artistId}`);
+                console.log('Response:', response); // Log the entire response
                 if (response.status === 200) {
                     const fetchedContentDocuments = response.data.contentDocuments;
                     setContentDocuments(fetchedContentDocuments);
-                    console.log(fetchedContentDocuments);
+                    console.log('Fetched Content Documents:', fetchedContentDocuments); // Log the fetched data
                 } else {
-                    console.error(response.statusText);
+                    console.error(`Request failed with status: ${response.status}`);
                 }
             } catch (error) {
-                console.error(error);
+                console.error(`An error occurred: ${error}`);
             }
+
         };
 
         // Call the function to fetch content by artist when the component mounts
