@@ -13,7 +13,7 @@ function ArtistVideos(props) {
                 const response = await Axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/getContentByArtist?artistId=${encodedArtistId}`);
                 console.log('Response:', response); // Log the entire response
                 if (response.status === 200) {
-                    const fetchedContentDocuments = response.data.contentDocuments;
+                    const fetchedContentDocuments = response.data; //.contentDocuments
                     setContentDocuments(fetchedContentDocuments);
                     console.log('Fetched Content Documents:', fetchedContentDocuments); // Log the fetched data
                 } else {
