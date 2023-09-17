@@ -9,6 +9,8 @@ function ApprovedContent() {
         try {
             const response = await Axios.get('https://jellyfish-app-tj9ha.ondigitalocean.app/api/getApprovedContent'); 
             if (response.status === 200) {
+                console.log("Approved Content Response:");
+                console.log(response);
             setApprovedContent(response.data);
             } else {
             console.error(`Request failed with status: ${response.status}`);
