@@ -8,7 +8,6 @@ function ArtistVideos(props) {
     useEffect(() => {
         const fetchContentByArtist = async () => {
             try {
-                console.log('Artist ID:', artistId);
                 const encodedArtistId = encodeURIComponent(artistId);
                 const response = await Axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/getContentByArtist?artistId=${encodedArtistId}`);
                 console.log('Response:', response); // Log the entire response

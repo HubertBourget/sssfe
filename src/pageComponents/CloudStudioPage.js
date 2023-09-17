@@ -287,7 +287,7 @@ const uploadFile = () => {
                 </ProfileSidebarDiv>
                 <ProfileEditSection/>
             </div>
-            <ArtistVideos artistId={user?.name} />
+            {/* <ArtistVideos artistId={user?.name} /> */} {/*Taken out to test ApprovedContent.*/}
             <ApprovedContent/> {/*test */}
     </>
 );
