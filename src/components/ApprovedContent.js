@@ -7,7 +7,7 @@ function ApprovedContent() {
     useEffect(() => {
         const fetchApprovedContent = async () => {
         try {
-            const response = await Axios.get('https://jellyfish-app-tj9ha.ondigitalocean.app/api/getApprovedContent'); 
+            const response = await Axios.get('https://jellyfish-app-tj9ha.ondigitalocean.app/api/getApprovedVideoContent'); 
             if (response.status === 200) {
                 console.log("Approved Content Response:");
                 console.log(response);
