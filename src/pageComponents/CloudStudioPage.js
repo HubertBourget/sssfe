@@ -16,6 +16,7 @@ import CircleMandala from '../assets/CircleMandala.png';
 import ProfileEditSection from '../components/ProfileEditSection';
 import LoginButton from '../components/LoginButton';
 import ArtistVideos from '../components/ArtistVideos';
+import ApprovedContent from '../components/ApprovedContent'; //test
 
 
 export default function CloudStudioPage() {
@@ -287,6 +288,7 @@ const uploadFile = () => {
                 <ProfileEditSection/>
             </div>
             <ArtistVideos artistId={user?.name} />
+            <ApprovedContent/> {/*test */}
     </>
 );
 }
