@@ -279,10 +279,10 @@ const uploadFile = () => {
                         <ButtonInnerImg src={FaceImg}/>
                         <h1>Your Profile</h1>
                     </DefaultButton>
-                    {/* <DefaultButton onClick={() => handleSectionChange('component2')} style={{ backgroundColor: activeComponent === 'component2' ? '#A3C4A338' : 'transparent', marginBottom: "100px" }}>
+                    <DefaultButton onClick={() => handleSectionChange('component2')} style={{ backgroundColor: activeComponent === 'component2' ? '#A3C4A338' : 'transparent', marginBottom: "100px" }}>
                         <ButtonInnerImg src={MusicIcon}/>
                         <h1>Your Content</h1>
-                    </DefaultButton> */}
+                    </DefaultButton>
                     <LogoutButton></LogoutButton>
                 </ProfileSidebarDiv>
                 <ProfileEditSection/>
