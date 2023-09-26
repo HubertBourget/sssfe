@@ -1,37 +1,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { GlobalStyle } from '../components/GlobalStyle';
+import TagComponent from '../components/TagComponent';
 
-function Popup() {
-  const [showPopup, setShowPopup] = useState(false);
+function TestPage() {
 
-  const togglePopup = () => {
-    setShowPopup(!showPopup);
-  };
 
   return (
     <>
-      <GlobalStyle />
-      <button onClick={togglePopup}>Open Popup</button>
-      {showPopup && (
-        <PopupContainer>
-          <PopupBackground />
-          <div style={{backgroundColor:'white', zIndex:'1', borderRadius:'33px'}}>
-            <PopupWrapper>
-              <h2 style={{color: "black"}}>Welcome, friend, to Sacred Sound.</h2>
-              <h2 style={{color: "black", marginTop:"25px"}}>Enter the name for your public profile, and get <br/>started uploading your beest quality sacred sound.</h2>
-              <p style={{color: "#434289", lineHeight: "0", marginTop:"25px"}}>Choose your account name.</p>
-              <input type="text" style={{borderRadius:"33px", padding:"15px", width:"90%"}} />
-              <CenteredButton onClick={togglePopup}><h1 style={{color: "#F5F5F5", lineHeight: "0"}}>Get Started</h1></CenteredButton>
-            </PopupWrapper>
-          </div>
-        </PopupContainer>
-      )}
+      <TagComponent />
     </>
   );
 }
 
-export default Popup;
+export default TestPage;
 
 const PopupContainer = styled.div`
   position: fixed;

@@ -47,7 +47,7 @@ export const GlobalStyle = createGlobalStyle`
         }
     }
     textarea {
-        border: none;
+        border: 1px solid gray;
         :focus {
             outline: none;
             border: 2px solid #434289;

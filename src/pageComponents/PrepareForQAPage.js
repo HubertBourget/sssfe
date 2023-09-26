@@ -8,8 +8,9 @@ import { v4 } from 'uuid';
 import { storage } from '../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import LoginButton from '../components/LoginButton';
+import TagComponent from '../components/TagComponent';
 
-const PrepareForQA = () => {
+const PrepareForQA = () => { //changing this component into a hybrid POST/UPDATE component : component name stay the same for now
     const { videoId } = useParams();
     const { user, isAuthenticated } = useAuth0();
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const PrepareForQA = () => {
     const [previewImageThumbnail, setPreviewImageThumbnail] = useState(null);
     const [isOnlyAudio, setIsOnlyAudio] = useState(true);
     const [selectedImageSource, setSelectedImageSource] = useState("previewImage");
-
+    const [tags, setTags] = useState('');
 
 useEffect(() => {
     const fetchVideosURL = async () => {
@@ -57,6 +58,35 @@ useEffect(() => {
     };
     fetchVideosURL();
 }, []);
+
+useEffect(() => {
+        const fetchContentData = async () => {
+            try {
+                const response = await axios.get(
+                    'https://jellyfish-app-tj9ha.ondigitalocean.app/api/getContentById',
+                    {
+                        params: {
+                            videoId: videoId,
+                        },
+                    }
+                );
+                const contentData = response.data.contentDocument;
+                // Set the form data with the fetched content data
+                setFormData({
+                    title: contentData.title || '', // Populate with existing title or an empty string if not found
+                    description: contentData.description || '', // Populate with existing description or an empty string if not found
+                    category: contentData.category || 'Music video', // Set default category or use existing if found
+                });
+                setIsOnlyAudio(contentData.isOnlyAudio || true); // Set isOnlyAudio to existing value or true by default
+                // Set other state variables as needed...
+            } catch (error) {
+                console.error(error);
+                setVideoUrlRetrived(false);
+            }
+        };
+        fetchContentData(); // Call the fetchContentData function when the component mounts
+    }, [videoId]); // Make sure to include videoId in the dependency array
+
 
 const uploadImageThumbnail = () => {
     if (uploadedImageThumbnail == null) {
@@ -87,14 +117,16 @@ const uploadImageThumbnail = () => {
         setSelectedImageSource("fileInput"); // Set the source to file input
     };
 
-
-
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormData((prevState) => ({
         ...prevState,
         [name]: value
         }));
+    };
+
+    const handleTagsChange = (newTags) => {
+        setTags(newTags);
     };
 
 const handleSubmit = async (event) => {
@@ -122,7 +154,8 @@ const handleSubmit = async (event) => {
             title: formData.title,
             description: formData.description,
             category: formData.category,
-            selectedImageThumbnail: imageThumbnailURL
+            selectedImageThumbnail: imageThumbnailURL,
+            tags: tags,
         });
         console.log('ContentMetaData updated successfully');
         navigate('/studio');
@@ -164,12 +197,10 @@ const handleSubmit = async (event) => {
                 <CustomForm onSubmit={handleSubmit}>
                 <CustomLabel><h3>Write a catchy title for the content.</h3></CustomLabel>
                 <CustomInput id="title" name="title" value={formData.title} onChange={handleInputChange} required ></CustomInput>
-                <CustomLabel><h3>Add a video description including #hashtags.</h3></CustomLabel>
+                <CustomLabel><h3>Add a video description.</h3></CustomLabel>
                 <DescriptionTextArea id="description" name="description" value={formData.description} onChange={handleInputChange} required />
-
-                {!isOnlyAudio ? (
-                    <>
-                    <CustomLabel><h3>Select the content's category.</h3></CustomLabel>
+                <TagComponent onTagsChange={(tags) => handleTagsChange(tags)} />
+                <CustomLabel><h3>Select the content's category.</h3></CustomLabel>
                     <CustomSelect id="category" name="category" value={formData.category} onChange={handleInputChange}>
                         <option value="Music video">Music video</option>
                         <option value="Integration support">Integration support</option>
@@ -179,6 +210,8 @@ const handleSubmit = async (event) => {
                         <option value="Behind the scenes">Behind the scenes</option>
                         <option value="Concert">Concert</option>
                     </CustomSelect>
+                {!isOnlyAudio ? (
+                    <>
                     {/* Temporary disabling ImageThumbnails: */}
                     {/*<ThumbnailContainerDiv>
                         {previewImageThumbnail && (
@@ -276,7 +309,7 @@ const CustomInput = styled.input`
     padding: 22px;
     width: 100%;
     margin-top: 2%;
-    border: none;
+    border: 1px solid gray;
     :focus {
             outline: none;
             border: 2px solid #434289;
@@ -298,9 +331,13 @@ const DescriptionTextArea = styled.textarea`
 const CustomSelect = styled.select`
     border-radius: 33px;
     padding: 22px;
-    width: 110%;
+    width: 105%;
     margin-top: 2%;
     margin-bottom: 5%; //Adjustement for disabling ImageThumbnails
+    :focus {
+            outline: none;
+            border: 2px solid #434289;
+        }
 `;
 
 const ThumbnailContainerDiv = styled.div`

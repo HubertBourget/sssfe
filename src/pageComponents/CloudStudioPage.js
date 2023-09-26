@@ -16,7 +16,7 @@ import CircleMandala from '../assets/CircleMandala.png';
 import ProfileEditSection from '../components/ProfileEditSection';
 import LoginButton from '../components/LoginButton';
 import ArtistVideos from '../components/ArtistVideos';
-import ApprovedContent from '../components/ApprovedContent'; //test
+import ContentGallery from '../components/ContentGallery';
 
 
 export default function CloudStudioPage() {
@@ -195,7 +195,7 @@ const uploadFile = () => {
         <div style={{display:"flex", flexDirection:'column', width:'30%', alignItems:'center'}}>
             <p>Please log in to access the Cloud Studio.</p>
             <button onClick={() => loginWithRedirect({
-                redirectUri: "http://localhost:3000/studio", // Change this for prod: "https://sacredsound.app/studio"
+                redirectUri: "https://sacredsound.app/studio", // Change this for dev: "http://localhost:3000/studio"
 })}>
                 <p>Log back into the App</p>
             </button>
@@ -279,16 +279,20 @@ const uploadFile = () => {
                         <ButtonInnerImg src={FaceImg}/>
                         <h1>Your Profile</h1>
                     </DefaultButton>
-                    <DefaultButton onClick={() => handleSectionChange('component2')} style={{ backgroundColor: activeComponent === 'component2' ? '#A3C4A338' : 'transparent', marginBottom: "100px" }}>
+                    <DefaultButton onClick={() => handleSectionChange('component2')} style={{ backgroundColor: activeComponent === 'component2' ? '#A3C4A338' : 'transparent'}}>
                         <ButtonInnerImg src={MusicIcon}/>
                         <h1>Your Content</h1>
                     </DefaultButton>
+                    <DefaultButton onClick={() => handleSectionChange('component3')} style={{ backgroundColor: activeComponent === 'component3' ? '#A3C4A338' : 'transparent', marginBottom: "100px" }}>
+                        <ButtonInnerImg src={MusicIcon}/>
+                        <h1>Content Gallery</h1>
+                    </DefaultButton>
                     <LogoutButton></LogoutButton>
                 </ProfileSidebarDiv>
-                <ProfileEditSection/>
+                {activeComponent === 'component1' && <ProfileEditSection/>}
+                {activeComponent === 'component2' && <ArtistVideos artistId={user?.name} />}
+                {activeComponent === 'component3' && <ContentGallery/>}
             </div>
-            {/* <ArtistVideos artistId={user?.name} /> */} {/*Taken out to test ApprovedContent.*/}
-            <ApprovedContent/> {/*test */}
     </>
 );
 }
