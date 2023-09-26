@@ -33,7 +33,7 @@ const App = () => {
         <Route exact path="/prepareForQA/:videoId" element={<PrepareForQAPage/>}/>
         <Route exact path="/studio" element={<CloudStudioPage/>}/>
         <Route exact path="/create" element={<ArtistCreatePage/>}/>
-        <Route exact path="/test" element={<TestPage/>}/>
+        {/* <Route exact path="/test" element={<TestPage/>}/> */}
         <Route exact path="/AccountNameSelection" element={<AccountNameSelection/>}/>
       </Routes>
     </BrowserRouter>
