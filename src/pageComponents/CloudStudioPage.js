@@ -121,11 +121,18 @@ export default function CloudStudioPage() {
 
 const handleFileChange = (event) => {
     const files = event.target.files;
-    const latestFile = files[files.length - 1]; //always select the last file uploaded in the array.
+    if (fileUpload) {
+        // File is already selected, handle the error or display a message
+        console.error('A file is already selected. Clear the selection first.');
+        return;
+    }
+
+    const latestFile = files[files.length - 1];
     setIsOnlyAudio(event.target.accept.includes('audio'));
     setFileUpload(latestFile);
     event.target.value = ''; // clear the input field
 };
+
 
 //Updated September 12th
 const uploadFile = () => {
