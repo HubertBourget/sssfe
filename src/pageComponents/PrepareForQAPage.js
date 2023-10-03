@@ -244,7 +244,9 @@ const handleSubmit = async (event) => {
                     </ThumbnailContainerDiv> */}
                     </>
                 ) : null }
-                <input type="file" onChange={handleImageThumbnailChange} style={{marginBottom:"3%"}}/>
+                <div>
+                    <input type="file" onChange={handleImageThumbnailChange} style={{marginBottom:"3%"}}/>
+                </div>
                 
                 {formError && <p style={{ color: 'red' }}>{formError}</p>}
                 <div>
