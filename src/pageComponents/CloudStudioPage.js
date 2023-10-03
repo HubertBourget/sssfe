@@ -50,11 +50,11 @@ export default function CloudStudioPage() {
     fetchUser();
     }, [user?.name]);
 
-    useEffect(() => {
-        if (fileUpload !== null) {
-        uploadFile();
-        }
-    }, [fileUpload]);
+    // useEffect(() => {
+    //     if (fileUpload !== null) {
+    //     uploadFile();
+    //     }
+    // }, [fileUpload]);
 
     useEffect(() => {
     const fetchVideos = async () => {
