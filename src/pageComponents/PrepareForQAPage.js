@@ -17,7 +17,8 @@ const PrepareForQA = () => { //changing this component into a hybrid POST/UPDATE
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        category: 'Music video'
+        category: 'Music video',
+        tags: ''
     });
     const [formError, setFormError] = useState('');
     const [videoURL, setVideoURL] = useState('');
@@ -76,6 +77,7 @@ useEffect(() => {
                     title: contentData.title || '', // Populate with existing title or an empty string if not found
                     description: contentData.description || '', // Populate with existing description or an empty string if not found
                     category: contentData.category || 'Music video', // Set default category or use existing if found
+                    tags: contentData.tags || '',
                 });
                 setIsOnlyAudio(contentData.isOnlyAudio || true); // Set isOnlyAudio to existing value or true by default
                 // Set other state variables as needed...
@@ -247,7 +249,7 @@ const handleSubmit = async (event) => {
                 <div>
                     <input type="file" onChange={handleImageThumbnailChange} style={{marginBottom:"3%"}}/>
                 </div>
-                
+
                 {formError && <p style={{ color: 'red' }}>{formError}</p>}
                 <div>
                     <DefaultButton type="submit">
