@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { GlobalStyle } from './GlobalStyle';
 
-function TagComponent({onTagsChange}) {
-    const [listOfTags, setListOfTags] = useState('');
+function TagComponent({ onTagsChange, value }) {
+    const [listOfTags, setListOfTags] = useState(value); 
     const [textAreaClicked, setTextAreaClicked] = useState(false);
     const [showListOfTags, setShowListOfTags] = useState(false);
 
