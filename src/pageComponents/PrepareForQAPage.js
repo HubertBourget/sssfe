@@ -201,7 +201,7 @@ const handleSubmit = async (event) => {
                 <CustomInput id="title" name="title" value={formData.title} onChange={handleInputChange} required ></CustomInput>
                 <CustomLabel><h3>Add a video description.</h3></CustomLabel>
                 <DescriptionTextArea id="description" name="description" value={formData.description} onChange={handleInputChange} required />
-                <TagComponent onTagsChange={(tags) => handleTagsChange(tags)} />
+                <TagComponent onTagsChange={(tags) => handleTagsChange(tags)} value={formData.tags} />
                 <CustomLabel><h3>Select the content's category.</h3></CustomLabel>
                     <CustomSelect id="category" name="category" value={formData.category} onChange={handleInputChange}>
                         <option value="Music video">Music video</option>
