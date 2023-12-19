@@ -6,14 +6,18 @@ const LoginButton = () => {
     const { loginWithRedirect, isAuthenticated } = useAuth0();
 
     return (
-        !isAuthenticated && (
-            <SingupButton onClick={() => loginWithRedirect({
-                redirectUri: "https://sacredsound.app/studio", // Change this for dev: "http://localhost:3000/studio"
-})}>
-                <LoginFonts>Become a Resident Artist</LoginFonts>
-            </SingupButton>
-        )
-    )
+      !isAuthenticated && (
+        <SingupButton
+          onClick={() =>
+            loginWithRedirect({
+              redirectUri: "http://localhost:3000/studio", // Change this Uri for prod: "https://sacredsound.app/studio"
+            })
+          }
+        >
+          <LoginFonts>Become a Resident Artist</LoginFonts>
+        </SingupButton>
+      )
+    );
 }
 
 export default LoginButton
