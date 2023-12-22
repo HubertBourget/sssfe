@@ -9,15 +9,16 @@ const ContentGallery = () => {
     useEffect(() => {
         // Make an Axios GET request to your backend API
         axios
-        .get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/getApprovedVideoContent`) 
-        .then((response) => {
+          .get(`${process.env.REACT_APP_API_BASE_URL}/api/getApprovedVideoContent`
+          )
+          .then((response) => {
             setApprovedContent(response.data);
             setLoading(false);
-        })
-        .catch((error) => {
+          })
+          .catch((error) => {
             console.error(error);
             setLoading(false); // Handle errors and set loading to false
-        });
+          });
     }, []);
 
     if (loading) {

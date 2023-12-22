@@ -38,12 +38,14 @@ export default function ProfileEditSection() {
     useEffect(() => {
         const getCheckAccountName = async () => {
             try {
-            const response = await axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/getCheckAccountName`, {
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getCheckAccountName`,
+              {
                 params: {
-                email: user.name,
-                accountName: accountName,
+                  email: user.name,
+                  accountName: accountName,
                 },
-            });
+              }
+            );
 
                 if (response.data.taken) {
 
@@ -82,11 +84,13 @@ export default function ProfileEditSection() {
         const handleProfileSubmit = async (event) => {
         event.preventDefault();
         try {
-        await axios.post(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/updateUserProfile`, {
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/updateUserProfile`,
+            {
             email: user.name,
             bio: bio,
             artistLink: artistLink,
-        });
+            }
+        );
         alert('Profile updated successfully');
         } catch (error) {
         console.error(error);
@@ -159,19 +163,19 @@ const uploadProfilePicture = (uploadingPicture) => {
 
 
     const postProfileImage = (url) => {
-        fetch(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/postProfileImage`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-        },
-        body: JSON.stringify({
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/postProfileImage`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
             email: user.name,
-            profileImageUrl: url
-        }),
+            profileImageUrl: url,
+          }),
         })
-        .then((res) => res.json())
-        .then((data) => console.log(data));
+          .then((res) => res.json())
+          .then((data) => console.log(data));
     };
 
     return (

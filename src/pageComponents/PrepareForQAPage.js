@@ -64,12 +64,12 @@ useEffect(() => {
         const fetchContentData = async () => {
             try {
                 const response = await axios.get(
-                    'https://jellyfish-app-tj9ha.ondigitalocean.app/api/getContentById',
-                    {
-                        params: {
-                            videoId: videoId,
-                        },
-                    }
+                  `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
+                  {
+                    params: {
+                      videoId: videoId,
+                    },
+                  }
                 );
                 const contentData = response.data.contentDocument;
                 // Set the form data with the fetched content data

@@ -99,19 +99,20 @@ export default function CloudStudioPage() {
     };
 
     const postGenerateThumbnailImage = (video_url, video_id) => {
-    fetch(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/postCreateImageThumbnail`, {
-        method: 'POST',
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/postCreateImageThumbnail`,
+      {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
-            video_url: video_url,
-            video_id: video_id,
-            email: user.name
+          video_url: video_url,
+          video_id: video_id,
+          email: user.name,
         }),
-    })
-    .then((res) => res.json())
+      }
+    ).then((res) => res.json());
     };
 
     const handleSectionChange = (componentName) => {

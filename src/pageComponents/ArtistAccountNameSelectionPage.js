@@ -57,25 +57,27 @@ export default function ArtistAccountNameSelectionPage() {
 
 const postNewUserWithAccountName = () => {
   const timestamp = new Date().toISOString();
-  fetch(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/postNewUserWithAccountName`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      email: user.name,
-      accountName: accountName,
-      isArtist: true,
-      timestamp: timestamp,
-    }),
-  })
-  .then((res) => res.json())
-  .then(() => {
-    setTimeout(() => {
-      navigate('/studio');
-    }, 3000);
-  });
+  fetch(`${process.env.REACT_APP_API_BASE_URL}/api/postNewUserWithAccountName`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        email: user.name,
+        accountName: accountName,
+        isArtist: true,
+        timestamp: timestamp,
+      }),
+    }
+  )
+    .then((res) => res.json())
+    .then(() => {
+      setTimeout(() => {
+        navigate("/studio");
+      }, 3000);
+    });
 };
 
 //Conditionnal rendering to make sure the user is authenticated.
