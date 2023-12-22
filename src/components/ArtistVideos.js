@@ -14,7 +14,7 @@ function ArtistVideos(props) {
         const fetchContentByArtist = async () => {
             try {
                 const encodedArtistId = encodeURIComponent(artistId);
-                const response = await Axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/getContentByArtist?artistId=${encodedArtistId}`);
+                const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getContentByArtist?artistId=${encodedArtistId}`);
                 if (response.status === 200) {
                     const fetchedContentDocuments = response.data;
                     setContentDocuments(fetchedContentDocuments);
@@ -40,7 +40,7 @@ const handleModify = (videoId) => {
 const handleDelete = async (videoId, artistId) => {
     try {
         // Include the user ID in the request data or headers
-        const response = await Axios.delete(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/deleteContent?videoId=${videoId}`, {
+        const response = await Axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/deleteContent?videoId=${videoId}`, {
             headers: {
                 'user-id': artistId, // Send the user ID as a custom header
             },

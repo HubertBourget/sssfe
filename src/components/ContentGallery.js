@@ -9,7 +9,7 @@ const ContentGallery = () => {
     useEffect(() => {
         // Make an Axios GET request to your backend API
         axios
-        .get('https://jellyfish-app-tj9ha.ondigitalocean.app/api/getApprovedVideoContent') // Replace with your actual API endpoint
+        .get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/getApprovedVideoContent`) 
         .then((response) => {
             setApprovedContent(response.data);
             setLoading(false);

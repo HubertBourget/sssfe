@@ -38,7 +38,7 @@ useEffect(() => {
     const fetchVideosURL = async () => {
         try {
         const response = await axios.get(
-            'https://jellyfish-app-tj9ha.ondigitalocean.app/api/getContentById',
+            `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
             {
             params: {
                 videoId: videoId,
@@ -150,7 +150,7 @@ const handleSubmit = async (event) => {
     }
 
     try {
-        await axios.post('https://jellyfish-app-tj9ha.ondigitalocean.app/api/updateContentMetaData', {
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/updateContentMetaData`, {
             videoId: videoId,
             b_isPreparedForReview: true,
             title: formData.title,

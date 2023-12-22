@@ -23,7 +23,7 @@ export default function ProfileEditSection() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/getUserProfile/${user.name}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${user.name}`);
                 setAccountName(response.data.accountName || '');
                 setInitialBio(response.data.bio || '');
                 setInitialArtistLink(response.data.artistLink || '');
@@ -82,7 +82,7 @@ export default function ProfileEditSection() {
         const handleProfileSubmit = async (event) => {
         event.preventDefault();
         try {
-        await axios.post('https://jellyfish-app-tj9ha.ondigitalocean.app/api/updateUserProfile', {
+        await axios.post(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/updateUserProfile`, {
             email: user.name,
             bio: bio,
             artistLink: artistLink,
@@ -159,7 +159,7 @@ const uploadProfilePicture = (uploadingPicture) => {
 
 
     const postProfileImage = (url) => {
-        fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postProfileImage', {
+        fetch(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/postProfileImage`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

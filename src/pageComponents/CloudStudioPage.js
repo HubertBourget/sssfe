@@ -37,7 +37,7 @@ export default function CloudStudioPage() {
         const fetchUser = async () => {
         try {
             if (user && user.name) {
-            const response = await axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/b_getUserExist/${user.name}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/b_getUserExist/${user.name}`);
             }
         } catch (error) {
             if (error.response && error.response.status === 404) {
@@ -59,7 +59,7 @@ export default function CloudStudioPage() {
     useEffect(() => {
     const fetchVideos = async () => {
         if (user && user.name) {
-        const response = await axios.get('https://jellyfish-app-tj9ha.ondigitalocean.app/api/getPreReviewedVideoList', {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getPreReviewedVideoList`, {
             params: {
             videoOwner: user.name,
             b_isPreparedForReview: false,
@@ -99,7 +99,7 @@ export default function CloudStudioPage() {
     };
 
     const postGenerateThumbnailImage = (video_url, video_id) => {
-    fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postCreateImageThumbnail', {
+    fetch(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/postCreateImageThumbnail`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -174,7 +174,7 @@ const uploadFile = () => {
     // Reviewed Mai 1st
     const postContentMetaData = (videoId, fileUrl) => {
         const timestamp = new Date().toISOString();
-        fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postContentMetaData', {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/postContentMetaData`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

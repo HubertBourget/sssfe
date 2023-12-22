@@ -19,7 +19,7 @@ export default function ArtistAccountNameSelectionPage() {
   useEffect(() => {
         const getCheckAccountName = async () => {
             try {
-            const response = await axios.get(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/getCheckAccountName`, {
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getCheckAccountName`, {
                 params: {
                 email: user.name,
                 accountName: accountName,
@@ -57,7 +57,7 @@ export default function ArtistAccountNameSelectionPage() {
 
 const postNewUserWithAccountName = () => {
   const timestamp = new Date().toISOString();
-  fetch('https://jellyfish-app-tj9ha.ondigitalocean.app/api/postNewUserWithAccountName', {
+  fetch(`https://jellyfish-app-tj9ha.ondigitalocean.app/api/postNewUserWithAccountName`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
