@@ -89,8 +89,8 @@ export default function ProfileEditSection() {
           {
             email: user.name,
             accountName: accountName,
-            bio: bio,
-            artistLink: artistLink,
+            bio: bio || initialBio,
+            artistLink: artistLink || initialArtistLink,
           }
         );
         alert('Profile updated successfully');
