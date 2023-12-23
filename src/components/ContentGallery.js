@@ -26,17 +26,17 @@ const ContentGallery = () => {
     }
 
     return (
-        <div style={{marginTop:"5%"}}>
-        {approvedContent.map((content) => (
+      <div style={{ marginTop: "5%" }}>
+        {Array.isArray(approvedContent) && approvedContent.map((content) => (
             <ContentCard key={content._id}>
-            <h2 style={{color: 'white'}}>{content.title}</h2>
-            <video controls width="300">
+              <h2 style={{ color: "white" }}>{content.title}</h2>
+              <video controls width="300">
                 <source src={content.fileUrl} type="video/mp4" />
                 Your browser does not support the video tag.
-            </video>
+              </video>
             </ContentCard>
-        ))}
-        </div>
+          ))}
+      </div>
     );
 };
 
