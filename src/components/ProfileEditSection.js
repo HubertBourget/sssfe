@@ -84,55 +84,20 @@ export default function ProfileEditSection() {
         const handleProfileSubmit = async (event) => {
         event.preventDefault();
         try {
-        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/updateUserProfile`,
-            {
+        await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}/api/updateUserProfile`,
+          {
             email: user.name,
+            accountName: accountName,
             bio: bio,
             artistLink: artistLink,
-            }
+          }
         );
         alert('Profile updated successfully');
         } catch (error) {
         console.error(error);
         }
     };
-
-    // const uploadProfilePicture = () => {
-    //     if (profilePicture == null) {
-    //         console.log("profilePicture was null")
-    //     return;
-    //     }
-    //     const fileUploadName = v4();
-    //     const fileRef = ref(storage, `ProfilePictures/${user.name}/${fileUploadName}`);
-    //     uploadBytes(fileRef, profilePicture).then(() => {
-    //     getDownloadURL(fileRef).then((url) => {
-    //         postProfileImage(url);
-    //         setProfilePicture(null); // clear the selected file after successful upload
-    //     });
-    //     });
-    // };
-
-//     const uploadProfilePicture = (uploadingPicture) => {
-//     if (uploadingPicture == null) {
-//         console.log("profilePicture was null");
-//         return;
-//     }
-//     const fileUploadName = v4();
-//     const fileRef = ref(storage, `ProfilePictures/${user.name}/${fileUploadName}`);
-//     // Set the content type of the file to image/jpeg
-//     const metadata = {
-//         contentType: 'image/jpeg',
-//     };
-//     // Upload the file with the specified metadata
-//     uploadBytes(fileRef, uploadingPicture, metadata)
-//         .then(() => {
-//         // Get the download URL of the uploaded file
-//         getDownloadURL(fileRef)
-//             .then((url) => {
-//             postProfileImage(url);
-//         });
-//     });
-// };
 
 const uploadProfilePicture = (uploadingPicture) => {
     if (uploadingPicture == null) {
