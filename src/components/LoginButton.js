@@ -10,7 +10,7 @@ const LoginButton = () => {
         <SingupButton
           onClick={() =>
             loginWithRedirect({
-              redirectUri: "http://localhost:3000/studio", // Change this Uri for prod: "https://sacredsound.app/studio"
+              redirectUri: "https://staging.sacredsound.pages.dev/studio", // Change this Uri for prod: "https://sacredsound.app/studio" or to this uri for local testing : "http://localhost:3000/studio"
             })
           }
         >
