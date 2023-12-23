@@ -14,7 +14,7 @@ const LoginButton = () => {
             })
           }
         >
-          <LoginFonts>Become a Resident Artist</LoginFonts>
+          <LoginFonts>Become a Resident Artist*</LoginFonts>
         </SingupButton>
       )
     );
