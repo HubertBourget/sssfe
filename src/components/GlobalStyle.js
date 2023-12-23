@@ -23,7 +23,7 @@ export const GlobalStyle = createGlobalStyle`
     }
     /* Set the font family for paragraphs */
     p {
-        font-family: 'Open Sans', sans-serif;
+        font-family: 'Outfit', sans-serif;
         font-size: 14px;
         line-height: 1.5;
         margin-bottom: 1rem;
@@ -31,7 +31,7 @@ export const GlobalStyle = createGlobalStyle`
     }
     /* Set the font family for buttons */
     button {
-        font-family: 'Open Sans', sans-serif;
+        font-family: 'Outfit', sans-serif;
         font-size: 14px;
         font-weight: 500;
         line-height: 1.5;
@@ -47,6 +47,7 @@ export const GlobalStyle = createGlobalStyle`
         }
     }
     textarea {
+        font-family: 'Outfit', sans-serif;
         border: 1px solid gray;
         :focus {
             outline: none;
