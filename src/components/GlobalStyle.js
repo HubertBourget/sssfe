@@ -54,4 +54,7 @@ export const GlobalStyle = createGlobalStyle`
             border: 2px solid #434289;
         }
     }
+    div {
+        font-family: 'Outfit', sans-serif;
+    }
 `;
