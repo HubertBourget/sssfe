@@ -212,97 +212,165 @@ const uploadFile = () => {
     }
 
     return (
-    <>
-        <GlobalStyle/>
+      <>
+        <GlobalStyle />
         <HeaderDiv>
-            <h1>Cloud Studio</h1>
+          <h1>Cloud Studio</h1>
         </HeaderDiv>
 
         {showProgress && isUploading && (
-            <SuccessMessage>
+          <SuccessMessage>
             <div>
-                <p>Uploading: {uploadProgress.toFixed(3)}%</p>
-                <progress max="100" value={uploadProgress}></progress>
+              <p>Uploading: {uploadProgress.toFixed(3)}%</p>
+              <progress max="100" value={uploadProgress}></progress>
             </div>
-            </SuccessMessage>
+          </SuccessMessage>
         )}
 
         {showSuccessMessage && (
-            <SuccessMessage>
+          <SuccessMessage>
             <div>
-                <p>Upload Successful!</p>
+              <p>Upload Successful!</p>
             </div>
-            </SuccessMessage>
+          </SuccessMessage>
         )}
-        
-        <UploadAndPreviewDivContainer>
-            <UploadDiv backgroundImage={MandalaBG}>
-            <h1 style={{marginBottom:"33px"}}>Upload your best quality content here.</h1>
-                <ButtonMainContainer>
-                    <UploadButtonColumnDiv>
-                        <UploadStyledLabel>
-                            <h1 style={{color: "#F5F5F5", lineHeight: "0", padding:"11px"}}>
-                                {window.innerWidth < 1050 ? 'Video' : 'Upload Video'}
-                            </h1>
-                            <input type="file" accept={`video/*`} onChange={handleFileChange} />
-                        </UploadStyledLabel>
-                        <p style={{lineHeight: "0"}}>MP4 or MOV files.</p>
-                    </UploadButtonColumnDiv>
-                    <UploadButtonColumnDiv>
-                        <UploadStyledLabel>
-                            <h1 style={{color: "#F5F5F5", lineHeight: "0", padding:"11px"}}>
-                                {window.innerWidth < 1050 ? 'Audio' : 'Upload Audio'}
-                            </h1>
-                            <input type="file" accept={`audio/*`} onChange={handleFileChange} />
-                        </UploadStyledLabel>
-                        <p style={{lineHeight: "0"}}>WAV or MP3 files.</p>
-                    </UploadButtonColumnDiv>
-                </ButtonMainContainer>
-            </UploadDiv>
-            {fileList.length > 0 ? (
-                <UploadedContentDivContainer>
-                    {fileList.map((video) => {
-                            return (
-                                <UploadedContentDiv key={video.videoId} backgroundImage={CircleMandala}>
-                                    <UploadedContentImgDiv backgroundImage={video.ImageThumbnailURL0}>
-                                        <Link to={`/PrepareForQA/${video.videoId}`}>
-                                            <CenteredButton><h1 style={{color: "#F5F5F5", lineHeight: "0", padding:"11px 33px"}}>Prepare for Review</h1></CenteredButton>
-                                        </Link>
-                                        <p style={{position: "relative", marginTop: "210px"}}>Add metadata to get found easily!</p>
-                                    </UploadedContentImgDiv>
-                                </UploadedContentDiv>
-                            );
-                    })}
-                </UploadedContentDivContainer>
-            ) : (
-                <EmptyUploadedContentDiv style={{width:"333px", }}>
-                    <h1>As a token of thanks, you’ll unlock 1 hour of studio time at Sacred Sound Studio once you upload your first content!</h1>
-                </EmptyUploadedContentDiv>
-            )}
 
-            </UploadAndPreviewDivContainer>
-            <div style={{display: "flex"}}>
-                <ProfileSidebarDiv>
-                    <DefaultButton onClick={() => handleSectionChange('component1')} style={{ backgroundColor: activeComponent === 'component1' ? '#A3C4A338' : 'transparent' }}>
-                        <ButtonInnerImg src={FaceImg}/>
-                        <h1>Your Profile</h1>
-                    </DefaultButton>
-                    <DefaultButton onClick={() => handleSectionChange('component2')} style={{ backgroundColor: activeComponent === 'component2' ? '#A3C4A338' : 'transparent'}}>
-                        <ButtonInnerImg src={MusicIcon}/>
-                        <h1>Your Content</h1>
-                    </DefaultButton>
-                    <DefaultButton onClick={() => handleSectionChange('component3')} style={{ backgroundColor: activeComponent === 'component3' ? '#A3C4A338' : 'transparent', marginBottom: "100px" }}>
-                        <ButtonInnerImg src={MusicIcon}/>
-                        <h1>Content Gallery</h1>
-                    </DefaultButton>
-                    <LogoutButton></LogoutButton>
-                </ProfileSidebarDiv>
-                {activeComponent === 'component1' && <ProfileEditSection/>}
-                {activeComponent === 'component2' && <ArtistVideos artistId={user?.name} />}
-                {activeComponent === 'component3' && <ContentGallery/>}
-            </div>
-    </>
-);
+        <UploadAndPreviewDivContainer>
+          <UploadDiv backgroundImage={MandalaBG}>
+            <h1 style={{ marginBottom: "33px" }}>
+              Upload your best quality content here.
+            </h1>
+            <ButtonMainContainer>
+              <UploadButtonColumnDiv>
+                <UploadStyledLabel>
+                  <h1
+                    style={{
+                      color: "#F5F5F5",
+                      lineHeight: "0",
+                      padding: "11px",
+                    }}
+                  >
+                    {window.innerWidth < 1050 ? "Video" : "Upload Video"}
+                  </h1>
+                  <input
+                    type="file"
+                    accept={`video/*`}
+                    onChange={handleFileChange}
+                  />
+                </UploadStyledLabel>
+                <p style={{ lineHeight: "0" }}>MP4 or MOV files.</p>
+              </UploadButtonColumnDiv>
+              <UploadButtonColumnDiv>
+                <UploadStyledLabel>
+                  <h1
+                    style={{
+                      color: "#F5F5F5",
+                      lineHeight: "0",
+                      padding: "11px",
+                    }}
+                  >
+                    {window.innerWidth < 1050 ? "Audio" : "Upload Audio"}
+                  </h1>
+                  <input
+                    type="file"
+                    accept={`audio/*`}
+                    onChange={handleFileChange}
+                  />
+                </UploadStyledLabel>
+                <p style={{ lineHeight: "0" }}>WAV or MP3 files.</p>
+              </UploadButtonColumnDiv>
+            </ButtonMainContainer>
+          </UploadDiv>
+          {fileList.length > 0 ? (
+            <UploadedContentDivContainer>
+              {Array.isArray(fileList) && fileList.map((video) => {
+                  return (
+                    <UploadedContentDiv
+                      key={video.videoId}
+                      backgroundImage={CircleMandala}
+                    >
+                      <UploadedContentImgDiv
+                        backgroundImage={video.ImageThumbnailURL0}
+                      >
+                        <Link to={`/PrepareForQA/${video.videoId}`}>
+                          <CenteredButton>
+                            <h1
+                              style={{
+                                color: "#F5F5F5",
+                                lineHeight: "0",
+                                padding: "11px 33px",
+                              }}
+                            >
+                              Prepare for Review
+                            </h1>
+                          </CenteredButton>
+                        </Link>
+                        <p style={{ position: "relative", marginTop: "210px" }}>
+                          Add metadata to get found easily!
+                        </p>
+                      </UploadedContentImgDiv>
+                    </UploadedContentDiv>
+                  );
+                })}
+            </UploadedContentDivContainer>
+          ) : (
+            <EmptyUploadedContentDiv style={{ width: "333px" }}>
+              <h1>
+                As a token of thanks, you’ll unlock 1 hour of studio time at
+                Sacred Sound Studio once you upload your first content!
+              </h1>
+            </EmptyUploadedContentDiv>
+          )}
+        </UploadAndPreviewDivContainer>
+        <div style={{ display: "flex" }}>
+          <ProfileSidebarDiv>
+            <DefaultButton
+              onClick={() => handleSectionChange("component1")}
+              style={{
+                backgroundColor:
+                  activeComponent === "component1"
+                    ? "#A3C4A338"
+                    : "transparent",
+              }}
+            >
+              <ButtonInnerImg src={FaceImg} />
+              <h1>Your Profile</h1>
+            </DefaultButton>
+            <DefaultButton
+              onClick={() => handleSectionChange("component2")}
+              style={{
+                backgroundColor:
+                  activeComponent === "component2"
+                    ? "#A3C4A338"
+                    : "transparent",
+              }}
+            >
+              <ButtonInnerImg src={MusicIcon} />
+              <h1>Your Content</h1>
+            </DefaultButton>
+            <DefaultButton
+              onClick={() => handleSectionChange("component3")}
+              style={{
+                backgroundColor:
+                  activeComponent === "component3"
+                    ? "#A3C4A338"
+                    : "transparent",
+                marginBottom: "100px",
+              }}
+            >
+              <ButtonInnerImg src={MusicIcon} />
+              <h1>Content Gallery</h1>
+            </DefaultButton>
+            <LogoutButton></LogoutButton>
+          </ProfileSidebarDiv>
+          {activeComponent === "component1" && <ProfileEditSection />}
+          {activeComponent === "component2" && (
+            <ArtistVideos artistId={user?.name} />
+          )}
+          {activeComponent === "component3" && <ContentGallery />}
+        </div>
+      </>
+    );
 }
 
 const HeaderDiv = styled.div`
