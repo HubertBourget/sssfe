@@ -32,6 +32,24 @@ export default function CloudStudioPage() {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);  
     const navigate = useNavigate();
 
+    //getRecommendations useEffect & useState:
+    const [recombeeDataResponse, setRecombeeDataResponse] = useState("");
+    useEffect(() => {
+      const fetchRecommendations = async () => {
+        try {
+          const response = await axios.get(
+            `${process.env.REACT_APP_API_BASE_URL}/api/getRecommendations/${user.name}`
+          );
+          setRecombeeDataResponse(response.data || "");
+          console.log("recombeeDataResponse: " + recombeeDataResponse);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      fetchRecommendations();
+      }, [user?.name])
+    
+
     //Verify via the Auth0 Hook if the user has an account inside MongoDb, if not it redirect the user toward the AccountNameSelectionPage
     useEffect(() => {
         const fetchUser = async () => {
@@ -49,12 +67,6 @@ export default function CloudStudioPage() {
     };
     fetchUser();
     }, [user?.name]);
-
-    // useEffect(() => {
-    //     if (fileUpload !== null) {
-    //     uploadFile();
-    //     }
-    // }, [fileUpload]);
 
     useEffect(() => {
     const fetchVideos = async () => {
