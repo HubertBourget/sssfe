@@ -1,16 +1,13 @@
 import React from 'react'
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import { v4 } from 'uuid';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../firebase';
-import ProfileCircle from '../assets/ProfileCircle.png';
+import { storage } from '../../firebase';
+import ProfileCircle from '../../assets/ProfileCircle.png';
 
-//Component being replace by YourChannel on Jan15
-export default function ProfileEditSection() {
-    const { user } = useAuth0();
+const YourChannel= ({user}) => {
     const [bio, setBio] = useState('');
     const [artistLink, setArtistLink] = useState('');
     const [profilePicture, setProfilePicture] = useState(ProfileCircle);
@@ -24,7 +21,7 @@ export default function ProfileEditSection() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${user.name}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${user}`);
                 setAccountName(response.data.accountName || '');
                 setInitialBio(response.data.bio || '');
                 setInitialArtistLink(response.data.artistLink || '');
@@ -34,7 +31,7 @@ export default function ProfileEditSection() {
             }
         };
         fetchData();
-    }, [user?.name]);
+    }, [user]);
 
     useEffect(() => {
         const getCheckAccountName = async () => {
@@ -193,6 +190,7 @@ const uploadProfilePicture = (uploadingPicture) => {
                 </ProfileEditDiv>
     )
 }
+export default YourChannel;
 
 const ProfileEditDiv = styled.div`
     width:66%;
@@ -202,7 +200,6 @@ const ProfileEditDiv = styled.div`
     flex-direction:column;
     border-radius: 33px;
     padding: 15px;
-    overflow:"hidden"
 `;
 
 const ImageUploadStyledLabel = styled.label`
@@ -273,4 +270,5 @@ const ProfilePicture = styled.img`
     object-fit: cover;
     object-position: center center;
 `;
+
 

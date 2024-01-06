@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMusic, faFilm, faCheck, faTimes, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
-//Component being replace by ContentTab on Jan15
-function ArtistVideos(props) {
-    const artistId = props.artistId;
+
+const ContentTab = ({user}) => {
+const artistId = user;
     const [contentDocuments, setContentDocuments] = useState([]);
     const navigate = useNavigate();
     
@@ -143,4 +143,4 @@ const handleDelete = async (videoId, artistId) => {
     );
 }
 
-export default ArtistVideos;
+export default ContentTab;

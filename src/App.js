@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useAuth0 } from "@auth0/auth0-react";
-import FileUploadPage from './pageComponents/FileUploadPage';
 import HomePage from './pageComponents/HomePage';
 import ArtistProfilePage from './pageComponents/ArtistProfilePage';
 import LoginButton from './components/LoginButton';
@@ -10,8 +9,9 @@ import ProfileTest from './components/ProfileTest';
 import PrepareForQAPage from './pageComponents/PrepareForQAPage';
 import CloudStudioPage from './pageComponents/CloudStudioPage';
 import ArtistCreatePage from './pageComponents/ArtistCreatePage';
-import TestPage from './pageComponents/TestPage'
+import TestPage from './pageComponents/TestPage';
 import AccountNameSelection from './pageComponents/ArtistAccountNameSelectionPage';
+import NewCloudStudio from './pageComponents/NewCloudStudio';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -29,12 +29,12 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/profile/:artistId" element={<ArtistProfilePage />} />
-        <Route exact path="/upload" element={<FileUploadPage/>} />
         <Route exact path="/prepareForQA/:videoId" element={<PrepareForQAPage/>}/>
         <Route exact path="/studio" element={<CloudStudioPage/>}/>
         <Route exact path="/create" element={<ArtistCreatePage/>}/>
         {/* <Route exact path="/test" element={<TestPage/>}/> */}
         <Route exact path="/AccountNameSelection" element={<AccountNameSelection/>}/>
+        <Route exact path="/cloudStudio" element={<NewCloudStudio/>}/>
       </Routes>
     </BrowserRouter>
   );

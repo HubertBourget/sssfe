@@ -14,11 +14,10 @@ import FaceImg from '../assets/Face.png';
 import MusicIcon from '../assets/MusicIcon.png';
 import CircleMandala from '../assets/CircleMandala.png';
 import ProfileEditSection from '../components/ProfileEditSection';
-import LoginButton from '../components/LoginButton';
 import ArtistVideos from '../components/ArtistVideos';
 import ContentGallery from '../components/ContentGallery';
 
-
+//Component being replace by NewCloudStudio on Jan15
 export default function CloudStudioPage() {
 
     const [fileUpload, setFileUpload] = useState(null);
