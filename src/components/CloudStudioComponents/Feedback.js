@@ -4,7 +4,8 @@ import { v4 } from 'uuid';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../firebase';
 
-//
+//Leaving Feedback component on ice, it is not finished
+//Switching focus on the Upload COmponents for now
 const Feedback = ({ user }) => {
     const [subject, setSubject] = useState('');
     const [feedbackType, setFeedbackType] = useState('General Feedback');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ProfileCircle from '../assets/ProfileCircle.png';
 import NavigationButton from '../components/CloudStudioComponents/NavigationButton';
@@ -7,6 +7,7 @@ import Dashboard from '../components/CloudStudioComponents/Dashboard';
 import ContentTab from '../components/CloudStudioComponents/ContentTab';
 import YourChannel from '../components/CloudStudioComponents/YourChannel';
 import Feedback from '../components/CloudStudioComponents/Feedback';
+import Upload from '../components/CloudStudioComponents/Upload';
 
 export default function NewCloudStudio() {
     //change this for Prod:
@@ -15,33 +16,35 @@ export default function NewCloudStudio() {
     };
     //with a user.name useEffect.
 
+    const [isUploadActive, setIsUploadActive] = useState(false);
     const [activeComponent, setActiveComponent] = useState('component1');
-    const handleSectionChange = (componentName) => {
+
+const handleSectionChange = (componentName, isUploading) => {
+    setIsUploadActive(isUploading);
     setActiveComponent(componentName);
-    };
-
-
+};
 
     return (
         <MainCOntainer>
+            {!isUploadActive === true && (
             <Header>
                 <Logo>
-                    Sacred Sounds
-                    Cloud Studio
+                Sacred Sounds
+                Cloud Studio
                 </Logo>
                 <div>
-                    <UploadButton>Upload</UploadButton>
-                    <AccountButton>Account</AccountButton>
+                <UploadButton onClick={() => {handleSectionChange('component5',true);}}> Upload </UploadButton>
+                <AccountButton>Account</AccountButton>
                 </div>
-                
             </Header>
+            )}
             <FlexContainer>
                 <NavigationPanel>
-                    <NavigationButton onClick={() => handleSectionChange('component1')} active={activeComponent === 'component1'}>Dashboard</NavigationButton>
-                    <NavigationButton onClick={() => handleSectionChange('component2')} active={activeComponent === 'component2'}>Your Content</NavigationButton>
-                    <NavigationButton onClick={() => handleSectionChange('component3')} active={activeComponent === 'component3'}>Your Channel</NavigationButton>
+                    <NavigationButton onClick={() => handleSectionChange('component1', false)} active={activeComponent === 'component1'}>Dashboard</NavigationButton>
+                    <NavigationButton onClick={() => handleSectionChange('component2', false)} active={activeComponent === 'component2'}>Your Content</NavigationButton>
+                    <NavigationButton onClick={() => handleSectionChange('component3', false)} active={activeComponent === 'component3'}>Your Channel</NavigationButton>
                     <SeparatorDiv/>
-                    <NavigationButton onClick={() => handleSectionChange('component4')} active={activeComponent === 'component4'}>Feedback</NavigationButton>
+                    <NavigationButton onClick={() => handleSectionChange('component4', false)} active={activeComponent === 'component4'}>Feedback</NavigationButton>
                     <BottomNavigationPanel/>
                 </NavigationPanel>
                 <ScrollableFlexThree>
@@ -49,6 +52,7 @@ export default function NewCloudStudio() {
                     {activeComponent === "component2" && (<ContentTab user={user?.name.toString()} />)}
                     {activeComponent === "component3" && <YourChannel user={user?.name.toString()} />}
                     {activeComponent === "component4" && <Feedback user={user?.name.toString()} />}
+                    {activeComponent === "component5" && <Upload user={user?.name.toString()} />}
                 </ScrollableFlexThree>
             </FlexContainer>
         </MainCOntainer>
@@ -62,10 +66,10 @@ overflow: hidden;
 `;
 
 const Header = styled.div`
+    display: flex;
     flex-direction: row;
     width: 100%;
     height: 12vh;
-    display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
@@ -73,6 +77,7 @@ const Header = styled.div`
     position: relative;
     overflow: hidden;
 `;
+
 
 const FlexContainer = styled.div`
     display: flex;
