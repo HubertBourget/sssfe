@@ -73,7 +73,7 @@ export default function CloudStudioPage() {
         if (user && user.name) {
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getPreReviewedVideoList`, {
             params: {
-            videoOwner: user.name,
+            owner: user.name,
             b_isPreparedForReview: false,
             },
         });
@@ -194,7 +194,7 @@ const uploadFile = () => {
             Accept: 'application/json',
         },
         body: JSON.stringify({
-            videoOwner: user.name,
+            owner: user.name,
             videoId: videoId,
             timestamp: timestamp,
             fileUrl: fileUrl,
