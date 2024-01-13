@@ -12,20 +12,14 @@ import ArtistCreatePage from './pageComponents/ArtistCreatePage';
 import TestPage from './pageComponents/TestPage';
 import AccountNameSelection from './pageComponents/ArtistAccountNameSelectionPage';
 import NewCloudStudio from './pageComponents/NewCloudStudio';
+import { GlobalStyle } from './components/GlobalStyle';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
   return (
+    
     <BrowserRouter>
-    {/* {error && <p>Authentication Error</p>}
-      {!error && isLoading && <p>Loading...</p>}
-      {!error && !isLoading && (
-        <>
-          <LoginButton />
-          <LogoutButton />
-          <ProfileTest />
-        </>
-      )} */}
+<GlobalStyle></GlobalStyle>
       <Routes>
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/profile/:artistId" element={<ArtistProfilePage />} />

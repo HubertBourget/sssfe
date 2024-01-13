@@ -33,9 +33,18 @@ export default function NewCloudStudio() {
     const [visibility, setVisibility] = useState('public'); // Default value set to 'public'
     // Function to handle album data update
     const handleAlbumDataChange = (key, value) => {
+        console.log('handleAlbumDataChange: ', key, value)
     if (key === "description") setAlbumDescription(value);
     if (key === "visibility") setVisibility(value);
     if (key === "albumTitle") setAlbumTitle(value);
+    if (key === "albumOrder") setReorderedFiles(value);
+    };
+
+    //lifting the state up of the array order inside the album:
+    const [reorderedFiles, setReorderedFiles] = useState([]);
+    const updateReorderedFiles = (newFiles) => {
+        console.log('updateReorderedFiles :', newFiles )
+    setReorderedFiles(newFiles);
     };
 
 const handleNextButtonClick = () => {
@@ -45,7 +54,9 @@ const handleNextButtonClick = () => {
         title: albumTitle,
         description: albumDescription,
         visibility: visibility,
+        albumOrder: reorderedFiles,
     };
+    console.log('inspecting albumData: ', albumData)
     // Call the function to update album metadata
     handleAlbumMetaDataUpdate(albumData);
     // Change the view state
@@ -98,7 +109,8 @@ const handleStateChange = (newViewState) => {
     };
 
 const handleAlbumMetaDataUpdate = async (albumData) => {
-    const { albumId, title, description, visibility } = albumData;
+    const { albumId, title, description, visibility, albumOrder } = albumData;
+    console.log("albumData: ", albumData);
 
     try {
         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/updateAlbumMetaData`, {
@@ -106,7 +118,7 @@ const handleAlbumMetaDataUpdate = async (albumData) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ albumId, title, description, visibility }),
+            body: JSON.stringify({ albumId, title, description, visibility, albumOrder }),
         });
         const result = await response.json();
         console.log(result);
@@ -153,20 +165,18 @@ const handleAlbumMetaDataUpdate = async (albumData) => {
                     {activeComponent === "component3" && <YourChannel user={user?.name.toString()} />}
                     {activeComponent === "component4" && <Feedback user={user?.name.toString()} />}
                     <UploadPopup slideIn={isSlideIn}>
-                        <CloseButton onClick={handleCloseClick}>Close</CloseButton>
-                        {isUploadActive && uploadViewState === "albumCreation" && (
-                        <div style={{display:'flex', flexDirection:'row-reverse'}}>
-                        <NextButton onClick={handleNextButtonClick}>Next</NextButton>
-                        </div>
-                        )}
-
-                        {isUploadActive && uploadViewState === "fileDetail" && (
-                        <div style={{display:'flex', flexDirection:'row-reverse'}}>
-                        <NextButton onClick={handlePublishButtonClick}>Publish</NextButton>
-                        </div>
-                        )}
+                        <TopUploadSection style={{height: '12vh'}}>
+                            <CloseButton onClick={handleCloseClick}>Close</CloseButton>
+                            {isUploadActive && uploadViewState === "albumCreation" && (
+                            <NextButton onClick={handleNextButtonClick} style={{display:'flex', flexDirection:'row-reverse'}}>Next</NextButton>)}
+                            
+                            {isUploadActive && uploadViewState === "fileDetail" && (
+                            <NextButton onClick={handlePublishButtonClick} style={{display:'flex', flexDirection:'row-reverse'}}>Publish</NextButton>)}
+                        </TopUploadSection>
                         {activeComponent === "component5" && (
                             <Upload
+                            reorderedFiles={reorderedFiles}
+                            onUpdateReorderedFiles={updateReorderedFiles}
                             onAllUpdatesComplete = {onAllUpdatesComplete}
                             publishClicked={publishClicked}
                             handlePublishHandled={handlePublishHandled}
@@ -195,6 +205,7 @@ overflow: hidden;
 const HeaderContainer = styled.div`
     display: flex;
     flex-direction: row;
+    height: 12vh;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
 `;
 
@@ -298,25 +309,34 @@ const UploadPopup = styled.div`
 `;
 
 const CloseButton = styled.button`
-    background-color: #f5f5f5;
+    background-color: rgb(0, 0, 0, 0);
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    font-size: 20px; 
-    color: #434289;
+    font-size: 20px;
+    color: rgb(67, 66, 137);
     text-decoration: underline;
-    margin-top: 4vh;
     margin-left: 4vw;
 `;
 
 const NextButton = styled.button`
     border: none;
-    color: #F5F5F5;
-    background-color: #434289;
+    color: rgb(245, 245, 245);
+    background-color: rgb(67, 66, 137);
     border-radius: 33px;
-    padding: 15px 40px;
+    padding: 7px 73px;
     cursor: pointer;
-    margin-top: 4vh;
     margin-right: 4vw;
-    font-size: 20px; 
+    font-size: 20px;
+    height: 6vh;
+    align-items: center;
+`;
+
+const TopUploadSection = styled.div`
+    height: 12vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0px 4px 4px -2px rgba(0,0,0,0.3);
+        align-items: center;
 `;

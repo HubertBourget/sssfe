@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import FileProgressBar from './FileProgressBar';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import UploadDetailsForm from './UploadsDetailsForm';
-import Rectangle27 from '../../assets/Rectangle27.png'
+import Rectangle27 from '../../assets/Rectangle27.png';
 
 const Upload = ({ 
     viewState, 
@@ -27,7 +27,7 @@ const Upload = ({
     const [uploadProgress, setUploadProgress] = useState({});
     const [fileUploadStatus, setFileUploadStatus] = useState({});
     const [isUpdating, setIsUpdating] = useState(false);
-
+    const [albumOrderUpdated, setAlbumOrderUpdated] = useState(false);
     //Drag and drop for the upload:
     const handleDragOver = (e) => {
         e.preventDefault();
@@ -42,6 +42,7 @@ const Upload = ({
             onStateChange("albumCreation");
         }
     };
+
     //Checkbox:
     const [createAlbum, setCreateAlbum] = useState(true);
     const handleCheckboxChange = (e) => {setCreateAlbum(e.target.checked);};
@@ -61,20 +62,26 @@ const Upload = ({
         onAlbumDataChange("albumTitle", e.target.value);
     };
     const handleAlbumCoverChange = (event) => {
-        if (event.target.files[0]) {
-            setAlbumCover(event.target.files[0]);
-            uploadAlbumPicture(event.target.files[0])
-        }
-    };
+    if (event.target.files[0]) {
+        const file = event.target.files[0];
+        const imageUrl = URL.createObjectURL(file);
+        setAlbumCover(imageUrl); // Set the state with the URL
+        uploadAlbumPicture(file); // Continue with your existing upload logic
+    }
+};
     //Inside Album creation : Drag and Drop (rearrange menu for the order of tracks on the album):
     const onDragEnd = (result) => {
-        if (!result.destination) {return;}
-        const reorderedFiles = Array.from(fileUploadsArray);
-        const [reorderedItem] = reorderedFiles.splice(result.source.index, 1);
-        reorderedFiles.splice(result.destination.index, 0, reorderedItem);
-        setFileUploadsArray(reorderedFiles);
-        console.log("Rearranged array:", reorderedFiles.map(file => file.data.name));
-    };
+    if (!result.destination) return;
+    const reorderedFiles = Array.from(fileUploadsArray);
+    const [reorderedItem] = reorderedFiles.splice(result.source.index, 1);
+    reorderedFiles.splice(result.destination.index, 0, reorderedItem);
+
+    setFileUploadsArray(reorderedFiles);
+    onAlbumDataChange("albumOrder", reorderedFiles.map(file => file.videoId));
+
+    // Log using videoId instead of file name
+    console.log("Rearranged array:", reorderedFiles.map(file => file.videoId));
+};
     
     //uploadDetailsForm handle changes in uploads details
     const handleDetailChange = (index, key, value) => {
@@ -118,9 +125,71 @@ const handleFileChange = (event) => {
         event.target.value = '';
     };
 
-    //Da upload useEffect:
-    useEffect(() => {
-    fileUploadsArray.forEach((fileObj, index) => {
+//     //Da upload useEffect (working except initail album order):
+//     useEffect(() => {
+//     fileUploadsArray.forEach((fileObj, index) => {
+//         if (!fileObj.data || fileUploadStatus[fileObj.data.name]) return;
+
+//         setFileUploadStatus(prevStatus => ({
+//             ...prevStatus,
+//             [fileObj.data.name]: { uploading: true }
+//         }));
+
+//         const isOnlyAudio = fileObj.data.type.startsWith('audio/');
+//         const fileUploadName = v4();
+//         console.log(fileUploadName)
+//         const fileRef = ref(storage, `Uploads/${user.name.toString()}/${fileUploadName}`);
+//         const metadata = { contentType: fileObj.data.type };
+//         const uploadTask = uploadBytesResumable(fileRef, fileObj.data, metadata);
+
+//         uploadTask.on(
+//             'state_changed',
+//             (snapshot) => {
+//                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+//                 setUploadProgress(prevProgress => ({
+//                     ...prevProgress,
+//                     [fileObj.data.name]: progress,
+//                 }));
+//             },
+//             (error) => {
+//                 // Error handling here
+//                 console.error('Upload error:', error);
+//             },
+//             () => {
+//                 getDownloadURL(fileRef).then((fileUrl) => {
+//                     console.log('File URL:', fileUrl); // Confirming we get the file URL
+//                     return postContentMetaData(fileUploadName, fileUrl, isOnlyAudio);
+//                 })
+//                 .then(videoId => {
+//                     console.log("Posting Meta Data, Video ID:", videoId);
+//                     // Update fileUploadsArray with videoId
+//                     setFileUploadsArray(prevArray => {
+//                         const newArray = [...prevArray];
+//                         const updatedFile = { ...newArray[index], videoId: videoId };
+//                         newArray[index] = updatedFile;
+//                         return newArray;
+//                     });
+//                 })
+//                 .catch(error => {
+//                     console.error('Error in getDownloadURL or postContentMetaData:', error);
+//                 })
+//                 .finally(() => {
+//                     setFileUploadStatus(prevStatus => ({
+//                         ...prevStatus,
+//                         [fileObj.data.name]: { uploading: false, completed: true }
+//                     }));
+//                 onAlbumDataChange("albumOrder", fileUploadsArray.map(file => file.videoId));
+//             });
+//             }
+//         );
+//     }
+//     );
+// }, [fileUploadsArray, user.name, onAlbumDataChange]);
+
+
+//handling file upload useEffect:
+useEffect(() => {
+    const uploadFile = async (fileObj) => {
         if (!fileObj.data || fileUploadStatus[fileObj.data.name]) return;
 
         setFileUploadStatus(prevStatus => ({
@@ -128,60 +197,57 @@ const handleFileChange = (event) => {
             [fileObj.data.name]: { uploading: true }
         }));
 
-        const isOnlyAudio = fileObj.data.type.startsWith('audio/');
         const fileUploadName = v4();
-        console.log(fileUploadName)
         const fileRef = ref(storage, `Uploads/${user.name.toString()}/${fileUploadName}`);
         const metadata = { contentType: fileObj.data.type };
         const uploadTask = uploadBytesResumable(fileRef, fileObj.data, metadata);
 
-        uploadTask.on(
-            'state_changed',
-            (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                setUploadProgress(prevProgress => ({
-                    ...prevProgress,
-                    [fileObj.data.name]: progress,
-                }));
-            },
-            (error) => {
-                // Error handling here
-                console.error('Upload error:', error);
-            },
-            () => {
-                getDownloadURL(fileRef).then((fileUrl) => {
-                    console.log('File URL:', fileUrl); // Confirming we get the file URL
-                    return postContentMetaData(fileUploadName, fileUrl, isOnlyAudio);
-                })
-                .then(videoId => {
-                    console.log("Posting Meta Data, Video ID:", videoId);
-                    // Update fileUploadsArray with videoId
-                    setFileUploadsArray(prevArray => {
-                        const newArray = [...prevArray];
-                        const updatedFile = { ...newArray[index], videoId: videoId };
-                        newArray[index] = updatedFile;
-                        return newArray;
-                    });
-                })
-                .catch(error => {
-                    console.error('Error in getDownloadURL or postContentMetaData:', error);
-                })
-                .finally(() => {
-                    setFileUploadStatus(prevStatus => ({
-                        ...prevStatus,
-                        [fileObj.data.name]: { uploading: false, completed: true }
-                    }));
+        // Track the upload progress
+        uploadTask.on('state_changed', (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            setUploadProgress(prevProgress => ({
+                ...prevProgress,
+                [fileObj.data.name]: progress,
+            }));
+        });
+        
+        return uploadTask.then(() => getDownloadURL(fileRef))
+            .then(fileUrl => postContentMetaData(fileUploadName, fileUrl, fileObj.data.type.startsWith('audio/')))
+            .then(videoId => {
+                // Update fileUploadsArray with videoId
+                setFileUploadsArray(prevArray => {
+                    const newArray = [...prevArray];
+                    const updatedFile = { ...newArray.find(f => f.data.name === fileObj.data.name), videoId: videoId };
+                    newArray[newArray.findIndex(f => f.data.name === fileObj.data.name)] = updatedFile;
+                    return newArray;
                 });
-            }
-        );
-    }
-    );
+                return videoId; // return videoId for further use if needed
+            })
+            .catch(error => console.error('Error in uploading file:', error))
+            .finally(() => {
+                setFileUploadStatus(prevStatus => ({
+                    ...prevStatus,
+                    [fileObj.data.name]: { uploading: false, completed: true }
+                }));
+            });
+    };
+
+    fileUploadsArray.forEach(fileObj => uploadFile(fileObj));
 }, [fileUploadsArray, user.name]);
 
-//debugging
+//updating parent with Album Order:
 useEffect(() => {
-    console.log("Publish Clicked Status:", publishClicked);
-}, [publishClicked]);
+    const allUploaded = fileUploadsArray.every(file => file.videoId && fileUploadStatus[file.data.name]?.completed);
+
+    if (allUploaded && fileUploadsArray.length > 0 && !albumOrderUpdated) {
+        const albumOrder = fileUploadsArray.map(file => file.videoId);
+        onAlbumDataChange("albumOrder", albumOrder);
+        setAlbumOrderUpdated(true); // Set the flag to true once updated
+    }
+}, [fileUploadsArray, fileUploadStatus, albumOrderUpdated, onAlbumDataChange]);
+
+
+
 
     useEffect(() => {
     if (publishClicked) {
@@ -318,19 +384,23 @@ const handleUpdateReviewStatus = async () => {
         <>
         {viewState === "initial" && (
                 <DropZone onDragOver={handleDragOver} onDrop={handleDrop}>
-                        <h1 style={{ marginTop: '5vh' }}>Drop your music here: single tracks or whole albums.</h1>
-                        <UploadStyledLabel>
-                            <h3 style={{ color: "#F5F5F5", lineHeight: "0", padding: "5px" }}>or choose files to upload</h3>
-                            <input type="file" accept="video/*, audio/*" onChange={handleFileChange} multiple />
-                        </UploadStyledLabel>
-                        <label>
-                            <input 
-                                type="checkbox" 
-                                checked={createAlbum} 
-                                onChange={handleCheckboxChange} 
-                            />
-                            Create an Album Instantly with Multiple Selection
-                        </label>
+                    <h1 style={{ marginTop: '5vh' }}>Drop your music here: single tracks or whole albums.</h1>
+                    <UploadStyledLabel>
+                        <h3 style={{ color: "#F5F5F5", lineHeight: "0", padding: "5px" }}>or choose files to upload</h3>
+                        <input type="file" accept="video/*, audio/*" onChange={handleFileChange} multiple />
+                    </UploadStyledLabel>
+                    <BottomContainer>
+                        <div>
+                                <input 
+                                    type="checkbox" 
+                                    id="createAlbumCheckbox"
+                                    checked={createAlbum} 
+                                    onChange={handleCheckboxChange} 
+                                />
+                                <label htmlFor="createAlbumCheckbox">Create an Album Instantly with Multiple Selection</label>
+                        </div>
+                        <div>Mp4, Mov, Wav, or Mp3</div>
+                    </BottomContainer>
                 </DropZone>
         )}
 
@@ -338,35 +408,48 @@ const handleUpdateReviewStatus = async () => {
         {viewState === "albumCreation" && (
             <AlbumCreationView>
                 <AlbumDetails>
-                    <h1>Album Details</h1>
+                    <h1 style={{marginTop:'5vh', marginBottom: '3vh'}}>Album Details</h1>
+
+                    <label htmlFor="albumTitle">Title</label>
                     <input
+                        style={{marginBottom: '3vh'}}
+                        id="albumTitle"
                         type="text"
-                        placeholder="Title"
                         value={albumTitle}
                         onChange={handleTitleChange}
                     />
-                    <h3>Upload Album Cover</h3>
-                        {albumCover && <img src={albumCover} alt="Album Cover" style={{ width: '100px', height: '100px' }} />}
+                    <AlbumCoverInput
+                        onClick={() => document.getElementById('albumCover').click()}
+                        image={albumCover}
+                    >
+                        {!albumCover && <span>Upload<br />Cover Image</span>}
+                    </AlbumCoverInput>
                     <input 
+                        style={{ display: 'none' }}
+                        id="albumCover"
                         type="file" 
                         accept="image/*" 
-                        onChange={(e) => {
-                                handleAlbumCoverChange(e);
-                            }}
+                        onChange={handleAlbumCoverChange}
                     />
-                    <input
-                    type="text"
-                    placeholder="Description"
-                    value={albumDescription}
-                    onChange={handleDescriptionChange}
+
+                    <label htmlFor="albumDescription">Description</label>
+                    {/* The text in this input field here need to be position to the top left of the large input field. */}
+                    <textarea
+                        style={{marginBottom: '3vh', height:'9vh',verticalAlign: 'top' }}
+                        id="albumDescription"
+                        type="text"
+                        value={albumDescription}
+                        onChange={handleDescriptionChange}
                     />
-                    <select value={visibility} onChange={handleVisibilityChange}>
+
+                    <label htmlFor="visibility">Visibility</label>
+                    <select id="visibility" value={visibility} onChange={handleVisibilityChange}>
                         <option value="public">Public</option>
                         <option value="private">Private</option>
                     </select>
                 </AlbumDetails>
                 <FileUploads>
-                    <h2>Tracks from this album</h2>
+                    <h2 style={{marginTop:'5vh', marginBottom:'3vh'}}>Tracks from this album</h2>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="fileUploads">
                             {(provided) => (
@@ -415,36 +498,42 @@ const handleUpdateReviewStatus = async () => {
 export default Upload;
 
 const DropZone = styled.div`
+    --borderHeight: 215px; // Half the height of the image for top and bottom borders
+    --borderWidth: 485px; // Half the width of the image for left and right borders
+
     align-items: center;
     padding: 20px;
     text-align: center;
     margin: 20px;
     height: 35vh;
-    z-index: 12;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-top: 12vh;
-    background-size: cover;      /* Cover the entire div */
-    background-position: center; /* Center the image in the div */
-    background-repeat: no-repeat;
-    border: 10px solid transparent; // Adjust border size as needed
-    border-image: url(${Rectangle27}) 30 30 round; // Adjust slicing and repeat as needed
+    position: relative; // Needed for pseudo-elements positioning
+
+    // Pseudo-elements for top, bottom, left, right borders
     &::before, &::after {
         content: "";
         position: absolute;
+        background: url(${Rectangle27}) no-repeat;
+    }
+
+    // Top border
+    &::before {
+        top: calc(0 * var(--borderHeight +100)); // Position outside the div
         left: 0;
         right: 0;
-        height: 10px; // Adjust based on sprite size
-        background: url(${Rectangle27}) repeat-x;
+        height: var(--borderHeight);
+        background-position: top; // Adjust if needed
     }
 
-    &::before {
-        top: -10px; // Adjust based on sprite size
-    }
-
+    // Bottom border
     &::after {
-        bottom: -10px; // Adjust based on sprite size
+        bottom: calc(0 * var(--borderHeight)); // Position outside the div
+        left: 0;
+        right: 0;
+        height: var(--borderHeight);
+        background-position: bottom; // Adjust if needed
     }
 `;
 
@@ -491,8 +580,51 @@ const AlbumDetails = styled.div`
     flex: 1 1 0%;
     display: flex;
     flex-direction: column;
+    margin-left: 3vw;
+    margin-right: 3vw;
 `;
 
 const FileUploads = styled.div`
     flex: 1;
+    margin-left: 3vw;
+    margin-right: 3vw;
+`;
+
+const AlbumCoverInput = styled.div`
+    width: 65%;
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: ${props => props.image ? 'transparent' : '#f0f0f0'};
+    background-image: url(${props => props.image});
+    background-size: contain; /* or 'cover' */
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    display: flex;           // Use flexbox for alignment
+    justify-content: center; // Center content horizontally
+    align-items: center;     // Center content vertically
+    margin-bottom: 3vh;
+
+    span {
+        text-align: center;  // Center text horizontally within the span
+    }
+`;
+
+const BottomContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between; // This will space out the children evenly
+    padding: 0 10px; // Add padding on the left and right sides
+    width: 930px;
+    z-index:'11';
+
+    label, div {
+        font-size: 22px; // Set the font size for label and span
+    }
+
+    input[type="checkbox"] {
+        // Any additional styling for the checkbox
+    }
 `;
