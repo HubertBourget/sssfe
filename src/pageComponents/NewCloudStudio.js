@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import NavigationButton from '../components/CloudStudioComponents/NavigationButton';
 import Dashboard from '../components/CloudStudioComponents/Dashboard';
@@ -8,30 +8,76 @@ import YourChannel from '../components/CloudStudioComponents/YourChannel';
 import Feedback from '../components/CloudStudioComponents/Feedback';
 import Upload from '../components/CloudStudioComponents/Upload';
 import { v4 } from 'uuid';
+import { debounce } from 'lodash';
+import axios from 'axios';
 
 export default function NewCloudStudio() {
     //change this for Prod:
+    //3 of those now:
     const user = {
         name: "debug7e@debug.com",
     };
     //with a user.name useEffect.
 
+    //Navigation, viewStates and button flow:
     const [isUploadActive, setIsUploadActive] = useState(false);
     const [activeComponent, setActiveComponent] = useState('component1');
     const [isSlideIn, setIsSlideIn] = useState(false);
     const [publishClicked, setPublishClicked] = useState(false);
+    const [uploadViewState, setUploadViewState] = useState("initial");
     const handleSectionChange = (componentName, isUploading) => {
         setIsUploadActive(isUploading);
         setActiveComponent(componentName);
     };
-    const [uploadViewState, setUploadViewState] = useState("initial");
+    const handlePublishHandled = () => {
+            setPublishClicked(false); // Reset the state
+        };
+    const handlePublishButtonClick = () => {
+        debouncedUpdate.flush(); // Flush any pending updates
+        setPublishClicked(true);
+    };
+    const resetUploadState = () => {
+        setUploadViewState("initial");
+    };
+    const onAllUpdatesComplete = () => {
+    // Logic to close the component or update the UI
+    resetUploadState()
+    setIsSlideIn(false); 
+    setIsUploadActive(false); 
+    setActiveComponent('component1');
+    };
+    const handleUploadClick = () => {
+        setAlbumId(v4());
+        setIsSlideIn(false);
+        //After a short delay, set isSlideIn to true to trigger the animation
+        setTimeout(() => {
+            handleSectionChange('component5', true);
+            setIsSlideIn(true); // Trigger the slide-in animation
+        }, 9);
+    };
+    const handleCloseClick = () => {
+        resetUploadState()
+        setIsSlideIn(false); // Hide the UploadPopup
+        setIsUploadActive(false); // Show the Upload and Account buttons
+        setActiveComponent('component1'); // Optionally, reset to the default component view
+    };
+    const handleStateChange = (newViewState) => {
+        // Update the state that controls the viewState of the Upload component
+        setUploadViewState(newViewState);
+    };
 
-    //states for album data:
+
+    // Function & useStates to handle album data update:
     const [albumId, setAlbumId] = useState(null);
     const [albumTitle, setAlbumTitle] = useState('');
     const [albumDescription, setAlbumDescription] = useState('');
     const [visibility, setVisibility] = useState('public'); // Default value set to 'public'
-    // Function to handle album data update
+    //lifting the state up of the array order inside the album:
+    const [reorderedFiles, setReorderedFiles] = useState([]);
+    const updateReorderedFiles = (newFiles) => {
+        console.log('updateReorderedFiles :', newFiles )
+    setReorderedFiles(newFiles);
+    };
     const handleAlbumDataChange = (key, value) => {
         console.log('handleAlbumDataChange: ', key, value)
     if (key === "description") setAlbumDescription(value);
@@ -39,94 +85,78 @@ export default function NewCloudStudio() {
     if (key === "albumTitle") setAlbumTitle(value);
     if (key === "albumOrder") setReorderedFiles(value);
     };
-
-    //lifting the state up of the array order inside the album:
-    const [reorderedFiles, setReorderedFiles] = useState([]);
-    const updateReorderedFiles = (newFiles) => {
-        console.log('updateReorderedFiles :', newFiles )
-    setReorderedFiles(newFiles);
+    //On buttonNext click, sends the request ot sets the albumData in MongoDb and change the viewState
+    const handleNextButtonClick = () => {
+        // Prepare the album data
+        const albumData = {
+            albumId: albumId,
+            title: albumTitle,
+            description: albumDescription,
+            visibility: visibility,
+            albumOrder: reorderedFiles,
+        };
+        console.log('inspecting albumData: ', albumData)
+        // Call the function to update album metadata
+        handleAlbumMetaDataUpdate(albumData);
+        // Change the view state
+        setUploadViewState("fileDetail");
+    };
+    //The album update API call:
+    const handleAlbumMetaDataUpdate = async (albumData) => {
+        const { albumId, title, description, visibility, albumOrder } = albumData;
+        console.log("albumData: ", albumData);
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/updateAlbumMetaData`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ albumId, title, description, visibility, albumOrder }),
+            });
+            const result = await response.json();
+            console.log(result);
+        } catch (error) {
+            console.error('Error updating album metadata:', error);
+        }
     };
 
-const handleNextButtonClick = () => {
-    // Prepare the album data
-    const albumData = {
-        albumId: albumId,
-        title: albumTitle,
-        description: albumDescription,
-        visibility: visibility,
-        albumOrder: reorderedFiles,
-    };
-    console.log('inspecting albumData: ', albumData)
-    // Call the function to update album metadata
-    handleAlbumMetaDataUpdate(albumData);
-    // Change the view state
-    setUploadViewState("fileDetail");
-};
 
-const handlePublishHandled = () => {
-        setPublishClicked(false); // Reset the state
-    };
+    // Function & useStates to handle tracks data update:
+    // Define the debounced function
+    const debouncedUpdate = useRef(debounce(async (trackId, key, value) => {
+        console.log(trackId);
+        const itemId = trackId.trackId.toString();
+        const itemKey = trackId.key;
+        const itemValue = trackId.value;
+        console.log("itemId::", itemId);
+        console.log("key::", itemKey);
+        console.log("value::", itemValue);
+    const dataToUpdate = { [itemKey]: itemValue };
 
-const handlePublishButtonClick = () => {
-    console.log("Publish button clicked");
-    setPublishClicked(true);
-};
-
-const resetUploadState = () => {
-    setUploadViewState("initial");
-    // Add other state resets if needed, e.g., setFileUploadsArray([])
-};
-
-const onAllUpdatesComplete = () => {
-    // Logic to close the component or update the UI
-    resetUploadState()
-    setIsSlideIn(false); 
-    setIsUploadActive(false); 
-    setActiveComponent('component1');
-};
-
-
-const handleUploadClick = () => {
-    setAlbumId(v4());
-    setIsSlideIn(false);
-    //After a short delay, set isSlideIn to true to trigger the animation
-    setTimeout(() => {
-        handleSectionChange('component5', true);
-        setIsSlideIn(true); // Trigger the slide-in animation
-    }, 9);
-};
-
-const handleCloseClick = () => {
-    resetUploadState()
-    setIsSlideIn(false); // Hide the UploadPopup
-    setIsUploadActive(false); // Show the Upload and Account buttons
-    setActiveComponent('component1'); // Optionally, reset to the default component view
-};
-
-const handleStateChange = (newViewState) => {
-        // Update the state that controls the viewState of the Upload component
-        setUploadViewState(newViewState);
-    };
-
-const handleAlbumMetaDataUpdate = async (albumData) => {
-    const { albumId, title, description, visibility, albumOrder } = albumData;
-    console.log("albumData: ", albumData);
+    if (!itemId || itemValue === undefined) {
+        console.log("Invalid itemId or value", { itemId, itemValue });
+        return;
+    }
 
     try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/updateAlbumMetaData`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ albumId, title, description, visibility, albumOrder }),
+        console.log('Sending data:', { videoId: itemId, ...dataToUpdate });
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/updatePartialContentMetaData`, {
+            videoId: itemId,
+            ...dataToUpdate
         });
-        const result = await response.json();
-        console.log(result);
-        // Additional handling based on result
+        console.log('Response:', response.data);
     } catch (error) {
-        console.error('Error updating album metadata:', error);
+        console.error('Error updating data:', error);
     }
+}, 3000)).current;
+    // Function to handle changes in track details
+    const handleTrackDetailChange = (trackId, key, value) => {
+        debouncedUpdate({ trackId, key, value });
 };
+
+// brigning fileUploadArray in the top level:
+const [fileUploadsArray, setFileUploadsArray] = useState([]);
+
 
 
     return (
@@ -187,6 +217,9 @@ const handleAlbumMetaDataUpdate = async (albumData) => {
                             onAlbumDataChange={handleAlbumDataChange}
                             onStateChange={handleStateChange}
                             albumId={albumId} 
+                            onTrackDetailChange={handleTrackDetailChange}
+                            fileUploadsArray={fileUploadsArray}
+                            setFileUploadsArray={setFileUploadsArray}
                             />
                         )}
                     </UploadPopup>

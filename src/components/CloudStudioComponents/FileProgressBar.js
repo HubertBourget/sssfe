@@ -4,13 +4,13 @@ import uploadEditIcon from '../../assets/uploadEditIcon.png';
 import uploadHamburgerIcon from '../../assets/uploadHamburgerIcon.png';
 import uploadTrashIcon from '../../assets/uploadTrashIcon.png';
 
-const FileProgressBar = ({ file, progress }) => {
+const FileProgressBar = ({ file, progress, onDelete }) => {
     return (
         <FileUploadStatus>
             <ProgressIndicator progress={progress} />
             <FileName>{file.name}</FileName>
                 <img src={uploadHamburgerIcon} alt="" />
-                <img src={uploadTrashIcon} alt="" style={{marginRight:'25px', zIndex:'21'}}/>
+                <img src={uploadTrashIcon} alt="" style={{marginRight:'25px', zIndex:'21', cursor: 'pointer'}} onClick={onDelete}/>
         </FileUploadStatus>
     );
 };

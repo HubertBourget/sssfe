@@ -18,17 +18,23 @@ const Upload = ({
     albumId,
     publishClicked, 
     handlePublishHandled,
-    onAllUpdatesComplete
+    onAllUpdatesComplete,
+    onTrackDetailChange,
+    fileUploadsArray, 
+    setFileUploadsArray,
     }) => {
-
+    //3 of those now:
     const user = { name: "debug7e@debug.com" };
+
+
     //Upload tracking:
-    const [fileUploadsArray, setFileUploadsArray] = useState([]);
     const [uploadProgress, setUploadProgress] = useState({});
     const [fileUploadStatus, setFileUploadStatus] = useState({});
-    const [isUpdating, setIsUpdating] = useState(false);
+    
+    // const [isUpdating, setIsUpdating] = useState(false); //prepping for deletion.
+
+    //Drag and drop system with albumOrdder:
     const [albumOrderUpdated, setAlbumOrderUpdated] = useState(false);
-    //Drag and drop for the upload:
     const handleDragOver = (e) => {
         e.preventDefault();
         const files = Array.from(e.dataTransfer.files);
@@ -41,6 +47,17 @@ const Upload = ({
         if (files.length > 0) {
             onStateChange("albumCreation");
         }
+    };
+
+    //delete tracks functions:
+    const handleDeleteTrack = (fileName) => {
+        // Remove the file from fileUploadsArray
+        const updatedFileUploadsArray = fileUploadsArray.filter(file => file.data.name !== fileName);
+        setFileUploadsArray(updatedFileUploadsArray);
+
+        // Update albumOrder
+        const updatedAlbumOrder = updatedFileUploadsArray.map(file => file.videoId);
+        onAlbumDataChange("albumOrder", updatedAlbumOrder);
     };
 
     //Checkbox:
@@ -62,13 +79,13 @@ const Upload = ({
         onAlbumDataChange("albumTitle", e.target.value);
     };
     const handleAlbumCoverChange = (event) => {
-    if (event.target.files[0]) {
-        const file = event.target.files[0];
-        const imageUrl = URL.createObjectURL(file);
-        setAlbumCover(imageUrl); // Set the state with the URL
-        uploadAlbumPicture(file); // Continue with your existing upload logic
-    }
-};
+        if (event.target.files[0]) {
+            const file = event.target.files[0];
+            const imageUrl = URL.createObjectURL(file);
+            setAlbumCover(imageUrl); // Set the state with the URL
+            uploadAlbumPicture(file); // Continue with your existing upload logic
+        }
+    };
     //Inside Album creation : Drag and Drop (rearrange menu for the order of tracks on the album):
     const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -125,66 +142,6 @@ const handleFileChange = (event) => {
         event.target.value = '';
     };
 
-//     //Da upload useEffect (working except initail album order):
-//     useEffect(() => {
-//     fileUploadsArray.forEach((fileObj, index) => {
-//         if (!fileObj.data || fileUploadStatus[fileObj.data.name]) return;
-
-//         setFileUploadStatus(prevStatus => ({
-//             ...prevStatus,
-//             [fileObj.data.name]: { uploading: true }
-//         }));
-
-//         const isOnlyAudio = fileObj.data.type.startsWith('audio/');
-//         const fileUploadName = v4();
-//         console.log(fileUploadName)
-//         const fileRef = ref(storage, `Uploads/${user.name.toString()}/${fileUploadName}`);
-//         const metadata = { contentType: fileObj.data.type };
-//         const uploadTask = uploadBytesResumable(fileRef, fileObj.data, metadata);
-
-//         uploadTask.on(
-//             'state_changed',
-//             (snapshot) => {
-//                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-//                 setUploadProgress(prevProgress => ({
-//                     ...prevProgress,
-//                     [fileObj.data.name]: progress,
-//                 }));
-//             },
-//             (error) => {
-//                 // Error handling here
-//                 console.error('Upload error:', error);
-//             },
-//             () => {
-//                 getDownloadURL(fileRef).then((fileUrl) => {
-//                     console.log('File URL:', fileUrl); // Confirming we get the file URL
-//                     return postContentMetaData(fileUploadName, fileUrl, isOnlyAudio);
-//                 })
-//                 .then(videoId => {
-//                     console.log("Posting Meta Data, Video ID:", videoId);
-//                     // Update fileUploadsArray with videoId
-//                     setFileUploadsArray(prevArray => {
-//                         const newArray = [...prevArray];
-//                         const updatedFile = { ...newArray[index], videoId: videoId };
-//                         newArray[index] = updatedFile;
-//                         return newArray;
-//                     });
-//                 })
-//                 .catch(error => {
-//                     console.error('Error in getDownloadURL or postContentMetaData:', error);
-//                 })
-//                 .finally(() => {
-//                     setFileUploadStatus(prevStatus => ({
-//                         ...prevStatus,
-//                         [fileObj.data.name]: { uploading: false, completed: true }
-//                     }));
-//                 onAlbumDataChange("albumOrder", fileUploadsArray.map(file => file.videoId));
-//             });
-//             }
-//         );
-//     }
-//     );
-// }, [fileUploadsArray, user.name, onAlbumDataChange]);
 
 
 //handling file upload useEffect:
@@ -212,7 +169,7 @@ useEffect(() => {
         });
         
         return uploadTask.then(() => getDownloadURL(fileRef))
-            .then(fileUrl => postContentMetaData(fileUploadName, fileUrl, fileObj.data.type.startsWith('audio/')))
+            .then(fileUrl => postContentMetaData(fileUploadName, fileUrl, fileObj.data.type.startsWith('audio/'), albumId))
             .then(videoId => {
                 // Update fileUploadsArray with videoId
                 setFileUploadsArray(prevArray => {
@@ -256,8 +213,8 @@ useEffect(() => {
     }, [publishClicked]);
     
 const handleUpdateReviewStatus = async () => {
-    setIsUpdating(true);
-    const fileIds = fileUploadsArray.map(file => file.videoId); // Assuming 'videoId' is the unique identifier
+    // setIsUpdating(true);
+    const fileIds = fileUploadsArray.map(file => file.videoId);
 
     console.log("Starting the update process for review status.");
 
@@ -281,7 +238,7 @@ const handleUpdateReviewStatus = async () => {
 
     await Promise.all(promises);
     console.log("Review status updated for all files.");
-    setIsUpdating(false);
+    // setIsUpdating(false);
     onAllUpdatesComplete();
     handlePublishHandled(); // Reset publishClicked to false
     } catch (error) {
@@ -291,6 +248,7 @@ const handleUpdateReviewStatus = async () => {
 
     //Api calls:
     const postContentMetaData = async (videoId, fileUrl, isOnlyAudio) => {
+        console.log('inside postcontentMetaData, printing albumId:', albumId)
         console.log('inside the function - postContentMetaData:', videoId, fileUrl, isOnlyAudio);
         const timestamp = new Date().toISOString();
         try {
@@ -303,6 +261,7 @@ const handleUpdateReviewStatus = async () => {
                 body: JSON.stringify({
                     owner: user.name.toString(),
                     videoId: videoId,
+                    albumId: albumId,
                     timestamp: timestamp,
                     fileUrl: fileUrl,
                     b_isPreparedForReview: false,
@@ -458,7 +417,11 @@ const handleUpdateReviewStatus = async () => {
                                         <Draggable key={`${file.data.name}-${index}`} draggableId={`${file.data.name}-${index}`} index={index}>
                                             {(provided) => (
                                                 <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                    <FileProgressBar file={file.data} progress={uploadProgress[file.data.name] || 0} />
+                                                    <FileProgressBar 
+                                                    file={file.data} 
+                                                    progress={uploadProgress[file.data.name] || 0}
+                                                    onDelete={() => handleDeleteTrack(file.data.name)}
+                                                    />
                                                 </div>
                                             )}
                                         </Draggable>
@@ -486,6 +449,7 @@ const handleUpdateReviewStatus = async () => {
                     handleImageChange={handleImageChange}
                     handleSubmit={handleSubmit}
                     progress={uploadProgress[file.data.name] || 0}
+                    onTrackDetailChange={onTrackDetailChange}
                 />
             ))}
         </div>
