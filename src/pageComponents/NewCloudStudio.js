@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import NavigationButton from '../components/CloudStudioComponents/NavigationButton';
 import Dashboard from '../components/CloudStudioComponents/Dashboard';
@@ -10,6 +10,14 @@ import Upload from '../components/CloudStudioComponents/Upload';
 import { v4 } from 'uuid';
 import { debounce } from 'lodash';
 import axios from 'axios';
+import ProfileCircle from '../assets/ProfileCircle.png';
+import HorizontalLogo from '../assets/HorizontalLogo.png';
+import UploadIcon from '../assets/UploadIcon.png';
+import DashboardIcon from '../assets/DashboardIcon.png';
+import YourContentIcon from '../assets/ContentIcon.png'
+import YourChanneltIcon from '../assets/YourChannelIcon.png';
+import FeedbackIcon from '../assets/FeedbackIcon.png';
+
 
 export default function NewCloudStudio() {
     //change this for Prod:
@@ -123,7 +131,7 @@ export default function NewCloudStudio() {
 
     // Function & useStates to handle tracks data update:
     // Define the debounced function
-    const debouncedUpdate = useRef(debounce(async (trackId, key, value) => {
+    const debouncedUpdate = useRef(debounce(async (trackId) => {
         console.log(trackId);
         const itemId = trackId.trackId.toString();
         const itemKey = trackId.key;
@@ -148,7 +156,7 @@ export default function NewCloudStudio() {
     } catch (error) {
         console.error('Error updating data:', error);
     }
-}, 3000)).current;
+}, 100)).current;
     // Function to handle changes in track details
     const handleTrackDetailChange = (trackId, key, value) => {
         debouncedUpdate({ trackId, key, value });
@@ -156,7 +164,24 @@ export default function NewCloudStudio() {
 
 // brigning fileUploadArray in the top level:
 const [fileUploadsArray, setFileUploadsArray] = useState([]);
+useEffect(() => {
+    fileUploadsArray.forEach(file => {
+        if (!trackDetails.some(detail => detail.id === file.videoId)) {
+            const newTrack = {
+                id: file.videoId,
+                visibility: 'public', // Default value
+                category: 'music video', // Default value
+                albumId:albumId,
+                // ... other default values
+            };
 
+            setTrackDetails(prevDetails => [...prevDetails, newTrack]);
+        }
+    });
+}, [fileUploadsArray]);
+
+
+const [trackDetails, setTrackDetails] = useState([]);
 
 
     return (
@@ -165,16 +190,17 @@ const [fileUploadsArray, setFileUploadsArray] = useState([]);
                 <HeaderLeft>
                     {!isUploadActive && (
                         <Logo>
-                        Sacred Sounds
-                        Cloud Studio
                         </Logo>
                     )}
                 </HeaderLeft>
                 <HeaderRight>
                     {!isUploadActive && (
                         <UploadAndAccountDiv>
-                            <CustomButton onClick={() => {handleUploadClick();}}> Upload </CustomButton>
-                            <CustomButton>Account</CustomButton>
+                            <button onClick={() => {handleUploadClick();}}>  
+                                <img src={UploadIcon} alt="Upload" style={{ marginRight: '8px'}}/>
+                                Upload 
+                            </button>
+                            <AccountButton></AccountButton>
                         </UploadAndAccountDiv>
                     )}                   
                 </HeaderRight>
@@ -182,11 +208,23 @@ const [fileUploadsArray, setFileUploadsArray] = useState([]);
             
             <FlexContainer>
                 <NavigationPanel>
-                    <NavigationButton onClick={() => handleSectionChange('component1', false)} active={activeComponent === 'component1'}>Dashboard</NavigationButton>
-                    <NavigationButton onClick={() => handleSectionChange('component2', false)} active={activeComponent === 'component2'}>Your Content</NavigationButton>
-                    <NavigationButton onClick={() => handleSectionChange('component3', false)} active={activeComponent === 'component3'}>Your Channel</NavigationButton>
+                    <NavigationButton onClick={() => handleSectionChange('component1', false)} active={activeComponent === 'component1'}>
+                        <img src={DashboardIcon} alt="Upload" style={{ marginRight: '8px'}}/>
+                        Dashboard
+                    </NavigationButton>
+                    <NavigationButton onClick={() => handleSectionChange('component2', false)} active={activeComponent === 'component2'}>
+                        <img src={YourContentIcon} alt="Upload" style={{ marginRight: '8px'}}/>
+                        Your Content
+                    </NavigationButton>
+                    <NavigationButton onClick={() => handleSectionChange('component3', false)} active={activeComponent === 'component3'}>
+                        <img src={YourChanneltIcon} alt="Upload" style={{ marginRight: '8px'}}/>
+                        Your Channel
+                    </NavigationButton>
                     <SeparatorDiv/>
-                    <NavigationButton onClick={() => handleSectionChange('component4', false)} active={activeComponent === 'component4'}>Feedback</NavigationButton>
+                    <NavigationButton onClick={() => handleSectionChange('component4', false)} active={activeComponent === 'component4'}>
+                        <img src={FeedbackIcon} alt="Upload" style={{ marginRight: '8px'}}/>
+                        Feedback
+                    </NavigationButton>
                     <BottomNavigationPanel/>
                 </NavigationPanel>
                 <ScrollableFlexThree isUploadActive={isUploadActive}>
@@ -198,10 +236,10 @@ const [fileUploadsArray, setFileUploadsArray] = useState([]);
                         <TopUploadSection style={{height: '12vh'}}>
                             <CloseButton onClick={handleCloseClick}>Close</CloseButton>
                             {isUploadActive && uploadViewState === "albumCreation" && (
-                            <NextButton onClick={handleNextButtonClick} style={{display:'flex', flexDirection:'row-reverse'}}>Next</NextButton>)}
+                            <button onClick={handleNextButtonClick} style={{display:'flex', flexDirection:'row-reverse'}}>Next</button>)}
                             
                             {isUploadActive && uploadViewState === "fileDetail" && (
-                            <NextButton onClick={handlePublishButtonClick} style={{display:'flex', flexDirection:'row-reverse'}}>Publish</NextButton>)}
+                            <button onClick={handlePublishButtonClick} style={{display:'flex', flexDirection:'row-reverse'}}>Publish</button>)}
                         </TopUploadSection>
                         {activeComponent === "component5" && (
                             <Upload
@@ -220,6 +258,7 @@ const [fileUploadsArray, setFileUploadsArray] = useState([]);
                             onTrackDetailChange={handleTrackDetailChange}
                             fileUploadsArray={fileUploadsArray}
                             setFileUploadsArray={setFileUploadsArray}
+                            trackDetails={trackDetails}
                             />
                         )}
                     </UploadPopup>
@@ -239,20 +278,16 @@ const HeaderContainer = styled.div`
     display: flex;
     flex-direction: row;
     height: 12vh;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
 `;
 
 const HeaderLeft = styled.div`
-    
-    flex: 1;
-    width: 100%;
+    width: 24%;
     height: 12vh;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
     position: relative;
     overflow: hidden;
+    border-right: 1px solid rgb(191, 187, 187);
 `;
 
 const HeaderRight = styled.div`
@@ -262,9 +297,11 @@ flex-direction:'end';
 `;
 
 const UploadAndAccountDiv = styled.div`
-    flex: 3 1 0%;
+    flex: 3;
     display: flex;
     justify-content: flex-end;
+    height: 100%;
+    align-items: center;
 `;
 
 
@@ -276,26 +313,31 @@ const FlexContainer = styled.div`
 
 const NavigationPanel = styled.div`
     display: flex;
-    flex: 1;
     flex-direction: column;
-    background-color: #f0f0f0;
-    padding: 10px;
     height: 80vh;
+    border-right: 1px solid rgb(191, 187, 187);
+    width: 24%;
 `;
 
 const Logo = styled.div`
     height: 100%;
     font-size: 1.5em;
-    margin-bottom: 10px;
+    margin-left: 1vw;
+    background-image: url(${HorizontalLogo});
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 `;
 
-const CustomButton = styled.button`
-    background-color: black;
-    color: white;
+const AccountButton = styled.button`
+    background-color: transparent;
     margin-left: 1vw;
     margin-right: 1vw;
-    padding: 10px
-
+    background-image: url(${ProfileCircle});
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 7vh;
 `;
 
 const SeparatorDiv = styled.div`
@@ -350,19 +392,6 @@ const CloseButton = styled.button`
     color: rgb(67, 66, 137);
     text-decoration: underline;
     margin-left: 4vw;
-`;
-
-const NextButton = styled.button`
-    border: none;
-    color: rgb(245, 245, 245);
-    background-color: rgb(67, 66, 137);
-    border-radius: 33px;
-    padding: 7px 73px;
-    cursor: pointer;
-    margin-right: 4vw;
-    font-size: 20px;
-    height: 6vh;
-    align-items: center;
 `;
 
 const TopUploadSection = styled.div`

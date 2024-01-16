@@ -4,7 +4,7 @@ import uploadEditIcon from '../../assets/uploadEditIcon.png';
 import uploadHamburgerIcon from '../../assets/uploadHamburgerIcon.png';
 import uploadTrashIcon from '../../assets/uploadTrashIcon.png';
 
-const FileProgressBar = ({ file, progress, onDelete }) => {
+const FileProgressBar = ({ file, progress, onDelete  }) => {
     return (
         <FileUploadStatus>
             <ProgressIndicator progress={progress} />

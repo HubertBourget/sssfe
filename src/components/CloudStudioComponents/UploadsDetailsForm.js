@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { debounce } from 'lodash';
 import FileProgressBar from './FileProgressBar';
@@ -7,8 +7,10 @@ import { storage } from '../../firebase';
 import { ref } from 'firebase/storage';
 import { getDownloadURL, uploadBytes } from 'firebase/storage';
 import styled from 'styled-components';
+import TagComponent from '../CloudStudioComponents/NewTagComponent';
 
-const UploadDetailsForm = ({ file, progress, videoId, onTrackDetailChange }) => {
+const UploadDetailsForm = ({ file, trackDetails, progress, videoId, onTrackDetailChange, handleDelete  }) => {
+    // console.log("key: ", key)
     //three of those now:
     const user = { name: "debug7e@debug.com" };
 
@@ -65,42 +67,43 @@ const uploadAlbumPicture = (uploadingPicture) => {
 
     //The form useState:
     const [formData, setFormData] = useState({
-        title: file.title || '',
-        description: file.description || '',
-        tags: file.tags || '',
-        category: file.category || '',
-        visibility: file.visibility || 'public',
-        selectedImageThumbnail: file.selectedImageThumbnail || '',
+        title: trackDetails.title || '',
+        description: trackDetails.description || '',
+        tags: trackDetails.tags || '',
+        category: trackDetails.category || '',
+        visibility: trackDetails.visibility || 'true',
+        selectedImageThumbnail: trackDetails.selectedImageThumbnail || '',
     });
 
 
-//     const debouncedUpdate = debounce(async (data) => {
-//     try {
-//         if(!videoId) return;
-//         console.log('Sending data:', { videoId, ...data });  // Log the data being sent
-//         const response = await axios.post('https://monkfish-app-nb3ck.ondigitalocean.app/api/updatePartialContentMetaData', {
-//             videoId: videoId,
-//             ...data
-//         });
-//         console.log('Response:', response.data);
-//     } catch (error) {
-//         console.error('Error updating data:', error);
-//     }
-// }, 3000);
-
-
 const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
-        onTrackDetailChange(videoId, name, value);
-    };
+    const { name, value } = e.target;
+    setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
+    onTrackDetailChange(videoId, name, value);
+};
+
+useEffect(() => {
+    setFormData(prevFormData => ({
+        ...prevFormData,
+        album: trackDetails.albumId || ''
+    }));
+}, [trackDetails.albumId]);
+
+useEffect(() => {
+    console.log("Updated formData: ", formData);
+}, [formData]);
 
 
     return (
         <div style={{display:'flex', flexDirection:'column'}}>
-            <FileProgressBar file={file.data} progress={progress} />
+            <h1>Track details</h1>
+            <FileProgressBar 
+                file={file.data}
+                progress={progress}
+                onDelete={handleDelete}
+            />
             <form style={{display:'flex', flexDirection:'row'}}>
-                <div style={{display:'flex', flexDirection:'column'}}>
+                <div style={{display:'flex', flexDirection:'column', flex: '1'}}>
                     <AlbumCoverInput
                         onClick={() => document.getElementById('coverImage').click()}
                         image={coverImage}
@@ -114,31 +117,35 @@ const handleInputChange = (e) => {
                         accept="image/*" 
                         onChange={handleCoverChange}
                     />
-                    <input 
+                    <UploadsDetailsLabel>Title</UploadsDetailsLabel>
+                    <UploadDetailsTextInput 
                         type="text"
                         placeholder="Write a catchy title for the content"
                         name="title"
                         value={formData.title}
                         onChange={handleInputChange}
                     />
-                    <input 
+                    <UploadsDetailsLabel>Description</UploadsDetailsLabel>
+                    <UploadDetailsTextInput 
                         type="text"
                         placeholder="What describes this track"
                         name="description"
                         value={formData.description}
                         onChange={handleInputChange}
                     />
-                    <select 
+                    <UploadsDetailsLabel>Visibility</UploadsDetailsLabel>
+                    <UploadDetailsSelectInput 
                         name="visibility"
                         value={formData.visibility}
                         onChange={handleInputChange}
                     >
-                        <option value="public">Public</option>
-                        <option value="private">Private</option>
-                    </select>
+                        <option value="true">Public</option>
+                        <option value="false">Private</option>
+                    </UploadDetailsSelectInput>
                 </div>
-                <div style={{display:'flex', flexDirection:'column'}}>
-                <select 
+                <div style={{display:'flex', flexDirection:'column', flex: '1', marginRight:'3vw'}}>
+                <UploadsDetailsLabel style={{marginTop:'3vh'}}>Category</UploadsDetailsLabel>
+                <UploadDetailsSelectInput style={{marginBottom:'3vh'}}
                     type="text"
                     name="category"
                     value={formData.category}
@@ -151,21 +158,10 @@ const handleInputChange = (e) => {
                     <option value="Meditation music">Meditation music</option>
                     <option value="Behind the scenes">Behind the scenes</option>
                     <option value="Concert">Concert</option>
-                </select>
-                <select 
-                    name="Album"
-                    value={formData.Album}
-                    onChange={handleInputChange}
-                >
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
-                </select>
-                <input 
-                    type="text"
-                    placeholder="Tags"
-                    name="tags"
-                    value={formData.tags}
-                    onChange={handleInputChange}
+                </UploadDetailsSelectInput>
+                <UploadsDetailsLabel>Tags</UploadsDetailsLabel>
+                <TagComponent
+                    onTagsChange={(tags) => handleInputChange(tags)} value={formData.tags}
                 />
                 </div>
             </form>
@@ -176,7 +172,7 @@ const handleInputChange = (e) => {
 export default UploadDetailsForm;
 
 const AlbumCoverInput = styled.div`
-    width: 65%;
+    width: 50%;
     height: 170px;
     display: flex;
     align-items: center;
@@ -191,8 +187,23 @@ const AlbumCoverInput = styled.div`
     justify-content: center; // Center content horizontally
     align-items: center;     // Center content vertically
     margin-bottom: 3vh;
+    margin-top: 3vh;
+    margin-left: 3vw;
 
     span {
         text-align: center;  // Center text horizontally within the span
     }
+`;
+
+const UploadsDetailsLabel = styled.label`
+    margin-left: 3vw;
+`;
+
+const UploadDetailsTextInput = styled.input`
+    margin-left: 3vw;
+    margin-bottom: 3vh;
+`;
+
+const UploadDetailsSelectInput = styled.select`
+    margin-left: 3vw;
 `;

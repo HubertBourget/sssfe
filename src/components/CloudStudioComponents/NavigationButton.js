@@ -8,12 +8,15 @@ const NavigationButton = ({ onClick, active, children }) => (
 );
 
 const Button = styled.button`
-  flex: 1;
-  padding: 10px;
-  margin-bottom: 10px;
+  width: 100%;
+  height: 11vh;
+  margin-bottom: 1vh;
+  background-color: transparent;
+  color: #434289;
+  border-radius: 0px;
   border: none;
-    border-right: ${({ active }) => (active ? '10px solid black' : 'none')};
+  border-right: ${({ active }) => (active ? '10px solid #434289' : 'none')};
+  display: flex;
 `;
-//${({ active }) => (active ? '#A3C4A338' : '#d3d3d3')};
 
 export default NavigationButton;

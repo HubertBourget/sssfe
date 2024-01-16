@@ -22,6 +22,7 @@ const Upload = ({
     onTrackDetailChange,
     fileUploadsArray, 
     setFileUploadsArray,
+    trackDetails,
     }) => {
     //3 of those now:
     const user = { name: "debug7e@debug.com" };
@@ -261,13 +262,14 @@ const handleUpdateReviewStatus = async () => {
                 body: JSON.stringify({
                     owner: user.name.toString(),
                     videoId: videoId,
-                    albumId: albumId,
                     timestamp: timestamp,
                     fileUrl: fileUrl,
                     b_isPreparedForReview: false,
                     b_hasBeenReviewed: false,
                     b_isApproved: false,
                     isOnlyAudio: isOnlyAudio,
+                    visibility: true,
+                    category: 'Music Video',
                 }),
             });
             return videoId; // Assuming the response contains the videoId
@@ -349,14 +351,19 @@ const handleUpdateReviewStatus = async () => {
                         <input type="file" accept="video/*, audio/*" onChange={handleFileChange} multiple />
                     </UploadStyledLabel>
                     <BottomContainer>
-                        <div>
+                        <div style={{zIndex:'21'}}>
                                 <input 
                                     type="checkbox" 
                                     id="createAlbumCheckbox"
                                     checked={createAlbum} 
-                                    onChange={handleCheckboxChange} 
+                                    onChange={handleCheckboxChange}
+                                    style={{cursor:'pointer'}}
                                 />
-                                <label htmlFor="createAlbumCheckbox">Create an Album Instantly with Multiple Selection</label>
+                                <label 
+                                    htmlFor="createAlbumCheckbox"
+                                    style={{cursor:'pointer'}}
+                                >
+                                    Create an Album Instantly with Multiple Selection</label>
                         </div>
                         <div>Mp4, Mov, Wav, or Mp3</div>
                     </BottomContainer>
@@ -450,6 +457,8 @@ const handleUpdateReviewStatus = async () => {
                     handleSubmit={handleSubmit}
                     progress={uploadProgress[file.data.name] || 0}
                     onTrackDetailChange={onTrackDetailChange}
+                    trackDetails={trackDetails}
+                    handleDelete={() => handleDeleteTrack(file.data.name)}
                 />
             ))}
         </div>

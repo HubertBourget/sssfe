@@ -51,6 +51,7 @@ export const GlobalStyle = createGlobalStyle`
     textarea {
         font-family: 'Outfit', sans-serif;
         border: 1px solid gray;
+        color: #434289;
         :focus {
             outline: none;
             border: 2px solid #434289;
@@ -80,5 +81,21 @@ export const GlobalStyle = createGlobalStyle`
         color: #434289;
         padding: 22px;
         font-size: 14px;
+    }
+    input::placeholder, textarea::placeholder {
+        color: #434289; /* Change to your desired color */
+        opacity: 1; /* Optional: Adjust the opacity as needed */
+    }
+    button {
+        border: none;
+        color: rgb(245, 245, 245);
+        background-color: rgb(67, 66, 137);
+        border-radius: 33px;
+        padding: 7px 73px;
+        cursor: pointer;
+        margin-right: 4vw;
+        font-size: 20px;
+        height: 6vh;
+        align-items: center;
     }
 `;
