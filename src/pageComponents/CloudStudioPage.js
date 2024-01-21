@@ -16,6 +16,7 @@ import CircleMandala from '../assets/CircleMandala.png';
 import ProfileEditSection from '../components/ProfileEditSection';
 import ArtistVideos from '../components/ArtistVideos';
 import ContentGallery from '../components/ContentGallery';
+import LoginButton from '../components/LoginButton';
 
 //Component being replace by NewCloudStudio on Jan15
 export default function CloudStudioPage() {
@@ -214,11 +215,7 @@ const uploadFile = () => {
         return (
         <div style={{display:"flex", flexDirection:'column', width:'30%', alignItems:'center'}}>
             <p>Please log in to access the Cloud Studio.</p>
-            <button onClick={() => loginWithRedirect({
-                redirectUri: "https://sacredsound.app/studio", // Change this for dev: "http://localhost:3000/studio"
-})}>
-                <p>Log back into the App</p>
-            </button>
+            <LoginButton/>
         </div>
         );
     }

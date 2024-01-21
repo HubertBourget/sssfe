@@ -198,7 +198,7 @@ const [trackDetails, setTrackDetails] = useState([]);
                         <UploadAndAccountDiv>
                             <button onClick={() => {handleUploadClick();}}>  
                                 <img src={UploadIcon} alt="Upload" style={{ marginRight: '8px'}}/>
-                                Upload 
+                                Upload
                             </button>
                             <AccountButton></AccountButton>
                         </UploadAndAccountDiv>

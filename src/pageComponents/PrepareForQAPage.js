@@ -175,15 +175,15 @@ const handleSubmit = async (event) => {
         setSelectedImageSource("previewImage"); // Set the source to preview image
     };
 
-
+    //Disabling for testing:
     //Conditionnal rendering to make sure the user is authenticated.
-    if (!isAuthenticated) {
-        return (
-        <div style={{display:"flex", flexDirection:'column', width:'30%', alignItems:'center'}}>
-            <p>Please log in to access the Cloud Studio.</p>
-        </div>
-        );
-    }
+    // if (!isAuthenticated) {
+    //     return (
+    //     <div style={{display:"flex", flexDirection:'column', width:'30%', alignItems:'center'}}>
+    //         <p>Please log in to access the Cloud Studio.</p>
+    //     </div>
+    //     );
+    // }
 
     return (
         <>
