@@ -39,17 +39,15 @@ export default function ProfileEditSection() {
     useEffect(() => {
         const getCheckAccountName = async () => {
             try {
-            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getCheckAccountName`,
-              {
-                params: {
-                  email: user.name,
-                  accountName: accountName,
-                },
-              }
-            );
-
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getCheckAccountName`,
+                {
+                    params: {
+                        email: user.name,
+                        accountName: accountName,
+                    },
+                }
+                );
                 if (response.data.taken) {
-
                     setAccountAvailableAlert(response.data.message);
                     setAccountNameTaken(true);
                 }
@@ -57,7 +55,6 @@ export default function ProfileEditSection() {
                     setAccountAvailableAlert(response.data.message);
                     setAccountNameTaken(false);
                 }
-                
             } catch (error) {
                 console.error(error);
             }
@@ -86,13 +83,13 @@ export default function ProfileEditSection() {
         event.preventDefault();
         try {
         await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}/api/updateUserProfile`,
-          {
-            email: user.name,
-            accountName: accountName,
-            bio: bio || initialBio,
-            artistLink: artistLink || initialArtistLink,
-          }
+            `${process.env.REACT_APP_API_BASE_URL}/api/updateUserProfile`,
+            {
+                email: user.name,
+                accountName: accountName,
+                bio: bio || initialBio,
+                artistLink: artistLink || initialArtistLink,
+            }
         );
         alert('Profile updated successfully');
         } catch (error) {
@@ -129,20 +126,20 @@ const uploadProfilePicture = (uploadingPicture) => {
 
 
     const postProfileImage = (url) => {
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/postProfileImage`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            email: user.name,
-            profileImageUrl: url,
-          }),
-        })
-          .then((res) => res.json())
-          .then((data) => console.log(data));
-    };
+            fetch(`${process.env.REACT_APP_API_BASE_URL}/api/postProfileImage`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            body: JSON.stringify({
+                email: user.name,
+                profileImageUrl: url,
+            }),
+            })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+        };
 
     return (
         <ProfileEditDiv>
