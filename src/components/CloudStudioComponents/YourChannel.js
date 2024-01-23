@@ -220,7 +220,7 @@ const YourChannel= () => { //{user} was in props
 
     return (
         <ProfileEditDiv>
-        <h1>Channel</h1>
+        <h1 style={{marginLeft:'5%'}}>Channel</h1>
         <BannerUploadInputField onClick={triggerBannerFileInput}>
             <h2>Upload your channel content banner image</h2>
             <BannerUploadStyledIcon src={BannerUploadIcon}></BannerUploadStyledIcon>

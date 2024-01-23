@@ -81,14 +81,16 @@ const postAttachment = (url) => {
 
     return (
         <form onSubmit={handleSubmit}>
-        <h1>Feedback & Suggestion</h1>
+        <h1 style={{marginLeft:'5%'}}>Feedback & Suggestion</h1>
 
-        <label>
-            Subject:
-            <input type="text" value={subject} onChange={handleSubjectChange} />
+        <label style={{display:'flex', flexDirection:'column', marginTop:'5vh'}}>
+            <div style={{marginLeft:'5%'}}>
+                Subject
+            </div>
+            <textarea style={{width:'80%', marginLeft:'5%'}} rows={3} type="text" value={subject} onChange={handleSubjectChange} />
         </label>
 
-        <div>
+        <div style={{marginLeft:'5%', width:'80%', display:'flex',justifyContent:'space-between'}}>
             <label>
             <input
                 type="radio"
@@ -127,52 +129,39 @@ const postAttachment = (url) => {
             </label>
         </div>
 
-        <label>
-            Message:
-            <textarea value={message} onChange={handleMessageChange} />
+        <label style={{display:'flex', flexDirection:'column', marginTop:'5vh'}}>
+            <div style={{marginLeft:'5%'}}>
+                Message
+            </div>
+            <textarea rows={6} style={{width:'80%', marginLeft:'5%'}} value={message} onChange={handleMessageChange} />
         </label>
-
-        <div>
-            <AttachmentUploadStyledLabel>
-                <h2 style={{color: "#434289"}}>+ Add an attachment</h2>
-                <input
-                    type="file"
-                    id="attachmentInput"
-                    accept="image/*"
-                    onChange={(e) => {
-                        handleAttachmentChange(e);
-                    }}
-                />
-            </AttachmentUploadStyledLabel>
-            {/* You can add attachment input field or logic here */}
-        </div>
-
-        <button type="submit">Submit</button>
+        <button style={{marginLeft:'5%', marginTop:'5vh'}} type="submit">Submit</button>
         </form>
     );
 };
 
 export default Feedback;
 
-const AttachmentUploadStyledLabel = styled.label`
-    display: inline-block;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    border-radius: 33px;
-    margin-top: 15px;
-    padding: 11px;
-    margin-bottom: 11px;
-    z-index: 0;
-& input[type="file"] {
-    position: absolute;
-    font-size: 100px;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    cursor: pointer;
-    display: none;
-}
-`;
+//Archiuved for later use, maybe:
+// const AttachmentUploadStyledLabel = styled.label`
+//     display: inline-block;
+//     position: relative;
+//     overflow: hidden;
+//     cursor: pointer;
+//     border-radius: 33px;
+//     margin-top: 15px;
+//     padding: 11px;
+//     margin-bottom: 11px;
+//     z-index: 0;
+// & input[type="file"] {
+//     position: absolute;
+//     font-size: 100px;
+//     width: 100%;
+//     height: 100%;
+//     top: 0;
+//     left: 0;
+//     opacity: 0;
+//     cursor: pointer;
+//     display: none;
+// }
+// `;
