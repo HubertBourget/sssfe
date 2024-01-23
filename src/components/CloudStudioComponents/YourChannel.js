@@ -19,6 +19,8 @@ const YourChannel= () => { //{user} was in props
     const [accountNameTaken, setAccountNameTaken] = useState(false);
     const fileInputRef = useRef(null);
     const [bannerImage, setBannerImage] = useState('');
+    const [artistTitle, setArtistTitle] = useState('');
+    const [initialArtistTitle, setInitialArtistTitle] = useState('');
 
     //testing only
     //take this out on production version
@@ -35,6 +37,7 @@ const YourChannel= () => { //{user} was in props
                 setInitialBio(response.data.bio || '');
                 setInitialArtistLink(response.data.artistLink || '');
                 setProfilePicture(response.data.profileImageUrl || ProfileCircle);
+                setInitialArtistTitle(response.data.artistTitle || '');
             } catch (error) {
                 console.error(error);
             }
@@ -79,6 +82,10 @@ const YourChannel= () => { //{user} was in props
         setArtistLink(event.target.value);
     };
 
+    const handleArtistTitleChange = (event) => {
+        setArtistTitle(event.target.value);
+    };
+
     const handleProfilePictureChange = (event) => {
         const files = event.target.files;
         const latestFile = files[files.length - 1]; //always select the last file uploaded in the array.
@@ -96,6 +103,7 @@ const YourChannel= () => { //{user} was in props
                 accountName: accountName,
                 bio: bio || initialBio,
                 artistLink: artistLink || initialArtistLink,
+                artistTitle: artistTitle || initialArtistTitle,
             }
         );
         alert('Profile updated successfully');
@@ -243,33 +251,44 @@ const YourChannel= () => { //{user} was in props
                     <ProfileUploadStyledIcon src={BannerUploadIcon}></ProfileUploadStyledIcon>
                 </ImageUploadStyledLabel>
             </div>
-            <div style={{width:'40vw'}}><form onSubmit={handleProfileSubmit} style={{display:"flex", flexDirection:"column"}}>
+            <div style={{width:'60%'}}><form onSubmit={handleProfileSubmit} style={{display:"flex", flexDirection:"column"}}>
                 <CustomLabel>
                     <h2>Your Name</h2>
                     <ProfileInputField
+                        style={{marginTop:'0vh'}}
                         type="text"
                         value={accountName}
                         onChange={(event) => setAccountName(event.target.value)}
                     />
-                    <div>{accountAvailableAlert}</div>
                 </CustomLabel>
-                <CustomLabel>
-                <h2>Write a bio for your profile.</h2>
-                <BioTextArea value={bio || initialBio} onChange={handleBioChange} />
-                </CustomLabel>
-                <br />
-                <CustomLabel>
-                <h2>Add a link to your website.</h2>
-                <ProfileInputField
-                    type="text"
-                    value={artistLink || initialArtistLink}
-                    onChange={handleArtistLinkChange}
-                />
-                </CustomLabel>
-                
-                <SaveButton type="submit" disabled={accountNameTaken}>
-                    <h1 style={{color:"#F5F5F5"}}>Save Changes</h1>
-                </SaveButton>
+                    <div style={{fontSize:'16px'}}>{accountAvailableAlert}</div>
+                <BioTextArea placeholder="Description" value={bio || initialBio} onChange={handleBioChange} />
+                <div style={{display:'flex', flexDirection:'row',width:'100%', justifyContent:'space-between'}}>
+                    <ProfileInputField 
+                    style={{width:'28%'}}
+                        type="text"
+                        placeholder="Link Title"
+                        value={artistTitle || initialArtistTitle}
+                        onChange={handleArtistTitleChange}
+                    />
+                    <ProfileInputField 
+                    style={{width:'56%'}}
+                        type="text"
+                        placeholder="Link URL"
+                        value={artistLink || initialArtistLink}
+                        onChange={handleArtistLinkChange}
+                    />
+                </div>
+                <div style={{display:'flex', justifyContent:'flex-end', marginTop:'3vh'}}>
+                    <button 
+                        type="submit" 
+                        disabled={accountNameTaken}
+                        style={{display:'flex'}}>
+                        <div style={{color:'white'}}>
+                            Publish
+                        </div>
+                    </button>
+                </div>
             </form></div>
         </Container>
         
@@ -280,7 +299,6 @@ export default YourChannel;
 
 const ProfileEditDiv = styled.div`
     width:94%;
-    height:870px;
     display:flex;
     flex-direction:column;
     padding: 3%;
@@ -315,28 +333,27 @@ const ImageUploadStyledLabel = styled.label`
 
 const CustomLabel = styled.label`
     margin-top: 3%;
+    width: 100%;
 `;
 
 const ProfileInputField = styled.input`
-    width: 90%;
-    border-radius: 33px;
-    margin-right: 5%;
-    padding-left: 2%;
-    padding-right: 2%;
-    padding-top: 11px;
-    padding-bottom: 11px;
+    margin-top: 3vh;
+    width: 93.3%;
+    padding: 3%;
     overflow: hidden;
+    border: 2px solid #D9D9D9;
 `;
 
 const BioTextArea = styled.textarea`
-    border-radius: 33px;
-    width: 90%;
+    margin-top: 3vh;
+    width: 93.3%;
+    padding: 3%;
     height: 200px;
-    padding: 2%;
-    margin-right: 5%;
+    margin-right: 2%;
     border: none;
     resize: none;
     overflow: hidden;
+    border: 2px solid #D9D9D9;
 `;
 
 const SaveButton = styled.button`

@@ -196,9 +196,12 @@ const [trackDetails, setTrackDetails] = useState([]);
                 <HeaderRight>
                     {!isUploadActive && (
                         <UploadAndAccountDiv>
-                            <button onClick={() => {handleUploadClick();}}>  
+                            <button onClick={() => {handleUploadClick();}}
+                            style={{display:'flex'}}>
                                 <img src={UploadIcon} alt="Upload" style={{ marginRight: '8px'}}/>
-                                Upload
+                                <div style={{alignItems:'center', color:'white'}}>
+                                    Upload
+                                </div>
                             </button>
                             <AccountButton></AccountButton>
                         </UploadAndAccountDiv>

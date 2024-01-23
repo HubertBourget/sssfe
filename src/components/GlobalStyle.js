@@ -40,8 +40,7 @@ export const GlobalStyle = createGlobalStyle`
     input[type=text] {
         font-family: 'Outfit', sans-serif;
         font-size: 14px;
-        border: 2px gray solid;
-        padding: 22px;
+        border: 2px solid #D9D9D9;
         color: #434289;
         :focus {
             outline: none;
@@ -50,7 +49,7 @@ export const GlobalStyle = createGlobalStyle`
     }
     textarea {
         font-family: 'Outfit', sans-serif;
-        border: 1px solid gray;
+        border: 2px solid #D9D9D9;
         color: #434289;
         :focus {
             outline: none;
@@ -74,7 +73,6 @@ export const GlobalStyle = createGlobalStyle`
     }
     textarea {
         color: #434289;
-        padding: 22px;
         font-size: 14px;
     }
     select {
@@ -91,9 +89,8 @@ export const GlobalStyle = createGlobalStyle`
         color: rgb(245, 245, 245);
         background-color: rgb(67, 66, 137);
         border-radius: 33px;
-        padding: 7px 73px;
+        padding: 12px 30px;
         cursor: pointer;
-        margin-right: 4vw;
         font-size: 20px;
         height: 6vh;
         align-items: center;

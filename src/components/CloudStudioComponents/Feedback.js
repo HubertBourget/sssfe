@@ -89,7 +89,6 @@ const postAttachment = (url) => {
         </label>
 
         <div>
-            <p>Feedback Type:</p>
             <label>
             <input
                 type="radio"
