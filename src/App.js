@@ -6,13 +6,14 @@ import ArtistProfilePage from './pageComponents/ArtistProfilePage';
 import LoginButton from './components/LoginButton';
 import LogoutButton from './components/LogoutButton';
 import ProfileTest from './components/ProfileTest';
-import PrepareForQAPage from './pageComponents/PrepareForQAPage';
+import PrepareForQAPage from './pageComponents/PrepareForQAPage'; //Endpoint Disabled Jan 2024
 import CloudStudioPage from './pageComponents/CloudStudioPage';
 import ArtistCreatePage from './pageComponents/ArtistCreatePage';
 import TestPage from './pageComponents/TestPage';
 import AccountNameSelection from './pageComponents/ArtistAccountNameSelectionPage';
 import NewCloudStudio from './pageComponents/NewCloudStudio';
 import { GlobalStyle } from './components/GlobalStyle';
+import ModifySingleTrackComponent from './components/CloudStudioComponents/ModifySingleTrackComponent';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -23,7 +24,7 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/profile/:artistId" element={<ArtistProfilePage />} />
-        <Route exact path="/prepareForQA/:videoId" element={<PrepareForQAPage/>}/>
+        <Route exact path="/prepareForQA/:videoId" element={<ModifySingleTrackComponent/>}/>
         <Route exact path="/studio" element={<CloudStudioPage/>}/>
         <Route exact path="/create" element={<ArtistCreatePage/>}/>
         {/* <Route exact path="/test" element={<TestPage/>}/> */}

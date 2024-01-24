@@ -106,8 +106,7 @@ useEffect(() => {
                 <div style={{display:'flex', flexDirection:'column', flex: '1'}}>
                     <AlbumCoverInput
                         onClick={() => document.getElementById('coverImage').click()}
-                        image={coverImage}
-                    >
+                        image={coverImage}>
                         {!coverImage && <span>Upload<br />Cover Image</span>}
                     </AlbumCoverInput>
                     <input 
@@ -159,8 +158,9 @@ useEffect(() => {
                     <option value="Behind the scenes">Behind the scenes</option>
                     <option value="Concert">Concert</option>
                 </UploadDetailsSelectInput>
-                <UploadsDetailsLabel>Tags</UploadsDetailsLabel>
-                <TagComponent
+                <UploadsDetailsLabel >Tags</UploadsDetailsLabel>
+                <TagComponent 
+                    style={{marginLeft:'3vw'}}
                     onTagsChange={(tags) => handleInputChange(tags)} value={formData.tags}
                 />
                 </div>
@@ -202,8 +202,20 @@ const UploadsDetailsLabel = styled.label`
 const UploadDetailsTextInput = styled.input`
     margin-left: 3vw;
     margin-bottom: 3vh;
+    padding: 22px;
+    border: 2px solid #D9D9D9;
+    :focus {
+            outline: none;
+            border: 2px solid #434289;
+        }
 `;
 
 const UploadDetailsSelectInput = styled.select`
     margin-left: 3vw;
+    padding: 22px;
+    border: 2px solid #D9D9D9;
+    :focus {
+            outline: none;
+            border: 2px solid #434289;
+        }
 `;

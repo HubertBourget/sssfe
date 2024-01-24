@@ -10,6 +10,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import LoginButton from '../components/LoginButton';
 import TagComponent from '../components/TagComponent';
 
+//Component being remplace in Jan 2024 by the ModifySingleTrackComponent
 const PrepareForQA = () => { //changing this component into a hybrid POST/UPDATE component : component name stay the same for now
     const { videoId } = useParams();
     const { user, isAuthenticated } = useAuth0();

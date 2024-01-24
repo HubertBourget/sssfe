@@ -242,7 +242,7 @@ const [trackDetails, setTrackDetails] = useState([]);
                             <button onClick={handleNextButtonClick} style={{display:'flex', flexDirection:'row-reverse'}}>Next</button>)}
                             
                             {isUploadActive && uploadViewState === "fileDetail" && (
-                            <button onClick={handlePublishButtonClick} style={{display:'flex', flexDirection:'row-reverse'}}>Publish</button>)}
+                            <button onClick={handlePublishButtonClick} style={{display:'flex', flexDirection:'row-reverse', marginRight:'5vw'}}>Publish</button>)}
                         </TopUploadSection>
                         {activeComponent === "component5" && (
                             <Upload

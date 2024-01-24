@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-function NewTagComponent({ onTagsChange, value }) {
+function NewTagComponent({ onTagsChange, value, style  }) {
     const [listOfTags, setListOfTags] = useState(value); 
 
     const tagArray = [
@@ -67,7 +67,7 @@ const handleTextareaChange = (e) => {
 
     return (
         <>
-        <Container>
+        <Container style={style}>
             <TextArea
                 rows={4}
                 value={listOfTags}
@@ -124,7 +124,6 @@ padding: 5px;
 `;
 
 const TextArea = styled.textarea`
-    margin-left: 3vw;
     border: 1px solid gray;
     width: 100%;
     resize: vertical; 

@@ -79,6 +79,7 @@ export const GlobalStyle = createGlobalStyle`
         color: #434289;
         padding: 22px;
         font-size: 14px;
+        border: 2px solid #434289;
     }
     input::placeholder, textarea::placeholder {
         color: #434289; /* Change to your desired color */
