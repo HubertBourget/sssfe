@@ -23,7 +23,7 @@ export default function NewCloudStudio() {
     //change this for Prod:
     //3 of those now:
     const user = {
-        name: "debug7e@debug.com",
+        name: "debug9@debug.com",
     };
     //with a user.name useEffect.
 
@@ -403,5 +403,5 @@ const TopUploadSection = styled.div`
     flex-direction: row;
     justify-content: space-between;
     box-shadow: 0px 4px 4px -2px rgba(0,0,0,0.3);
-        align-items: center;
+    align-items: center;
 `;

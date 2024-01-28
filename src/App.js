@@ -6,14 +6,15 @@ import ArtistProfilePage from './pageComponents/ArtistProfilePage';
 import LoginButton from './components/LoginButton';
 import LogoutButton from './components/LogoutButton';
 import ProfileTest from './components/ProfileTest';
-import PrepareForQAPage from './pageComponents/PrepareForQAPage'; //Endpoint Disabled Jan 2024
-import CloudStudioPage from './pageComponents/CloudStudioPage';
+// import PrepareForQAPage from './pageComponents/PrepareForQAPage'; //Endpoint Disabled Jan 2024
+import CloudStudioPage from './pageComponents/CloudStudioPage'; //Endpoint Disabled Jan 2024
 import ArtistCreatePage from './pageComponents/ArtistCreatePage';
 import TestPage from './pageComponents/TestPage';
 import AccountNameSelection from './pageComponents/ArtistAccountNameSelectionPage';
 import NewCloudStudio from './pageComponents/NewCloudStudio';
 import { GlobalStyle } from './components/GlobalStyle';
 import ModifySingleTrackComponent from './components/CloudStudioComponents/ModifySingleTrackComponent';
+import ArtistLandingPage from './pageComponents/ArtistLandingPage';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -26,7 +27,7 @@ const App = () => {
         <Route exact path="/profile/:artistId" element={<ArtistProfilePage />} />
         <Route exact path="/prepareForQA/:videoId" element={<ModifySingleTrackComponent/>}/>
         <Route exact path="/studio" element={<CloudStudioPage/>}/>
-        <Route exact path="/create" element={<ArtistCreatePage/>}/>
+        <Route exact path="/create" element={<ArtistLandingPage/>}/>
         {/* <Route exact path="/test" element={<TestPage/>}/> */}
         <Route exact path="/AccountNameSelection" element={<AccountNameSelection/>}/>
         <Route exact path="/cloudStudio" element={<NewCloudStudio/>}/>

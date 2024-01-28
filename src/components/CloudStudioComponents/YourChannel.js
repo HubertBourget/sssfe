@@ -26,7 +26,7 @@ const YourChannel= () => { //{user} was in props
     //take this out on production version
     //*Run a Ctrl-F to clear all of them on Prod*
     const user = {
-        name: "debug7e@debug.com",
+        name: "debug9@debug.com",
     };
 
     useEffect(() => {

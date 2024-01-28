@@ -8,10 +8,12 @@ import { v4 } from 'uuid';
 import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import TagComponent from '../CloudStudioComponents/NewTagComponent';
+import uploadHamburgerIcon from '../../assets/uploadHamburgerIcon.png';
+import uploadTrashIcon from '../../assets/uploadTrashIcon.png';
 
 const ModifySingleTrackComponent = () => { 
     const { videoId } = useParams();
-    const { user, isAuthenticated } = useAuth0();
+    // const { user, isAuthenticated } = useAuth0(); //reactivate on production
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         title: '',
@@ -21,82 +23,115 @@ const ModifySingleTrackComponent = () => {
         visibility: '',
     });
     const [formError, setFormError] = useState('');
-    const [videoURL, setVideoURL] = useState('');
-    const [videoUrlRetrived, setVideoUrlRetrived] = useState(false);
+    const [videoURL, setVideoURL] = useState('');//Disabled to match design
+    const [videoUrlRetrived, setVideoUrlRetrived] = useState(false);//Disabled to match design
     const [uploadedImageThumbnail, setUploadedImageThumbnail] = useState('');
     const [selectedImageSource, setSelectedImageSource] = useState("previewImage");
+    const [uploadedThumbnailUrl, setUploadedThumbnailUrl] = useState('');// Necessary for passing the url of the Track's image to MongoDB
 
-useEffect(() => {
-    const fetchVideosURL = async () => {
+    //for testing purpose only:
+    const user = { name: "debug9@debug.com" };
+
+    //Disabled the fetching call for the Video Data.
+    //Original design no longer has the video in the Modify View
+    //Keeping for archives
+    // useEffect(() => {
+    //     const fetchVideosURL = async () => {
+    //         try {
+    //         const response = await axios.get(
+    //             `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
+    //             {
+    //             params: {
+    //                 videoId: videoId,
+    //             },
+    //             }
+    //         );
+    //         setVideoURL(response.data.contentDocument.fileUrl);
+    //         setVideoUrlRetrived(true);
+
+    //         } catch (error) {
+    //         console.error(error);
+    //         setVideoUrlRetrived(false);
+    //         }
+    //     };
+    //     fetchVideosURL();
+    // }, []);
+
+    useEffect(() => {
+            const fetchContentData = async () => {
+                try {
+                    const response = await axios.get(
+                        `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
+                        {
+                            params: {
+                            videoId: videoId,
+                            },
+                        }
+                    );
+                    const contentData = response.data.contentDocument;
+                    // Set the form data with the fetched content data
+                    setFormData({
+                        title: contentData.title || '', // Populate with existing title or an empty string if not found
+                        description: contentData.description || '', // Populate with existing description or an empty string if not found
+                        category: contentData.category || 'Music video', // Set default category or use existing if found
+                        tags: contentData.tags || '',
+                        visibility: contentData.visibility || 'Public',
+                    });
+                    // Set other state variables as needed...
+                } catch (error) {
+                    console.error(error);
+                    setVideoUrlRetrived(false);
+                }
+            };
+            fetchContentData(); // Call the fetchContentData function when the component mounts
+        }, [videoId]); // Make sure to include videoId in the dependency array
+
+    const handleCloseClick = () => {
+        navigate('/cloudStudio')
+    };
+
+    const handleDelete = () => {
+        axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/deleteContent`, {
+        params: { videoId },
+        headers: {
+            'user-id': user.name // Setting the custom header for user ID
+        }
+    })
+    .then(response => {
+        navigate('/cloudStudio')
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+        }
+
+    const uploadImageThumbnail = async (file) => {
+        if (!file) {
+            console.log("No file provided for upload.");
+            return;
+        }
+        const fileUploadName = v4();
+        const fileRef = ref(storage, `thumbnails/${user.name}/${fileUploadName}`);
+
         try {
-        const response = await axios.get(
-            `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
-            {
-            params: {
-                videoId: videoId,
-            },
-            }
-        );
-        setVideoURL(response.data.contentDocument.fileUrl);
-        setVideoUrlRetrived(true);
+            await uploadBytes(fileRef, file, { contentType: file.type });
+            const url = await getDownloadURL(fileRef);
 
+            // Update MongoDB with the new image URL
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/updateTrackThumbnail`, {
+                videoId: videoId,
+                thumbnailUrl: url,
+            });
+
+            alert("Image Upload and Update Successful!");
+            setUploadedThumbnailUrl(url); // Update state if needed
         } catch (error) {
-        console.error(error);
-        setVideoUrlRetrived(false);
+            console.error("Error in image upload: ", error);
         }
     };
-    fetchVideosURL();
-}, []);
-
-useEffect(() => {
-        const fetchContentData = async () => {
-            try {
-                const response = await axios.get(
-                    `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
-                    {
-                        params: {
-                        videoId: videoId,
-                        },
-                    }
-                );
-                const contentData = response.data.contentDocument;
-                // Set the form data with the fetched content data
-                setFormData({
-                    title: contentData.title || '', // Populate with existing title or an empty string if not found
-                    description: contentData.description || '', // Populate with existing description or an empty string if not found
-                    category: contentData.category || 'Music video', // Set default category or use existing if found
-                    tags: contentData.tags || '',
-                    visibility: contentData.visibility || 'Public',
-                });
-                // Set other state variables as needed...
-            } catch (error) {
-                console.error(error);
-                setVideoUrlRetrived(false);
-            }
-        };
-        fetchContentData(); // Call the fetchContentData function when the component mounts
-    }, [videoId]); // Make sure to include videoId in the dependency array
 
 
-const uploadImageThumbnail = () => {
-    if (uploadedImageThumbnail == null) {
-        console.log("uploadedImageThumbnail was null");
-        return Promise.resolve(null);
-    }
-    const fileUploadName = v4();
-    const fileRef = ref(storage, `thumbnails/${user.name}/${fileUploadName}`);
-    return uploadBytes(fileRef, uploadedImageThumbnail)
-        .then(() => getDownloadURL(fileRef))
-        .then((url) => {
-        alert("uploadedImageThumbnail Upload Successful!");
-        setUploadedImageThumbnail(null);
-        return url;
-        })
-        .catch((error) => {
-        console.error(error);
-        return null;
-        });
-};
+
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -106,25 +141,74 @@ const uploadImageThumbnail = () => {
         }));
     };
 
-const handleSubmit = async (event) => {
+    const dragOverHandler = (event) => {
+    // Prevent the browser's default behavior when dragging over
     event.preventDefault();
-
-    try {
-        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/updateContentMetaData`, {
-            videoId: videoId,
-            b_isPreparedForReview: true,
-            title: formData.title,
-            description: formData.description,
-            category: formData.category,
-            tags: formData.tags,
-        });
-        console.log('ContentMetaData updated successfully');
-        navigate('/studio');
-    } catch (error) {
-        setFormError('An error occurred while updating the ContentMetaData');
-        console.error(error);
-    }
 };
+
+    const fileChangeHandler = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            console.log("Selected file type:", file.type); // Log the file type
+            setUploadedImageThumbnail(file);
+            uploadImageThumbnail(file); // Pass the file directly
+        }
+    };
+
+    const dropHandler = (event) => {
+        // Prevent the browser from opening the file
+        event.preventDefault();
+
+        let file;
+        if (event.dataTransfer.items) {
+            // Use DataTransferItemList to get the file
+            if (event.dataTransfer.items[0].kind === 'file') {
+                file = event.dataTransfer.items[0].getAsFile();
+            }
+        } else {
+            // Use DataTransfer to get the file
+            file = event.dataTransfer.files[0];
+        }
+
+        // Check if a file is actually selected
+        if (file && file.type.match('image.*')) {
+            setUploadedImageThumbnail(file); // Update your state with the new file
+            uploadImageThumbnail(file); // Pass the file directly
+            console.log('Profile image dropped:', file.name);
+        } else {
+            console.log('File is not an image:', file.name);
+        }
+
+        // Clear the drag data cache
+        if (event.dataTransfer.items) {
+            event.dataTransfer.items.clear();
+        } else {
+            event.dataTransfer.clearData();
+        }
+    };
+
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/updateContentMetaData`, {
+                videoId: videoId,
+                b_isPreparedForReview: true,
+                title: formData.title,
+                description: formData.description,
+                category: formData.category,
+                tags: formData.tags,
+                // The image URL is already updated separately
+            });
+            console.log('ContentMetaData updated successfully');
+            navigate('/studio');
+        } catch (error) {
+            setFormError('An error occurred while updating the ContentMetaData');
+            console.error(error);
+        }
+    };
 
     //Disabling for testing:
     //Conditionnal rendering to make sure the user is authenticated.
@@ -140,22 +224,41 @@ const handleSubmit = async (event) => {
         <>
         <GlobalStyle/>
         <MainDiv>
-            <div style={{display:'flex',flexDirection:'row'}}>
+            <CustomForm onSubmit={handleSubmit}>
+            <Header>
+                <CloseButton onClick={handleCloseClick}>
+                    Close
+                </CloseButton>  
+                <button style={{display:'flex', flexDirection:'row-reverse', marginRight:'5vw'}} type="submit">
+                    Publish
+                </button>
+            </Header>
+            <h1>Track details</h1>
+            <TrackHeaderDiv>
+                <FullBlueLine/>
+                <img src={uploadHamburgerIcon} alt="" />
+                <FileName>{formData.title}</FileName>
+                <img src={uploadTrashIcon} alt="" style={{cursor:'pointer'}} onClick={handleDelete} />
+            </TrackHeaderDiv>
+            <div style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
                 <LeftDiv>
-                <CustomForm onSubmit={handleSubmit}>
+                <UploadProfileImageContainer 
+                    onClick={() => document.getElementById('file-input').click()}
+                    onDrop={dropHandler}
+                    onDragOver={dragOverHandler}
+                >
+                    <p>Upload cover image</p>
+                    <input type="file" accept="image/*" id="file-input" hidden onChange={fileChangeHandler} />
+                </UploadProfileImageContainer>
+                
                 <CustomLabel>Title</CustomLabel>
                 <CustomInput placeholder="Write a catchy title for the content" id="title" name="title" value={formData.title} onChange={handleInputChange} required ></CustomInput>
                 <CustomLabel>Description</CustomLabel>
                 <DescriptionTextArea placeholder='What describes this track' id="description" name="description" value={formData.description} onChange={handleInputChange} required />
-
-
                 {/* <div>
                     Temporarly disabling this file input
                     <input id='SelectedImageThumbnail'type="file" onChange={handleImageThumbnailChange} style={{marginBottom:"3%"}}/>
                 </div> */}
-
-                {formError && <p style={{ color: 'red' }}>{formError}</p>}
-                </CustomForm>
                 </LeftDiv>
                 <RightDiv>
                     <CustomLabel>Category</CustomLabel>
@@ -168,16 +271,14 @@ const handleSubmit = async (event) => {
                             <option value="Behind the scenes">Behind the scenes</option>
                             <option value="Concert">Concert</option>
                         </CustomSelect>
-                        <TagComponent id="tags" onTagsChange={(tags) => handleInputChange(tags)} value={formData.tags} />
+                        <TagComponent style={{width:"90%"}} id="tags" onTagsChange={(tags) => handleInputChange(tags)} value={formData.tags} />
                 </RightDiv>
             </div>
             
             <div>
-                <DefaultButton style={{marginLeft:'3vw'}} type="submit">
-                    Save
-                </DefaultButton>
                 {formError && <p style={{ color: 'red' }}>{formError}</p>}
             </div>
+            </CustomForm>
         </MainDiv>
         </>
     );
@@ -189,6 +290,7 @@ export default ModifySingleTrackComponent;
 const MainDiv = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
 `;
 
 const LeftDiv = styled.div`
@@ -203,10 +305,11 @@ const LeftDiv = styled.div`
 
 const RightDiv = styled.div`
     width: 45%;
+    margin-right: 3%;
 `;
 
 const CustomForm = styled.form`
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -214,7 +317,7 @@ const CustomForm = styled.form`
 
 const CustomInput = styled.input`
     padding: 22px;
-    width: 100%;
+    width: 90%;
     margin-top: 2%;
     border: 2px solid #D9D9D9;
     :focus {
@@ -228,7 +331,7 @@ const CustomLabel = styled.label`
 `;
 
 const DescriptionTextArea = styled.textarea`
-    width: 100%;
+    width: 90%;
     height: 70px;
     padding: 22px;
     resize: none;
@@ -242,7 +345,7 @@ const DescriptionTextArea = styled.textarea`
 
 const CustomSelect = styled.select`
     padding: 22px;
-    width: 105%;
+    width: 90%;
     margin-top: 2%;
     margin-bottom: 5%; //Adjustement for disabling ImageThumbnails
     border: 2px solid #D9D9D9;
@@ -259,4 +362,70 @@ const DefaultButton = styled.button`
     border-radius: 33px;
     padding: 7px 60px;
     margin-top: 3%;
+`;
+
+const UploadProfileImageContainer = styled.div`
+    border: 2px dashed grey;
+    height: 200px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+
+:hover {
+    background-color: lightblue;
+}
+`
+const Header = styled.div`
+    width: 100%;
+    height: 12vh;
+    box-shadow: rgb(0 0 0 / 30%) 0px 4px 4px -2px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const CloseButton = styled.button`
+    background-color: rgb(0, 0, 0, 0);
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 20px;
+    color: rgb(67, 66, 137);
+    text-decoration: underline;
+    margin-left: 4vw;
+`;
+
+const TrackHeaderDiv = styled.div`
+    margin-top: 10px;
+    position: relative;
+    background-color: rgb(245, 245, 245);
+    padding: 22px;
+    border: 1px solid rgb(217, 217, 217);
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    width: 100vh;
+`;
+
+const FullBlueLine = styled.div`
+    background-color: rgb(67, 66, 137);
+    width: 100%;
+    height: 6px;
+    transition: width 0.4s ease 0s;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+`;
+
+const FileName = styled.span`
+    position: absolute; // Normal flow, below the progress bar
+    color: #333; // Text color, change as needed
+    font-size: 20px; // Adjust as per your design
+    display: flex;
+    justify-content: center;
+    left: 45%;
 `;

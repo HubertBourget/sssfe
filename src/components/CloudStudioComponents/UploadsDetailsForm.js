@@ -12,7 +12,7 @@ import TagComponent from '../CloudStudioComponents/NewTagComponent';
 const UploadDetailsForm = ({ file, trackDetails, progress, videoId, onTrackDetailChange, handleDelete  }) => {
     // console.log("key: ", key)
     //three of those now:
-    const user = { name: "debug7e@debug.com" };
+    const user = { name: "debug9@debug.com" };
 
     const [coverImage, setcoverImage] = useState(null);
     const handleCoverChange = (event) => {
