@@ -7,6 +7,7 @@ import FileProgressBar from './FileProgressBar';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import UploadDetailsForm from './UploadsDetailsForm';
 import Rectangle27 from '../../assets/Rectangle27.png';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Upload = ({ 
     viewState, 
@@ -24,8 +25,9 @@ const Upload = ({
     setFileUploadsArray,
     trackDetails,
     }) => {
-    //3 of those now:
-    const user = { name: "debug9@debug.com" };
+    
+    
+    const { user } = useAuth0();
 
 
     //Upload tracking:

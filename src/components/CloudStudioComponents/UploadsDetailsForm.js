@@ -8,11 +8,12 @@ import { ref } from 'firebase/storage';
 import { getDownloadURL, uploadBytes } from 'firebase/storage';
 import styled from 'styled-components';
 import TagComponent from '../CloudStudioComponents/NewTagComponent';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const UploadDetailsForm = ({ file, trackDetails, progress, videoId, onTrackDetailChange, handleDelete  }) => {
     // console.log("key: ", key)
     //three of those now:
-    const user = { name: "debug9@debug.com" };
+    const { user } = useAuth0();
 
     const [coverImage, setcoverImage] = useState(null);
     const handleCoverChange = (event) => {

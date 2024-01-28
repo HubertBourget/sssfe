@@ -7,6 +7,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../firebase';
 import ProfileCircle from '../../assets/ProfileCircle.png';
 import BannerUploadIcon from '../../assets/BannerUploadIcon.png';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const YourChannel= () => { //{user} was in props
     const [bio, setBio] = useState('');
@@ -22,12 +23,7 @@ const YourChannel= () => { //{user} was in props
     const [artistTitle, setArtistTitle] = useState('');
     const [initialArtistTitle, setInitialArtistTitle] = useState('');
 
-    //testing only
-    //take this out on production version
-    //*Run a Ctrl-F to clear all of them on Prod*
-    const user = {
-        name: "debug9@debug.com",
-    };
+    const { user } = useAuth0();
 
     useEffect(() => {
         const fetchData = async () => {

@@ -13,7 +13,7 @@ import uploadTrashIcon from '../../assets/uploadTrashIcon.png';
 
 const ModifySingleTrackComponent = () => { 
     const { videoId } = useParams();
-    // const { user, isAuthenticated } = useAuth0(); //reactivate on production
+    const { user, isAuthenticated } = useAuth0();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         title: '',
@@ -29,8 +29,6 @@ const ModifySingleTrackComponent = () => {
     const [selectedImageSource, setSelectedImageSource] = useState("previewImage");
     const [uploadedThumbnailUrl, setUploadedThumbnailUrl] = useState('');// Necessary for passing the url of the Track's image to MongoDB
 
-    //for testing purpose only:
-    const user = { name: "debug9@debug.com" };
 
     //Disabled the fetching call for the Video Data.
     //Original design no longer has the video in the Modify View

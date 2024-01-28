@@ -17,15 +17,12 @@ import DashboardIcon from '../assets/DashboardIcon.png';
 import YourContentIcon from '../assets/ContentIcon.png'
 import YourChanneltIcon from '../assets/YourChannelIcon.png';
 import FeedbackIcon from '../assets/FeedbackIcon.png';
+import { useAuth0 } from '@auth0/auth0-react';
+import { Navigate, useNavigate } from 'react-router';
 
 
 export default function NewCloudStudio() {
-    //change this for Prod:
-    //3 of those now:
-    const user = {
-        name: "debug9@debug.com",
-    };
-    //with a user.name useEffect.
+    const { user } = useAuth0();
 
     //Navigation, viewStates and button flow:
     const [isUploadActive, setIsUploadActive] = useState(false);
@@ -33,6 +30,26 @@ export default function NewCloudStudio() {
     const [isSlideIn, setIsSlideIn] = useState(false);
     const [publishClicked, setPublishClicked] = useState(false);
     const [uploadViewState, setUploadViewState] = useState("initial");
+    const navigate = useNavigate();
+
+    //Verify via the Auth0 Hook if the user has an account inside MongoDb, if not it redirect the user toward the AccountNameSelectionPage
+    useEffect(() => {
+        const fetchUser = async () => {
+        try {
+            if (user && user.name) {
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/b_getUserExist/${user.name}`);
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+            navigate('/AccountNameSelection');
+            } else {
+            console.log('Error:', error.message);
+            }
+        }
+    };
+    fetchUser();
+    }, [user?.name]);
+
     const handleSectionChange = (componentName, isUploading) => {
         setIsUploadActive(isUploading);
         setActiveComponent(componentName);
