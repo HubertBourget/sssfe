@@ -2,7 +2,7 @@ import React from 'react';
 import backgroundImage from '../assets/ArtistLandingPageBackgroundImage.png';
 import logo from '../assets/HorozontalLogoWhiteFont.png';
 import Tint from '../assets/ArtistLandingPageTint.png';
-import ExplainerVideo from '../assets/SacredSoundExplainerVideo.mp4';
+// import ExplainerVideo from '../assets/'; // neet Git LFS for the fileSize
 import { useNavigate } from 'react-router-dom';
 
 const ArtistLandingPage = () => {
@@ -202,7 +202,7 @@ const ArtistLandingPage = () => {
             </div>
             <div style={rightVideoStyle}>
                     <video 
-                        src={ExplainerVideo} 
+                        // src={ExplainerVideo} 
                         controls 
                         style={{ width: '100%', height: 'auto', objectFit: 'cover' }} // Adjust the width and height as needed
                     >
