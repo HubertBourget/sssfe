@@ -31,6 +31,7 @@ const SignupButton = styled.button`
   display: flex; // Use flex to center content
   justify-content: center; // Center horizontally
   align-items: center; // Center vertically
+  height: 100%;
   @media (max-width: 768px) {
     display: none; // Hide button on small screens for the /create page
   }
