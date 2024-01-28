@@ -7,36 +7,32 @@ const LoginButton = () => {
 
     return (
       !isAuthenticated && (
-        <SingupButton
+        <SignupButton
           onClick={() =>
             loginWithRedirect({
               redirectUri: "https://staging.sacredsound.pages.dev/studio", //Change this URL for Staging : "https://staging.sacredsound.pages.dev/studio", Change this Uri for prod: "https://sacredsound.app/studio" or to this uri for local testing : "http://localhost:3000/studio"
             })
           }
         >
-          <LoginFonts>Become a Resident Artist</LoginFonts>
-        </SingupButton>
+          Become a Resident Artist
+        </SignupButton>
       )
     );
 }
 
 export default LoginButton
 
-const SingupButton = styled.button`
-border: none;
-color: #F5F5F5;
-background-color: #434289;
-border-radius: 33px;
-padding: 11px;
-cursor: pointer;
-@media (max-width: 768px) {display: none;} //for the /create page
+const SignupButton = styled.button`
+  border: none;
+  color: #F5F5F5;
+  background-color: #434289;
+  border-radius: 33px;
+  cursor: pointer;
+  display: flex; // Use flex to center content
+  justify-content: center; // Center horizontally
+  align-items: center; // Center vertically
+  @media (max-width: 768px) {
+    display: none; // Hide button on small screens for the /create page
+  }
 `;
 
-const LoginFonts = styled.h2`
-    font-family: 'Outfit', sans-serif;
-    font-weight: 500;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-    color: #F5F5F5;
-    font-size: 18px;
-`;
