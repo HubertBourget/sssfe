@@ -26,11 +26,11 @@ const App = () => {
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/profile/:artistId" element={<ArtistProfilePage />} />
         <Route exact path="/prepareForQA/:videoId" element={<ModifySingleTrackComponent/>}/>
-        <Route exact path="/studio" element={<CloudStudioPage/>}/>
+        <Route exact path="/studio" element={<NewCloudStudio/>}/>
         <Route exact path="/create" element={<ArtistLandingPage/>}/>
         {/* <Route exact path="/test" element={<TestPage/>}/> */}
         <Route exact path="/AccountNameSelection" element={<AccountNameSelection/>}/>
-        <Route exact path="/cloudStudio" element={<NewCloudStudio/>}/>
+        {/* <Route exact path="/cloudStudio" element={<NewCloudStudio/>}/> */}
       </Routes>
     </BrowserRouter>
   );
