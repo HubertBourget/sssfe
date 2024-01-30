@@ -85,7 +85,7 @@ const ModifySingleTrackComponent = () => {
         }, [videoId]); // Make sure to include videoId in the dependency array
 
     const handleCloseClick = () => {
-        navigate('/cloudStudio')
+        navigate('/studio')
     };
 
     const handleDelete = () => {
@@ -96,7 +96,7 @@ const ModifySingleTrackComponent = () => {
         }
     })
     .then(response => {
-        navigate('/cloudStudio')
+        navigate('/studio')
     })
     .catch(error => {
         console.error('Error:', error);

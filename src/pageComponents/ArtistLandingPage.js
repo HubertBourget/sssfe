@@ -3,7 +3,7 @@ import backgroundImage from '../assets/ArtistLandingPageBackgroundImage.png';
 import logo from '../assets/HorozontalLogoWhiteFont.png';
 import Tint from '../assets/ArtistLandingPageTint.png';
 import { useAuth0 } from '@auth0/auth0-react';
-// import ExplainerVideo from '../assets/'; // need Git LFS for this fileSize
+import ExplainerVideo from '../assets/SacredSoundExplainerVideo.mp4';
 
 const ArtistLandingPage = () => {
     const { loginWithRedirect } = useAuth0();
@@ -202,7 +202,7 @@ const ArtistLandingPage = () => {
             </div>
             <div style={rightVideoStyle}>
                     <video 
-                        // src={ExplainerVideo} 
+                        src={ExplainerVideo} 
                         controls 
                         style={{ width: '50%', height: 'auto', objectFit: 'cover' }} // Adjust the width and height as needed
                     >
