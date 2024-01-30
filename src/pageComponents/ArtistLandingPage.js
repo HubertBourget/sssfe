@@ -204,7 +204,7 @@ const ArtistLandingPage = () => {
                     <video 
                         src={ExplainerVideo} 
                         controls 
-                        style={{ width: '50%', height: 'auto', objectFit: 'cover' }} // Adjust the width and height as needed
+                        style={{ width: '90%', height: 'auto', objectFit: 'cover',  marginLeft: '5vw' }} // Adjust the width and height as needed
                     >
                         Your browser does not support the video tag.
                     </video>
