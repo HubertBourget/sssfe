@@ -97,7 +97,6 @@ useEffect(() => {
 
     return (
         <div style={{display:'flex', flexDirection:'column'}}>
-            <h1>Track details</h1>
             <FileProgressBar 
                 file={file.data}
                 progress={progress}

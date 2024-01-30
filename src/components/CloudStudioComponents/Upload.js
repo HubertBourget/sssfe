@@ -380,7 +380,7 @@ const handleUpdateReviewStatus = async () => {
 
                     <label htmlFor="albumTitle">Title</label>
                     <input
-                        style={{marginBottom: '3vh'}}
+                        style={{marginBottom: '3vh', padding: '22px'}}
                         id="albumTitle"
                         type="text"
                         value={albumTitle}
@@ -448,6 +448,7 @@ const handleUpdateReviewStatus = async () => {
 
         {viewState === "fileDetail" && (
         <div>
+            <h1>Track details</h1>
             {fileUploadsArray.map((file, index) => (
                 <UploadDetailsForm 
                     key={index}

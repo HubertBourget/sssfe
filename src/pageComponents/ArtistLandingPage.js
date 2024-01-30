@@ -2,11 +2,11 @@ import React from 'react';
 import backgroundImage from '../assets/ArtistLandingPageBackgroundImage.png';
 import logo from '../assets/HorozontalLogoWhiteFont.png';
 import Tint from '../assets/ArtistLandingPageTint.png';
-// import ExplainerVideo from '../assets/'; // neet Git LFS for the fileSize
-import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
+// import ExplainerVideo from '../assets/'; // need Git LFS for this fileSize
 
 const ArtistLandingPage = () => {
-    const navigate = useNavigate();
+    const { loginWithRedirect } = useAuth0();
 
     // Style for the first section
     const sectionStyle = {
@@ -83,6 +83,7 @@ const ArtistLandingPage = () => {
         backgroundColor: '#A3C4A3', // Adjust to the color used in your design
         width: '50%', // Half the width of the container
         padding: '4vw',
+        margin: '3vw',
         boxSizing: 'border-box', // Ensure padding is included in the width
         backgroundImage: 'green', // Use the green tint here if applicable
         backgroundSize: 'cover',
@@ -119,8 +120,7 @@ const ArtistLandingPage = () => {
     };
 
     const rightVideoStyle = {
-        width: '100%', // Make sure the video fills the width
-        height: '100%', // Make sure the video fills the height
+        width: '50%', // Make sure the video fills the width, // Make sure the video fills the height
         overflow: 'hidden', // Hide any overflow
         display: 'flex',
         justifyContent: 'center',
@@ -155,10 +155,6 @@ const ArtistLandingPage = () => {
         outline: 'none',
     };
 
-    const clickHandler  = () => {
-        navigate(`/studio`);
-    }
-
     return (
         <>
         <div style={sectionStyle}>
@@ -170,7 +166,11 @@ const ArtistLandingPage = () => {
                 Amplify Your Sacred <br /> Music Journey
                 </h1>
                 <div style={{display:'flex', flexDirection:'row-reverse'}}>
-                <button style={buttonStyle} onClick={() => clickHandler()}>
+                <button style={buttonStyle} onClick={() =>
+                    loginWithRedirect({
+                    redirectUri: "https://staging.sacredsound.pages.dev/studio", 
+                    })
+                }>
                     Get Started
                 </button>
                 </div>
@@ -181,7 +181,7 @@ const ArtistLandingPage = () => {
         {/* Second section */}
         <div style={secondSectionStyle}>
             <div style={leftColumnStyle}>
-            <h1 style={{fontSize:'70px', color:'white'}}>Welcome to Sacred Sound Studios</h1>
+            <h1 style={{fontSize:'70px', color:'white'}}>Welcome to Sacred Sound</h1>
             <h2 style={{color:'white'}}>A Platform for Artists to Share Sacred Music and Connect with a Global Community.</h2>
             </div>
             <div style={rightColumnStyle}>
@@ -204,7 +204,7 @@ const ArtistLandingPage = () => {
                     <video 
                         // src={ExplainerVideo} 
                         controls 
-                        style={{ width: '100%', height: 'auto', objectFit: 'cover' }} // Adjust the width and height as needed
+                        style={{ width: '50%', height: 'auto', objectFit: 'cover' }} // Adjust the width and height as needed
                     >
                         Your browser does not support the video tag.
                     </video>
@@ -214,7 +214,11 @@ const ArtistLandingPage = () => {
     {/* Fourth section */}
         <div style={fourthSectionStyle}>
             <h2 style={headingStyle}>Ready to Share Your Sound?</h2>
-            <button style={ctaButtonStyle} onClick={() => clickHandler()}>
+            <button style={ctaButtonStyle} onClick={() =>
+                    loginWithRedirect({
+                    redirectUri: "https://staging.sacredsound.pages.dev/studio", 
+                    })
+                }>
                 Start Your Musical Journey
             </button>
         </div>
