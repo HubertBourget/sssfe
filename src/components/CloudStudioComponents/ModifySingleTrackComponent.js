@@ -56,33 +56,33 @@ const ModifySingleTrackComponent = () => {
     // }, []);
 
     useEffect(() => {
-            const fetchContentData = async () => {
-                try {
-                    const response = await axios.get(
-                        `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
-                        {
-                            params: {
+        const fetchContentData = async () => {
+            try {
+                const response = await axios.get(
+                    `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
+                    {
+                        params: {
                             videoId: videoId,
-                            },
-                        }
-                    );
-                    const contentData = response.data.contentDocument;
-                    // Set the form data with the fetched content data
-                    setFormData({
-                        title: contentData.title || '', // Populate with existing title or an empty string if not found
-                        description: contentData.description || '', // Populate with existing description or an empty string if not found
-                        category: contentData.category || 'Music video', // Set default category or use existing if found
-                        tags: contentData.tags || '',
-                        visibility: contentData.visibility || 'Public',
-                    });
-                    // Set other state variables as needed...
-                } catch (error) {
-                    console.error(error);
-                    setVideoUrlRetrived(false);
-                }
-            };
-            fetchContentData(); // Call the fetchContentData function when the component mounts
-        }, [videoId]); // Make sure to include videoId in the dependency array
+                        },
+                    }
+                );
+                const contentData = response.data.contentDocument;
+                // Assuming tags are a comma-separated string and TagComponent expects an array
+                const tagsArray = contentData.tags ? contentData.tags.split(',') : [];
+                // Set the form data with the fetched content data
+                setFormData({
+                    title: contentData.title || '',
+                    description: contentData.description || '',
+                    category: contentData.category || 'Music video',
+                    tags: tagsArray, // Convert to array if necessary
+                    visibility: contentData.visibility || 'Public',
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchContentData(); // Call the fetchContentData function when the component mounts
+    }, [videoId]); 
 
     const handleCloseClick = () => {
         navigate('/studio')
@@ -269,7 +269,7 @@ const ModifySingleTrackComponent = () => {
                             <option value="Behind the scenes">Behind the scenes</option>
                             <option value="Concert">Concert</option>
                         </CustomSelect>
-                        <TagComponent style={{width:"90%"}} id="tags" onTagsChange={(tags) => handleInputChange(tags)} value={formData.tags} />
+                        <TagComponent style={{width:"90%"}} id="tags" onTagsChange={(tags) => setFormData({ ...formData, tags })} value={formData.tags} />
                 </RightDiv>
             </div>
             
