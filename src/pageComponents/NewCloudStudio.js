@@ -65,9 +65,13 @@ export default function NewCloudStudio() {
         setPublishClicked(true);
     };
     const resetUploadState = () => {
-        setAlbumId(null); // Reset albumId to null or initial state
-        setTrackDetails([]); // Clear track details
+        setAlbumId(null);
+        setAlbumTitle('');
+        setAlbumDescription('');
+        setVisibility('public');
         setUploadViewState("initial");
+        setReorderedFiles([]);
+        setFileUploadsArray([]);
     };
     const onAllUpdatesComplete = () => {
     // Logic to close the component or update the UI
