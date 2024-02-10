@@ -7,7 +7,6 @@ import { GlobalStyle } from '../components/GlobalStyle';
 import { v4 } from 'uuid';
 import { storage } from '../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import LoginButton from '../components/LoginButton';
 import TagComponent from '../components/TagComponent';
 
 //Component being remplace in Jan 2024 by the ModifySingleTrackComponent
@@ -64,13 +63,12 @@ useEffect(() => {
 useEffect(() => {
         const fetchContentData = async () => {
             try {
-                const response = await axios.get(
-                  `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
-                  {
-                    params: {
-                      videoId: videoId,
-                    },
-                  }
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
+                    {
+                        params: {
+                        videoId: videoId,
+                        },
+                    }
                 );
                 const contentData = response.data.contentDocument;
                 // Set the form data with the fetched content data
@@ -143,7 +141,7 @@ const handleSubmit = async (event) => {
     } else if (selectedImageSource === "previewImage") {
         // User selected a preview image
         //Change to selectedImage when switching back the Thumbnails on:
-        imageThumbnailURL = "Null"; //selectedImage;
+        imageThumbnailURL = null; //selectedImage;
     } else {
         // Handle the case where no image is selected
         alert("Please select an imageThumbnail");

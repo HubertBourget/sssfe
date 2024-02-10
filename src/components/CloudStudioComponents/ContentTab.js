@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import EditIcon from '../../assets/EditIcon.png';
 import TrashIcon from '../../assets/TrashIcon.png';
 
@@ -9,27 +9,34 @@ const ContentTab = ({user}) => {
     const artistId = user;
     const [contentDocuments, setContentDocuments] = useState([]);
     const [artistName, setArtistName] = useState('');
+    const [filter, setFilter] = useState('audio'); // Default view is audio
     const navigate = useNavigate();
+
     
     useEffect(() => {
-        const fetchContentByArtist = async () => {
-            try {
-                const encodedArtistId = encodeURIComponent(artistId);
-                const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getContentByArtist?artistId=${encodedArtistId}`);
-                if (response.status === 200) {
-                    const fetchedContentDocuments = response.data;
-                    setContentDocuments(fetchedContentDocuments);
-                } else {
-                    console.error(`Request failed with status: ${response.status}`);
-                }
-            } catch (error) {
-                console.error(`An error occurred: ${error}`);
+    const fetchData = async () => {
+        try {
+            const encodedArtistId = encodeURIComponent(artistId);
+            let url = `${process.env.REACT_APP_API_BASE_URL}/api/getContentByArtist?artistId=${encodedArtistId}`;
+            
+            // If the filter is set to 'album', change the URL to fetch albums instead
+            if (filter === 'album') {
+                url = `${process.env.REACT_APP_API_BASE_URL}/api/getAlbumsByArtist?artistId=${encodedArtistId}`;
             }
-        };
 
-        // Call the function to fetch content by artist when the component mounts
-        fetchContentByArtist();
-    }, [artistId]); // Make sure to include artistId in the dependencies array
+            const response = await Axios.get(url);
+            if (response.status === 200) {
+                setContentDocuments(response.data);
+            } else {
+                console.error(`Request failed with status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error(`An error occurred: ${error}`);
+        }
+    };
+
+    fetchData();
+}, [artistId, filter]);
 
     useEffect(() => {
         const fetchArtistName = async () => {
@@ -53,12 +60,18 @@ const ContentTab = ({user}) => {
         }
     }, [user]); // Depend on user prop
 
+    const handleDeleteAlbum = (albumId) => {
+        console.log('Deleting albumId: ', albumId);
+    }
+
 
     const handleModify = (videoId) => {
-        // Handle modify action for the specified videoId
-        // You can navigate to the PrepareForQA page with the videoId
         navigate(`/prepareForQA/${videoId}`);
     };
+
+    const handleModifyAlbum = (albumId) => {
+        navigate(`/ModifyAlbum/${albumId}`);
+    }
 
 
     const handleDelete = async (videoId, artistId) => {
@@ -98,61 +111,126 @@ const ContentTab = ({user}) => {
         return 'Not started';
     };
 
+    // Function to handle filter change
+    const handleFilterChange = (filterType) => {
+        setFilter(filterType);
+    };
+
+
+    const getFilteredContent = () => {
+    let filteredContent = [];
+    switch (filter) {
+        case 'audio':
+            filteredContent = contentDocuments.filter(doc => doc.isOnlyAudio);
+            break;
+        case 'video':
+            filteredContent = contentDocuments.filter(doc => !doc.isOnlyAudio);
+            break;
+        case 'album':
+            // Assuming 'type' attribute specifies if the document is an album
+            filteredContent = contentDocuments.filter(doc => doc.albumId !== null);
+            break;
+    }
+    return filteredContent;
+};
+
 
 return (
     <>
-        <div style={{ marginTop: '5vw' }}> {/* Adjusted from 5% to 5vw */}
-            {/* Check if contentDocuments is defined before mapping */}
-            {contentDocuments && (
-                <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-around', 
-                    alignItems: 'center', 
-                    fontWeight: 'bold',
-                    marginBottom: '2vw'  // Adjusted for spacing
-                }}>
-                    <span style={{ width: '20vw' }}></span> 
-                    <span style={{ width: '20vw' }}>Track</span>
-                    <span style={{ width: '20vw' }}>Status</span>
-                </div>
-            )}
-            {/* Render contentDocument details */}
-            {contentDocuments &&
-                contentDocuments.map((contentDocument) => (
-                    <div
-                        key={contentDocument.videoId}
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            borderBottom: '0.1vw solid #ccc', // Use vw for border
-                            padding: '1vw 0', // Use vw for padding
-                            margin: '1vw 0', // Use vw for margin
-                        }}
-                    >
-                        {/* ... */}
-                        <TrackInfo>
-                            <TrackName>{contentDocument.title}</TrackName>
-                            {contentDocument.title && <ArtistName>{artistName}</ArtistName>}
-                        </TrackInfo>
-                        {/* ... */}
-                        <span style={{ width: '30vw' }}>{getStatus(contentDocument)}</span> {/* Adjusted width */}
-                        {/* Render action buttons */}
-                        <span style={{ width: '10vw' }}> {/* Adjusted width */}
-                            <TransparentButton onClick={() => handleModify(contentDocument.videoId)}>
-                                <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw' }} /> {/* Use vw for image size */}
-                            </TransparentButton>
-                        </span>
-                        <span style={{ width: '10vw' }}> {/* Adjusted width */}
-                            <TransparentButton onClick={() => handleDelete(contentDocument.videoId, artistId)}>
-                                <img src={TrashIcon} alt="Delete" style={{ width: '2vw', height: '2vw' }} /> {/* Use vw for image size */}
-                            </TransparentButton>
-                        </span>
+        {/* Filter buttons */}
+        <div>
+            <FilterButton onClick={() => handleFilterChange('audio')} selected={filter === 'audio'}>
+                Music
+            </FilterButton>
+            <FilterButton onClick={() => handleFilterChange('video')} selected={filter === 'video'}>
+                Video
+            </FilterButton>
+            <FilterButton onClick={() => handleFilterChange('album')} selected={filter === 'album'}>
+                Album
+            </FilterButton>
+        </div>
+
+        <div style={{ marginTop: '5vw' }}>
+            {filter !== 'album' ? (
+                <>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold', marginBottom: '2vw' }}>
+                        <span style={{ marginLeft:'3vw'}}>Track</span>
+                        <span>Status</span>
+                        <span></span>
+                        <span></span>
                     </div>
-                ))
-            }
+                    {getFilteredContent().map((item) => (
+                        <div
+                            key={item.videoId}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                borderBottom: '0.1vw solid #ccc',
+                                padding: '1vw 0',
+                                margin: '1vw 0',
+                            }}
+                        >
+                            <TrackInfo>
+                                <TrackName>{item.title}</TrackName>
+                                <ArtistName>{artistName}</ArtistName>
+                            </TrackInfo>
+                            <span style={{ width: '30vw' }}>{getStatus(item)}</span>
+                            <span style={{ width: '10vw' }}>
+                                <TransparentButton onClick={() => handleModify(item.videoId)}>
+                                    <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw' }} />
+                                </TransparentButton>
+                            </span>
+                            <span style={{ width: '10vw'}}>
+                                <TransparentButton onClick={() => handleDelete(item.videoId, artistId)}>
+                                    <img src={TrashIcon} alt="Delete" style={{ width: '2vw', height: '2vw' }} />
+                                </TransparentButton>
+                            </span>
+                        </div>
+                    ))}
+                </>
+            ) : (
+                <>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold', marginBottom: '2vw' }}>
+                        <span style={{ marginLeft:'3vw'}}>Album</span>
+                        <span >Date added</span>
+                        <span ></span>
+                        
+                    </div>
+                    {getFilteredContent().map((album) => (
+                        <div
+                            key={album.albumId}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                borderBottom: '0.1vw solid #ccc',
+                                padding: '1vw 0',
+                                margin: '1vw 0',
+                            }}
+                        >
+                            <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', alignItems: 'center' }}>
+                                <TrackInfo>
+                                <TrackName>{album.albumName|| 'Unnamed Album'}</TrackName>
+                                <ArtistName>{artistName}</ArtistName>
+                                </TrackInfo>
+                                <p>{new Date(album.timestamp).toLocaleDateString()}</p>
+                                <TransparentButton onClick={() => handleModifyAlbum(album.albumId)}>
+                                    <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw' }} />
+                                </TransparentButton>
+                                <TransparentButton onClick={() => handleDeleteAlbum(album.albumId, artistId)}>
+                                    <img src={TrashIcon} alt="Delete" style={{ width: '2vw', height: '2vw' }} />
+                                </TransparentButton>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
+                            </div>
+                        </div>
+                    ))}
+                </>
+            )}
         </div>
     </>
 );
+
 }
 
 export default ContentTab;
@@ -166,12 +244,12 @@ const TrackInfo = styled.div`
 `;
 
 const TrackName = styled.span`
-    font-size: 2.4vw; // Adjusted from 24px to viewport relative units
+    font-size: 2em; // Adjusted from 24px to viewport relative units
     color: #434289; // Your primary color
 `;
 
 const ArtistName = styled.span`
-    font-size: 1.6vw; // Adjusted from 16px to viewport relative units
+    font-size: 1.6em; // Adjusted from 16px to viewport relative units
     color: #434289; // You can use a slightly different color if needed
 `;
 
@@ -183,6 +261,24 @@ const TransparentButton = styled.button`
     cursor: pointer;
     padding: 0;
 `;
+
+// Styled components for the buttons
+const FilterButton = styled.button`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #434289;
+    margin-right: 1rem;
+    padding-bottom: 0.25rem;
+    font-size: 1rem;
+    border-radius: 0px;
+
+    // Apply a thick underline if the button is selected
+    ${props => props.selected && css`
+        border-bottom: 2px solid #434289;
+    `}
+`;
+
 
 
 //Archives:

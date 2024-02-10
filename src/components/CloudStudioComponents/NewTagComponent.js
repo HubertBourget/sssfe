@@ -38,32 +38,43 @@ function NewTagComponent({ onTagsChange, value, style  }) {
         "Ayahuasca",
     ];
 
-const handleTagChoiceClick = (tag) => {
-    setListOfTags((prevTag) => {
-        const newTags = prevTag ? prevTag + ', ' + tag : tag;
-        // Construct an event-like object with the necessary properties
-        const simulatedEvent = {
-            target: {
-                name: 'tags', // Assuming 'tags' is the name of the field in formData
-                value: newTags
-            }
-        };
-        onTagsChange(simulatedEvent); // Pass this simulated event to the callback
-        return newTags;
-    });
-};
+    const handleTagChoiceClick = (tag) => {
+        setListOfTags((prevTag) => {
+            // Split the previous tags into an array, trim each tag to remove whitespace
+            const existingTags = prevTag.split(',').map(t => t.trim());
 
-const handleTextareaChange = (e) => {
-        setListOfTags(e.target.value);
-        // Create a simulated event object
-        const simulatedEvent = {
-            target: {
-                name: 'tags', // Make sure this matches your formData field name
-                value: e.target.value
+            // Check if the new tag is already in the list of tags
+            if (existingTags.includes(tag)) {
+                return prevTag; // If the tag is already included, don't change the list
             }
-        };
-        onTagsChange(simulatedEvent); // Update the parent component
+
+            const newTags = prevTag ? prevTag + ', ' + tag : tag;
+
+            // Construct an event-like object with the necessary properties
+            const simulatedEvent = {
+                target: {
+                    name: 'tags', // Assuming 'tags' is the name of the field in formData
+                    value: newTags
+                }
+            };
+
+            onTagsChange(simulatedEvent); // Pass this simulated event to the callback
+            return newTags;
+        });
     };
+
+
+    const handleTextareaChange = (e) => {
+            setListOfTags(e.target.value);
+            // Create a simulated event object
+            const simulatedEvent = {
+                target: {
+                    name: 'tags', // Make sure this matches your formData field name
+                    value: e.target.value
+                }
+            };
+            onTagsChange(simulatedEvent); // Update the parent component
+        };
 
     return (
         <>
@@ -104,23 +115,22 @@ const TagContainer = styled.div`
 margin-top: 3vh;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: space-between;
 `;
 
 const Tag = styled.div`
 padding: 5px;
-  cursor: pointer;
-  border: 1px solid #434289;
-  margin: 5px;
-  border-radius: 33px;
-  margin-left: 3vw;
-  margin-right: 0;
-
-  &:hover {
-    background-color: #434289;
-    color: white;
+    cursor: pointer;
     border: 1px solid #434289;
-  }
+    margin: 5px;
+    border-radius: 33px;
+    margin-right: 0;
+
+    &:hover {
+        background-color: #434289;
+        color: white;
+        border: 1px solid #434289;
+    }
 `;
 
 const TextArea = styled.textarea`
@@ -128,4 +138,5 @@ const TextArea = styled.textarea`
     width: 100%;
     resize: vertical; 
     color: #434289;
+    padding: 22px;
 `;

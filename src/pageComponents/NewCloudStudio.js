@@ -20,9 +20,13 @@ import FeedbackIcon from '../assets/FeedbackIcon.png';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Navigate, useNavigate } from 'react-router'; 
 import LoginButton from '../components/LoginButton';
+import VideoPlayer from '../components/CloudStudioComponents/VideoPlayer'
 
 export default function NewCloudStudio() {
     const { user, isAuthenticated } = useAuth0();
+
+    // const user = { name: "debug9@debug.com" };
+    // const isAuthenticated = true;
 
     //Navigation, viewStates and button flow:
     const [isUploadActive, setIsUploadActive] = useState(false);
@@ -90,7 +94,6 @@ export default function NewCloudStudio() {
         // Update the state that controls the viewState of the Upload component
         setUploadViewState(newViewState);
     };
-
 
     // Function & useStates to handle album data update:
     const [albumId, setAlbumId] = useState(null);
@@ -242,18 +245,24 @@ const [trackDetails, setTrackDetails] = useState([]);
                         Dashboard
                     </NavigationButton>
                     <NavigationButton onClick={() => handleSectionChange('component2', false)} active={activeComponent === 'component2'}>
-                        <img src={YourContentIcon} alt="Upload" style={{ marginRight: '8px'}}/>
+                        <img src={YourContentIcon} alt="Your Channel" style={{ marginRight: '8px'}}/>
                         Your Content
                     </NavigationButton>
-                    <NavigationButton onClick={() => handleSectionChange('component3', false)} active={activeComponent === 'component3'}>
+
+                    {/* Disabling in current build */}
+                    {/* <NavigationButton onClick={() => handleSectionChange('component3', false)} active={activeComponent === 'component3'}>
                         <img src={YourChanneltIcon} alt="Upload" style={{ marginRight: '8px'}}/>
                         Your Channel
                     </NavigationButton>
+                    */}
                     <SeparatorDiv/>
-                    <NavigationButton onClick={() => handleSectionChange('component4', false)} active={activeComponent === 'component4'}>
-                        <img src={FeedbackIcon} alt="Upload" style={{ marginRight: '8px'}}/>
+                    <NavigationButton 
+                        onClick={() => window.location.href = 'mailto:feedback@sacredsound.app'}> {/* active={activeComponent === 'component4'} */}
+                        
+                        <img src={FeedbackIcon} alt="Feedback" style={{ marginRight: '8px'}}/>
                         Feedback
                     </NavigationButton>
+
                     <BottomNavigationPanel/>
                 </NavigationPanel>
                 <ScrollableFlexThree isUploadActive={isUploadActive}>
@@ -261,15 +270,15 @@ const [trackDetails, setTrackDetails] = useState([]);
                     {activeComponent === "component2" && (<ContentTab user={user?.name.toString()} />)}
                     {activeComponent === "component3" && <YourChannel user={user?.name.toString()} />}
                     {activeComponent === "component4" && <Feedback user={user?.name.toString()} />}
-                    <UploadPopup slideIn={isSlideIn}>
-                        <TopUploadSection style={{height: '12vh'}}>
+                    <PopupComponentWithSlideIn slideIn={isSlideIn}>
+                        <TopHeaderSection style={{height: '12vh'}}>
                             <CloseButton onClick={handleCloseClick}>Close</CloseButton>
                             {isUploadActive && uploadViewState === "albumCreation" && (
-                            <button onClick={handleNextButtonClick} style={{display:'flex', flexDirection:'row-reverse'}}>Next</button>)}
+                            <button onClick={handleNextButtonClick} style={{display:'flex', flexDirection:'row-reverse', marginRight:'3vw'}}>Next</button>)}
                             
                             {isUploadActive && uploadViewState === "fileDetail" && (
-                            <button onClick={handlePublishButtonClick} style={{display:'flex', flexDirection:'row-reverse', marginRight:'5vw'}}>Publish</button>)}
-                        </TopUploadSection>
+                            <button onClick={handlePublishButtonClick} style={{display:'flex', flexDirection:'row-reverse', marginRight:'3vw'}}>Publish</button>)}
+                        </TopHeaderSection>
                         {activeComponent === "component5" && (
                             <Upload
                             reorderedFiles={reorderedFiles}
@@ -290,7 +299,8 @@ const [trackDetails, setTrackDetails] = useState([]);
                             trackDetails={trackDetails}
                             />
                         )}
-                    </UploadPopup>
+                        
+                    </PopupComponentWithSlideIn>
                     </ScrollableFlexThree>
                     </FlexContainer>
         </MainContainer>
@@ -397,7 +407,7 @@ const ScrollableFlexThree = styled.div`
     overflow-y: ${props => props.isUploadActive ? 'hidden' : 'auto'};
 `;
 
-const UploadPopup = styled.div`
+const PopupComponentWithSlideIn = styled.div`
     position: fixed;
     top: 0vh;
     left: 0;
@@ -412,6 +422,19 @@ const UploadPopup = styled.div`
     overflow-y: auto;
 `;
 
+const PopupComponent = styled.div`
+    position: fixed;
+    top: 0vh;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    z-index: 1;
+    overflow-y: auto;
+`;
+
 const CloseButton = styled.button`
     background-color: rgb(0, 0, 0, 0);
     border: none;
@@ -420,10 +443,11 @@ const CloseButton = styled.button`
     font-size: 20px;
     color: rgb(67, 66, 137);
     text-decoration: underline;
-    margin-left: 4vw;
+    margin-left: 3vw;
+    padding: 0px;
 `;
 
-const TopUploadSection = styled.div`
+const TopHeaderSection = styled.div`
     height: 12vh;
     display: flex;
     flex-direction: row;

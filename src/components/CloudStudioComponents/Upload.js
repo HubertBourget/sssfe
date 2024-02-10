@@ -29,6 +29,8 @@ const Upload = ({
     
     const { user } = useAuth0();
 
+    // const user = { name: "debug9@debug.com" };
+
 
     //Upload tracking:
     const [uploadProgress, setUploadProgress] = useState({});
@@ -129,7 +131,7 @@ const Upload = ({
     };
 
     //set the viewstate based on the properties of the upload event 
-const handleFileChange = (event) => {
+    const handleFileChange = (event) => {
         const files = Array.from(event.target.files).map(file => ({
             data: file,
             uploaded: false,
@@ -148,8 +150,8 @@ const handleFileChange = (event) => {
 
 
 //handling file upload useEffect:
-useEffect(() => {
-    const uploadFile = async (fileObj) => {
+    useEffect(() => {
+        const uploadFile = async (fileObj) => {
         if (!fileObj.data || fileUploadStatus[fileObj.data.name]) return;
 
         setFileUploadStatus(prevStatus => ({
@@ -196,58 +198,58 @@ useEffect(() => {
 }, [fileUploadsArray, user.name]);
 
 //updating parent with Album Order:
-useEffect(() => {
-    const allUploaded = fileUploadsArray.every(file => file.videoId && fileUploadStatus[file.data.name]?.completed);
-
-    if (allUploaded && fileUploadsArray.length > 0 && !albumOrderUpdated) {
-        const albumOrder = fileUploadsArray.map(file => file.videoId);
-        onAlbumDataChange("albumOrder", albumOrder);
-        setAlbumOrderUpdated(true); // Set the flag to true once updated
-    }
-}, [fileUploadsArray, fileUploadStatus, albumOrderUpdated, onAlbumDataChange]);
-
-
-
-
     useEffect(() => {
-    if (publishClicked) {
-        handleUpdateReviewStatus();
-    }
-    }, [publishClicked]);
+        const allUploaded = fileUploadsArray.every(file => file.videoId && fileUploadStatus[file.data.name]?.completed);
+
+        if (allUploaded && fileUploadsArray.length > 0 && !albumOrderUpdated) {
+            const albumOrder = fileUploadsArray.map(file => file.videoId);
+            onAlbumDataChange("albumOrder", albumOrder);
+            setAlbumOrderUpdated(true); // Set the flag to true once updated
+        }
+    }, [fileUploadsArray, fileUploadStatus, albumOrderUpdated, onAlbumDataChange]);
+
+
+
+
+        useEffect(() => {
+        if (publishClicked) {
+            handleUpdateReviewStatus();
+        }
+        }, [publishClicked]);
     
-const handleUpdateReviewStatus = async () => {
-    // setIsUpdating(true);
-    const fileIds = fileUploadsArray.map(file => file.videoId);
+    const handleUpdateReviewStatus = async () => {
+        // setIsUpdating(true);
+        const fileIds = fileUploadsArray.map(file => file.videoId);
 
-    console.log("Starting the update process for review status.");
+        console.log("Starting the update process for review status.");
 
-    try {
-        // Send a batch request or individual requests to update MongoDB
-        const promises = fileIds.map(videoId => {
-            console.log(`Updating review status for file ID: ${videoId}`);
-            return fetch(`${process.env.REACT_APP_API_BASE_URL}/api/updateReviewStatus`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ videoId, b_isPreparedForReview: true }),
-            }).then(response => {
-                console.log(`Response received for file ID: ${videoId}`);
-                return response.json();
-            }).then(result => {
-                console.log(`Update result for file ID ${videoId}:`, result);
+        try {
+            // Send a batch request or individual requests to update MongoDB
+            const promises = fileIds.map(videoId => {
+                console.log(`Updating review status for file ID: ${videoId}`);
+                return fetch(`${process.env.REACT_APP_API_BASE_URL}/api/updateReviewStatus`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ videoId, b_isPreparedForReview: true }),
+                }).then(response => {
+                    console.log(`Response received for file ID: ${videoId}`);
+                    return response.json();
+                }).then(result => {
+                    console.log(`Update result for file ID ${videoId}:`, result);
+                });
             });
-        });
 
-    await Promise.all(promises);
-    console.log("Review status updated for all files.");
-    // setIsUpdating(false);
-    onAllUpdatesComplete();
-    handlePublishHandled(); // Reset publishClicked to false
-    } catch (error) {
-        console.error('Error updating review status:', error);
-    }
-};
+        await Promise.all(promises);
+        console.log("Review status updated for all files.");
+        // setIsUpdating(false);
+        onAllUpdatesComplete();
+        handlePublishHandled(); // Reset publishClicked to false
+        } catch (error) {
+            console.error('Error updating review status:', error);
+        }
+    };
 
     //Api calls:
     const postContentMetaData = async (videoId, fileUrl, isOnlyAudio) => {
@@ -380,28 +382,30 @@ const handleUpdateReviewStatus = async () => {
 
                     <label htmlFor="albumTitle">Title</label>
                     <input
-                        style={{marginBottom: '3vh', padding: '22px'}}
-                        id="albumTitle"
-                        type="text"
-                        value={albumTitle}
-                        onChange={handleTitleChange}
-                    />
-                    <AlbumCoverInput
-                        onClick={() => document.getElementById('albumCover').click()}
-                        image={albumCover}
-                    >
+                            style={{marginBottom: '3vh', padding: '22px'}}
+                            id="albumTitle"
+                            type="text"
+                            value={albumTitle}
+                            onChange={handleTitleChange}
+                        />
+                    <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
+                        <AlbumCoverInput
+                            onClick={() => document.getElementById('albumCover').click()}
+                            image={albumCover}
+                        >
+                        </AlbumCoverInput>
+                        <input 
+                            style={{ display: 'none' }}
+                            id="albumCover"
+                            type="file" 
+                            accept="image/*" 
+                            onChange={handleAlbumCoverChange}
+                        />
                         {!albumCover && <span>Upload<br />Cover Image</span>}
-                    </AlbumCoverInput>
-                    <input 
-                        style={{ display: 'none' }}
-                        id="albumCover"
-                        type="file" 
-                        accept="image/*" 
-                        onChange={handleAlbumCoverChange}
-                    />
+                        {albumCover && <span>Change<br />Cover Image</span>}
+                    </div>
 
                     <label htmlFor="albumDescription">Description</label>
-                    {/* The text in this input field here need to be position to the top left of the large input field. */}
                     <textarea
                         style={{marginBottom: '3vh', height:'9vh',verticalAlign: 'top' }}
                         id="albumDescription"
@@ -569,23 +573,18 @@ const FileUploads = styled.div`
 const AlbumCoverInput = styled.div`
     width: 65%;
     height: 170px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background-color: ${props => props.image ? 'transparent' : '#f0f0f0'};
     background-image: url(${props => props.image});
-    background-size: contain; /* or 'cover' */
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
-    display: flex;           // Use flexbox for alignment
-    justify-content: center; // Center content horizontally
-    align-items: center;     // Center content vertically
+    display: flex;
+    justify-content: space-between; /* Align children to the left and right */
+    align-items: center; /* Align children vertically */
+    position: relative; /* Position relative to the parent */
     margin-bottom: 3vh;
-
-    span {
-        text-align: center;  // Center text horizontally within the span
-    }
+    padding: 0 10px; /* Add horizontal padding */
 `;
 
 const BottomContainer = styled.div`

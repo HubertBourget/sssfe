@@ -15,6 +15,8 @@ import NewCloudStudio from './pageComponents/NewCloudStudio';
 import { GlobalStyle } from './components/GlobalStyle';
 import ModifySingleTrackComponent from './components/CloudStudioComponents/ModifySingleTrackComponent';
 import ArtistLandingPage from './pageComponents/ArtistLandingPage';
+import VideoPlayer from './components/CloudStudioComponents/VideoPlayer';
+import ModifyAlbum from './components/CloudStudioComponents/ModifyAlbum';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -31,6 +33,8 @@ const App = () => {
         {/* <Route exact path="/test" element={<TestPage/>}/> */}
         <Route exact path="/AccountNameSelection" element={<AccountNameSelection/>}/>
         {/* <Route exact path="/cloudStudio" element={<NewCloudStudio/>}/> */}
+        <Route exact path="/play/:videoId" element={<VideoPlayer />} />
+        <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum/>} />
       </Routes>
     </BrowserRouter>
   );

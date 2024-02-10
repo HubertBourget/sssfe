@@ -12,7 +12,7 @@ import { GlobalStyle } from '../components/GlobalStyle';
 import MandalaBG from '../assets/MandalaAlpha.png';
 import FaceImg from '../assets/Face.png';
 import MusicIcon from '../assets/MusicIcon.png';
-import CircleMandala from '../assets/CircleMandala.png';
+import CircleMandala from '../assets/DefautlImageThumbnail.png';
 import ProfileEditSection from '../components/ProfileEditSection';
 import ArtistVideos from '../components/ArtistVideos';
 import ContentGallery from '../components/ContentGallery';

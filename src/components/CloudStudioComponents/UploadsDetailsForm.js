@@ -11,9 +11,10 @@ import TagComponent from '../CloudStudioComponents/NewTagComponent';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const UploadDetailsForm = ({ file, trackDetails, progress, videoId, onTrackDetailChange, handleDelete  }) => {
-    // console.log("key: ", key)
-    //three of those now:
+    
     const { user } = useAuth0();
+    // const user = { name: "debug9@debug.com" };
+
 
     const [coverImage, setcoverImage] = useState(null);
     const handleCoverChange = (event) => {
@@ -96,26 +97,30 @@ useEffect(() => {
 
 
     return (
-        <div style={{display:'flex', flexDirection:'column'}}>
+        <div style={{display:'flex', flexDirection:'column', margin: '3%', border: '1px solid #BDBDBD'}}>
             <FileProgressBar 
                 file={file.data}
                 progress={progress}
-                onDelete={handleDelete}
+                // onDelete={handleDelete} //Disabling delete for the trackDetail view
             />
             <form style={{display:'flex', flexDirection:'row'}}>
                 <div style={{display:'flex', flexDirection:'column', flex: '1'}}>
-                    <AlbumCoverInput
-                        onClick={() => document.getElementById('coverImage').click()}
-                        image={coverImage}>
-                        {!coverImage && <span>Upload<br />Cover Image</span>}
-                    </AlbumCoverInput>
-                    <input 
-                        style={{ display: 'none' }}
-                        id="coverImage"
-                        type="file" 
-                        accept="image/*" 
-                        onChange={handleCoverChange}
-                    />
+                    <CoverContainer>
+                        <TrackCoverInput
+                            onClick={() => document.getElementById('coverImage').click()}
+                            image={coverImage}>
+                            {!coverImage && <span>Upload<br />Cover Image</span>}
+                        </TrackCoverInput>
+                        <input 
+                            style={{ display: 'none' }}
+                            id="coverImage"
+                            type="file" 
+                            accept="image/*" 
+                            onChange={handleCoverChange}
+                        />
+                        {coverImage !== null && <div onClick={() => document.getElementById('coverImage').click()} style={{width:'30%', height:'100%', alignItems:'center', display:'flex', cursor:'pointer'}}>Change <br/> Cover Image</div>}
+                    </CoverContainer>
+                    
                     <UploadsDetailsLabel>Title</UploadsDetailsLabel>
                     <UploadDetailsTextInput 
                         type="text"
@@ -171,8 +176,8 @@ useEffect(() => {
 
 export default UploadDetailsForm;
 
-const AlbumCoverInput = styled.div`
-    width: 50%;
+const TrackCoverInput = styled.div`
+    width: 70%;
     height: 170px;
     display: flex;
     align-items: center;
@@ -218,4 +223,9 @@ const UploadDetailsSelectInput = styled.select`
             outline: none;
             border: 2px solid #434289;
         }
+`;
+
+const CoverContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
 `;

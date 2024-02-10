@@ -1,51 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import DefaultImageThumbnailImage from '../../assets/DefautlImageThumbnail.png';
 
-const Dashboard = ({user}) => {
-    const [recombeeDataResponse, setRecombeeDataResponse] = useState("");
-    // console.log(`${process.env.REACT_APP_API_BASE_URL}/api/getRecommendations/${user}`)
+const Dashboard = ({ user }) => {
+    const [videos, setVideos] = useState([]);
+    const navigate = useNavigate();
 
-    //Suspending recommendastion useEffect for now:
-    // useEffect(() => {
-    //     const fetchRecommendations = async () => {
-    //         try {
-    //             if (user) { // Check if user and user.name are defined
-    //                 const response = await axios.get(
-    //                     `${process.env.REACT_APP_API_BASE_URL}/api/getRecommendations/${user}`
-    //                 );
-    //                 setRecombeeDataResponse(response.data || "");
-    //             }
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-    //     };
-    //     fetchRecommendations();
-    // }, [user]);
+    useEffect(() => {
+        const fetchRecommendations = async () => {
+            try {
+                if (user) {
+                    const recoResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getRecommendations/${user}`);
+                    const videoIds = recoResponse.data.recomms.map(recomm => recomm.id);
 
-    // useEffect(() => {
-    //     // console.log("recombeeDataResponse after render:", recombeeDataResponse);
-    // }, [recombeeDataResponse]);
+                    const videosData = await Promise.all(videoIds.map(async (id) => {
+                        const videoResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${id}`);
+                        const videoData = videoResp.data;
 
-    const mockData = [
-        { trackName: "Track 1", artistName: "Artist A" },
-        { trackName: "Track 2", artistName: "Artist B" },
-        { trackName: "Track 3", artistName: "Artist C" },
-        { trackName: "Track 4", artistName: "Artist D" },
-        { trackName: "Track 5", artistName: "Artist E" },
-        { trackName: "Track 6", artistName: "Artist F" }
-    ];
+                        const userResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${videoData.videoOwner}`);
+                        const userData = userResp.data;
 
+                        return {
+                            ...videoData,
+                            accountName: userData.accountName // Assume this field exists in your user response
+                        };
+                    }));
 
-return (
+                    setVideos(videosData);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchRecommendations();
+    }, [user]);
+
+    const handleCardClick = (videoId) => {
+        navigate(`/play/${videoId}`);
+    };
+
+    return (
         <Container>
-            <h1 style={{ marginLeft: '3vw' }}>Dashboard</h1>
+            <h1 style={{ marginBottom: '3vh' }}>Dashboard</h1>
             <CardContainer>
-                {mockData.map((item, index) => (
-                    <Card key={index}>
-                        <TrackName>{item.trackName}</TrackName>
-                        <ArtistName>{item.artistName}</ArtistName>
+                {videos.map((video, index) => (
+                    <Card 
+                        key={index} 
+                        style={{ 
+                            cursor: 'pointer', 
+                            backgroundImage: `url(${video.selectedImageThumbnail || DefaultImageThumbnailImage})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                        }} 
+                        onClick={() => handleCardClick(video.videoId)}
+                    >
+                        <TrackName>{video.title}</TrackName>
+                        <ArtistName>{video.accountName}</ArtistName>
                     </Card>
                 ))}
             </CardContainer>
@@ -56,7 +68,7 @@ return (
 export default Dashboard;
 
 const Container = styled.div`
-    padding: 20px;
+    padding: 3%;
     // Rest of your Container styles...
 `;
 
@@ -64,8 +76,6 @@ const CardContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between; // This will evenly space the cards in the row
-    /* gap: 1vw; // Adjust this gap if necessary */
-    // Make sure there's no additional padding or margin reducing the available space
 `;
 
 const Card = styled.div`
@@ -87,3 +97,8 @@ const TrackName = styled.h3`
 const ArtistName = styled.p`
     // Your ArtistName styles...
 `;
+
+
+
+//For default cards use this :
+// background-image: url(${DefaultImageThumbnailImage});

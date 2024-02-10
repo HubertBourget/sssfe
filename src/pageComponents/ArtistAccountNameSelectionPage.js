@@ -4,17 +4,19 @@ import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import MandalaBG from '../assets/MandalaAlpha.png';
 import axios from 'axios';
-import LoginButton from '../components/LoginButton';
 import { GlobalStyle } from '../components/GlobalStyle';
 
 
 export default function ArtistAccountNameSelectionPage() {
-  const { user, isAuthenticated } = useAuth0();
   const [accountName, setAccountName] = useState('');
   const [buttonText, setButtonText] = useState('Get Started');
   const [accountNameTaken, setAccountNameTaken] = useState(false);
   const [accountAvailableAlert, setAccountAvailableAlert] = useState('');
   const navigate = useNavigate();
+
+  const { user, isAuthenticated } = useAuth0();
+  // const user = { name: "debug9@debug.com" };
+    // const isAuthenticated = true;
 
   useEffect(() => {
         const getCheckAccountName = async () => {
@@ -98,9 +100,9 @@ if (!isAuthenticated) {
               <h2 style={{color: "black"}}>Welcome, friend, to Sacred Sound.</h2>
               <h2 style={{color: "black", marginTop:"25px"}}>Enter the name for your public profile, and get <br/>started uploading your best quality sacred sound.</h2>
               <p style={{color: "#434289", lineHeight: "0", marginTop:"25px"}}>Choose your account name.</p>
-              <input type="text" style={{borderRadius:"33px", width:"90%"}} onChange={handleAccountNameChange} />
+              <input type="text" style={{borderRadius:"0px", width:'90%', padding:'22px'}} onChange={handleAccountNameChange} />
               <div>{accountAvailableAlert}</div>
-              <CenteredButton disabled={accountNameTaken} onClick={buttonClickHandler}><h1 style={{color: "#F5F5F5", lineHeight: "0"}}>{buttonText}</h1></CenteredButton>
+              <CenteredButton disabled={accountNameTaken} onClick={buttonClickHandler}>{buttonText}</CenteredButton>
           </WrapperDiv>
           </div>
       </ContainerDiv>
@@ -139,6 +141,9 @@ const WrapperDiv = styled.div`
   border-radius: 33px;
   padding: 20px;
   background-color: rgba(163, 196, 163, 0.22);
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 
 `;
 
@@ -149,7 +154,7 @@ const CenteredButton = styled.button`
     border-radius: 33px;
     align-self: center;
     cursor: pointer;
-    width: 100%;
+    width: auto;
     margin-top: 20px;
     padding: 11px;
     `;
