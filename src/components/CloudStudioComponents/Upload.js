@@ -407,7 +407,7 @@ const Upload = ({
 
                     <label htmlFor="albumDescription">Description</label>
                     <textarea
-                        style={{marginBottom: '3vh', height:'9vh',verticalAlign: 'top' }}
+                        style={{marginBottom: '3vh', height:'9vh',verticalAlign: 'top', padding: '22px' }}
                         id="albumDescription"
                         type="text"
                         value={albumDescription}
