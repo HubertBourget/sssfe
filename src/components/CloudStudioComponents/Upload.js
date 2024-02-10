@@ -27,9 +27,8 @@ const Upload = ({
     }) => {
     
     
-    const { user } = useAuth0();
-
-    // const user = { name: "debug9@debug.com" };
+    // const { user } = useAuth0();
+    const user = { name: "debug9@debug.com" };
 
 
     //Upload tracking:

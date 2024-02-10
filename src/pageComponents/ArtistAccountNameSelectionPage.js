@@ -14,9 +14,9 @@ export default function ArtistAccountNameSelectionPage() {
   const [accountAvailableAlert, setAccountAvailableAlert] = useState('');
   const navigate = useNavigate();
 
-  const { user, isAuthenticated } = useAuth0();
-  // const user = { name: "debug9@debug.com" };
-  //   const isAuthenticated = true;
+  // const { user, isAuthenticated } = useAuth0();
+  const user = { name: "debug9@debug.com" };
+    const isAuthenticated = true;
 
   useEffect(() => {
         const getCheckAccountName = async () => {

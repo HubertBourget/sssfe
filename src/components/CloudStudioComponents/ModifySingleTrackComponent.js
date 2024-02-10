@@ -12,9 +12,9 @@ import uploadHamburgerIcon from '../../assets/uploadHamburgerIcon.png';
 import uploadTrashIcon from '../../assets/uploadTrashIcon.png';
 
 const ModifySingleTrackComponent = () => { 
-    const { user, isAuthenticated } = useAuth0();
-    // const user = { name: "debug9@debug.com" };
-    // const isAuthenticated = true;
+    // const { user, isAuthenticated } = useAuth0();
+    const user = { name: "debug9@debug.com" };
+    const isAuthenticated = true;
 
     const { videoId } = useParams();
     const navigate = useNavigate();
