@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useEffect } from 'react';
 
 function NewTagComponent({ onTagsChange, value, style }) {
     // Directly use the value as the array of tags
@@ -39,52 +40,46 @@ function NewTagComponent({ onTagsChange, value, style }) {
         "Ayahuasca",
     ];
 
-    const handleTagChoiceClick = (tag) => {
-        setListOfTags((prevTag) => {
-            // Split the previous tags into an array, trim each tag to remove whitespace
-            const existingTags = prevTag.split(',').map(t => t.trim());
+    useEffect(() => {
+        if (Array.isArray(value)) {
+            setListOfTags(value);
+        } else if (typeof value === 'string') {
+            setListOfTags(value.split(',').map(tag => tag.trim()).filter(tag => tag));
+        }
+    }, [value]);
 
-            // Check if the new tag is already in the list of tags
-            if (existingTags.includes(tag)) {
-                return prevTag; // If the tag is already included, don't change the list
+    const handleTagClick = (tag) => {
+    if (!listOfTags.includes(tag)) {
+        const updatedTags = [...listOfTags, tag];
+        setListOfTags(updatedTags);
+        // Simulate an event object with the expected structure
+        const simulatedEvent = {
+            target: {
+                name: 'tags', // Assuming 'tags' is the name of your form field
+                value: updatedTags.join(', ') // Join the array into a string
             }
-
-            const newTags = prevTag ? prevTag + ', ' + tag : tag;
-
-            // Construct an event-like object with the necessary properties
-            const simulatedEvent = {
-                target: {
-                    name: 'tags', // Assuming 'tags' is the name of the field in formData
-                    value: newTags
-                }
-            };
-
-            onTagsChange(simulatedEvent); // Pass this simulated event to the callback
-            return newTags;
-        });
-    };
-
+        };
+        onTagsChange(simulatedEvent); // Pass the simulated event to the parent component
+    }
+};
 
     const handleTextareaChange = (e) => {
-            setListOfTags(e.target.value);
-            // Create a simulated event object
-            const simulatedEvent = {
-                target: {
-                    name: 'tags', // Make sure this matches your formData field name
-                    value: e.target.value
-                }
-            };
-            onTagsChange(simulatedEvent); // Update the parent component
-        };
+        const tags = e.target.value.split(',')
+                         .map(tag => tag.trim())
+                         .filter(tag => tag); // Split and clean tags, removing empty ones
+        setListOfTags(tags);
+        onTagsChange(tags); // Pass array to parent
+    };
+
 
     return (
         <>
         <Container style={style}>
             <TextArea
-                rows={4}
-                value={listOfTags}
+                row={4}
+                value={listOfTags.join(', ')} // Join array for display
                 onChange={handleTextareaChange}
-                placeholder='Add Tags to help others find your content.'
+                placeholder="Enter tags separated by commas."
             />
             <TagContainer>
             {tagArray.map((tag, index) => (
@@ -92,7 +87,7 @@ function NewTagComponent({ onTagsChange, value, style }) {
                     key={index}
                     onClick={(e) => {
                         e.stopPropagation(); // Prevent the click event from propagating
-                        handleTagChoiceClick(tag);
+                        handleTagClick(tag);
                     }}
                 >
                     {tag}

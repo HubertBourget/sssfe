@@ -68,14 +68,12 @@ const ModifySingleTrackComponent = () => {
                     }
                 );
                 const contentData = response.data.contentDocument;
-                // Assuming tags are a comma-separated string and TagComponent expects an array
-                const tagsArray = contentData.tags ? contentData.tags.split(',') : [];
-                // Set the form data with the fetched content data
+                console.log("contentData.tags: ", contentData.tags)
                 setFormData({
                     title: contentData.title || '',
                     description: contentData.description || '',
                     category: contentData.category || 'Music video',
-                    tags: tagsArray, // Convert to array if necessary
+                    tags: contentData.tags, 
                     visibility: contentData.visibility || 'Public',
                 });
 
