@@ -12,14 +12,17 @@ import uploadHamburgerIcon from '../../assets/uploadHamburgerIcon.png';
 import uploadTrashIcon from '../../assets/uploadTrashIcon.png';
 
 const ModifySingleTrackComponent = () => { 
+    // const { user, isAuthenticated } = useAuth0();
+    const user = { name: "debug9@debug.com" };
+    const isAuthenticated = true;
+
     const { videoId } = useParams();
-    const { user, isAuthenticated } = useAuth0();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         category: 'Music video',
-        tags: '',
+        tags: [],
         visibility: '',
     });
     const [formError, setFormError] = useState('');
@@ -30,30 +33,28 @@ const ModifySingleTrackComponent = () => {
     const [uploadedThumbnailUrl, setUploadedThumbnailUrl] = useState('');// Necessary for passing the url of the Track's image to MongoDB
 
 
-    //Disabled the fetching call for the Video Data.
-    //Original design no longer has the video in the Modify View
-    //Keeping for archives
-    // useEffect(() => {
-    //     const fetchVideosURL = async () => {
-    //         try {
-    //         const response = await axios.get(
-    //             `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
-    //             {
-    //             params: {
-    //                 videoId: videoId,
-    //             },
-    //             }
-    //         );
-    //         setVideoURL(response.data.contentDocument.fileUrl);
-    //         setVideoUrlRetrived(true);
+    useEffect(() => {
+        const fetchVideosURL = async () => {
+            try {
+            const response = await axios.get(
+                `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
+                {
+                params: {
+                    videoId: videoId,
+                },
+                }
+            );
+            console.log("getContentById - response.data: ",response.data);
+            setVideoURL(response.data.contentDocument.fileUrl);
+            setVideoUrlRetrived(true);
 
-    //         } catch (error) {
-    //         console.error(error);
-    //         setVideoUrlRetrived(false);
-    //         }
-    //     };
-    //     fetchVideosURL();
-    // }, []);
+            } catch (error) {
+            console.error(error);
+            setVideoUrlRetrived(false);
+            }
+        };
+        fetchVideosURL();
+    }, []);
 
     useEffect(() => {
         const fetchContentData = async () => {
@@ -77,12 +78,19 @@ const ModifySingleTrackComponent = () => {
                     tags: tagsArray, // Convert to array if necessary
                     visibility: contentData.visibility || 'Public',
                 });
+
+                // Set uploaded image thumbnail if coverImageUrl exists
+                if (contentData.coverImageUrl) {
+                    setUploadedImageThumbnail(contentData.coverImageUrl);
+                }
+
             } catch (error) {
                 console.error(error);
             }
         };
         fetchContentData(); // Call the fetchContentData function when the component mounts
-    }, [videoId]); 
+    }, [videoId]);
+
 
     const handleCloseClick = () => {
         navigate('/studio')
@@ -185,7 +193,9 @@ const ModifySingleTrackComponent = () => {
         }
     };
 
-
+    const handleTagsChange = (newTags) => {
+        setFormData({ ...formData, tags: newTags });
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -231,13 +241,13 @@ const ModifySingleTrackComponent = () => {
                     Publish
                 </button>
             </Header>
-            <h1>Track details</h1>
-            <TrackHeaderDiv>
+            <h1 style={{marginLeft:'3vw'}}>Edit Track</h1>
+            {/* <TrackHeaderDiv>
                 <FullBlueLine/>
                 <img src={uploadHamburgerIcon} alt="" />
                 <FileName>{formData.title}</FileName>
                 <img src={uploadTrashIcon} alt="" style={{cursor:'pointer'}} onClick={handleDelete} />
-            </TrackHeaderDiv>
+            </TrackHeaderDiv> */}
             <div style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
                 <LeftDiv>
                 <UploadProfileImageContainer 
@@ -245,7 +255,14 @@ const ModifySingleTrackComponent = () => {
                     onDrop={dropHandler}
                     onDragOver={dragOverHandler}
                 >
-                    <p>Upload cover image</p>
+                    {uploadedImageThumbnail ? (
+                        <>
+                            <img src={uploadedImageThumbnail} alt="Cover" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <p>Change cover image</p>
+                        </>
+                    ) : (
+                        <p>Upload cover image</p>
+                    )}
                     <input type="file" accept="image/*" id="file-input" hidden onChange={fileChangeHandler} />
                 </UploadProfileImageContainer>
                 
@@ -269,7 +286,7 @@ const ModifySingleTrackComponent = () => {
                             <option value="Behind the scenes">Behind the scenes</option>
                             <option value="Concert">Concert</option>
                         </CustomSelect>
-                        <TagComponent style={{width:"90%"}} id="tags" onTagsChange={(tags) => setFormData({ ...formData, tags })} value={formData.tags} />
+                        <TagComponent style={{width:"90%"}} id="tags" onTagsChange={handleTagsChange} value={formData.tags} />
                 </RightDiv>
             </div>
             
@@ -363,7 +380,6 @@ const DefaultButton = styled.button`
 `;
 
 const UploadProfileImageContainer = styled.div`
-    border: 2px dashed grey;
     height: 200px;
     width: 300px;
     display: flex;

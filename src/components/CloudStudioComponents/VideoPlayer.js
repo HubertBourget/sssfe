@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const VideoPlayerHeader = styled.div`
     width: 100%;
@@ -21,19 +23,39 @@ const VideoPlayerHeader = styled.div`
     // Add more styles as needed
     `;
 
-    const VideoPlayer = ({ videoUrl }) => {
-    const navigate = useNavigate();
+    const VideoPlayer = () => {
+        const { videoId } = useParams();
+        const [videoData, setVideoData] = useState(null);
+        const navigate = useNavigate();
+
+        useEffect(() => {
+        const fetchVideoData = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${videoId}`);
+                setVideoData(response.data);
+            } catch (error) {
+                console.error('Error fetching video data:', error);
+            }
+        };
+
+        if (videoId) {
+            fetchVideoData();
+        }
+    }, [videoId]);
+
+    if (!videoData) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
         <VideoPlayerHeader>
             <BackButton onClick={() => navigate(-1)} style={{color:'black'}}>Close</BackButton>
-            {/* Add other header content here if necessary */}
         </VideoPlayerHeader>
         <div id="videoPlayerContainer" style={{display:'flex', justifyContent:'center'}}>
         <video width="80%" height="auto" controls>
-            <source src={videoUrl} type="video/mp4" />
-            <p>Your browser does not support HTML5 video. Here is a <a href={videoUrl}>link to the video</a> instead.</p>
+            <source src={videoData.fileUrl} type="video/mp4" />
+            <p>Your browser does not support HTML5 video. Here is a <a href={videoData.fileUrl}>link to the video</a> instead.</p>
         </video>
         </div>
         </>

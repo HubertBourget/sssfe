@@ -54,11 +54,12 @@ const Dashboard = ({ user }) => {
                             backgroundSize: 'cover',
                             backgroundPosition: 'center'
                         }} 
-                        onClick={() => handleCardClick(video.videoId)}
+                        onClick={() => handleCardClick(video.videoId)} // Pass video.videoId here
                     >
                         <TrackName>{video.title}</TrackName>
                         <ArtistName>{video.accountName}</ArtistName>
                     </Card>
+
                 ))}
             </CardContainer>
         </Container>

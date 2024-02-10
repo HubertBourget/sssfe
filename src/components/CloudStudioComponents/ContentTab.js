@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import EditIcon from '../../assets/EditIcon.png';
 import TrashIcon from '../../assets/TrashIcon.png';
+import axios from 'axios';
 
 const ContentTab = ({user}) => {
     const artistId = user;
@@ -60,9 +61,18 @@ const ContentTab = ({user}) => {
         }
     }, [user]); // Depend on user prop
 
-    const handleDeleteAlbum = (albumId) => {
-        console.log('Deleting albumId: ', albumId);
-    }
+    const handleDeleteAlbum = async (albumId, artistId) => {
+        try {
+            const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/deleteAlbum/${albumId}?artistId=${artistId}`);
+            console.log(response.data.message);
+            // After successful deletion, filter out the deleted album from the state
+            setContentDocuments(prevContentDocuments =>
+                prevContentDocuments.filter((contentDocument) => contentDocument.albumId !== albumId)
+            );
+        } catch (error) {
+            console.error('Error deleting album:', error.response.data.message);
+        }
+    };
 
 
     const handleModify = (videoId) => {

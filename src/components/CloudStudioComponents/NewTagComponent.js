@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-function NewTagComponent({ onTagsChange, value, style  }) {
-    const [listOfTags, setListOfTags] = useState(value); 
+function NewTagComponent({ onTagsChange, value, style }) {
+    // Directly use the value as the array of tags
+    const [listOfTags, setListOfTags] = useState(value || []);
 
     const tagArray = [
         "Acapella",

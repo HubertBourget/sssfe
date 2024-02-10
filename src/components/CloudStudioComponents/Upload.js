@@ -27,9 +27,9 @@ const Upload = ({
     }) => {
     
     
-    const { user } = useAuth0();
+    // const { user } = useAuth0();
 
-    // const user = { name: "debug9@debug.com" };
+    const user = { name: "debug9@debug.com" };
 
 
     //Upload tracking:
@@ -452,7 +452,7 @@ const Upload = ({
 
         {viewState === "fileDetail" && (
         <div>
-            <h1>Track details</h1>
+            <h1 style={{marginLeft:'3vw'}}>Track details</h1>
             {fileUploadsArray.map((file, index) => (
                 <UploadDetailsForm 
                     key={index}

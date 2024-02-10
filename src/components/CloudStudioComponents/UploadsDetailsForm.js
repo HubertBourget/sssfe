@@ -10,11 +10,12 @@ import styled from 'styled-components';
 import TagComponent from '../CloudStudioComponents/NewTagComponent';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const UploadDetailsForm = ({ file, trackDetails, progress, videoId, onTrackDetailChange, handleDelete  }) => {
+const UploadDetailsForm = ({ file, trackDetails, progress, videoId, onTrackDetailChange, handleDelete, index  }) => {
     
-    const { user } = useAuth0();
-    // const user = { name: "debug9@debug.com" };
+    // const { user } = useAuth0();
+    const user = { name: "debug9@debug.com" };
 
+    const inputId = `coverImage-${index}`; // Unique ID for each input
 
     const [coverImage, setcoverImage] = useState(null);
     const handleCoverChange = (event) => {
@@ -22,11 +23,11 @@ const UploadDetailsForm = ({ file, trackDetails, progress, videoId, onTrackDetai
             const file = event.target.files[0];
             const imageUrl = URL.createObjectURL(file);
             setcoverImage(imageUrl); // Set the state with the URL
-            uploadAlbumPicture(file); // Continue with your existing upload logic
+            uploadAlbumPicture(file, videoId); // Continue with your existing upload logic
         }
     };
-const uploadAlbumPicture = (uploadingPicture) => {
-        if (uploadingPicture == null) {
+const uploadAlbumPicture = (file, videoId) => {
+        if (file == null) {
             console.log("profilePicture was null");
             return;
         }
@@ -35,11 +36,11 @@ const uploadAlbumPicture = (uploadingPicture) => {
         const metadata = {
             contentType: 'image/jpeg',
         };
-        uploadBytes(fileRef, uploadingPicture, metadata)
+        uploadBytes(fileRef, file, metadata)
             .then(() => {
             getDownloadURL(fileRef)
                 .then((url) => {
-                postCoverImage(url);
+                postCoverImage(url, videoId);
                 setcoverImage(url); // Update the profilePicture state with the new URL
                 })
                 .catch((error) => {
@@ -50,7 +51,7 @@ const uploadAlbumPicture = (uploadingPicture) => {
             console.error(error);
             });
     };
-    const postCoverImage = (url) => {
+    const postCoverImage = (url, videoId) => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/postCoverImage`, {
         method: "POST",
         headers: {
@@ -107,13 +108,13 @@ useEffect(() => {
                 <div style={{display:'flex', flexDirection:'column', flex: '1'}}>
                     <CoverContainer>
                         <TrackCoverInput
-                            onClick={() => document.getElementById('coverImage').click()}
+                            onClick={() => document.getElementById(inputId).click()}
                             image={coverImage}>
                             {!coverImage && <span>Upload<br />Cover Image</span>}
                         </TrackCoverInput>
                         <input 
                             style={{ display: 'none' }}
-                            id="coverImage"
+                            id={inputId}
                             type="file" 
                             accept="image/*" 
                             onChange={handleCoverChange}
