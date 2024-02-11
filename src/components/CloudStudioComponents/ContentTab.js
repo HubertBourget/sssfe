@@ -178,6 +178,7 @@ return (
                                 borderBottom: '0.1vw solid #ccc',
                                 padding: '1vw 0',
                                 margin: '1vw 0',
+                                justifyContent:'space-between'
                             }}
                         >
                             <TrackInfo>
