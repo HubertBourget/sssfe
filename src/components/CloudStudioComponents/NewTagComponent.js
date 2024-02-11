@@ -117,16 +117,10 @@ margin-top: 3vh;
 const Tag = styled.div`
 padding: 5px;
     cursor: pointer;
-    border: 1px solid #434289;
     margin: 5px;
     border-radius: 33px;
     margin-right: 0;
-
-    &:hover {
-        background-color: #434289;
-        color: white;
-        border: 1px solid #434289;
-    }
+    background-color: #F5F5F5;
 `;
 
 const TextArea = styled.textarea`
