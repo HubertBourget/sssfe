@@ -220,7 +220,7 @@ return (
                                 justifyContent:'space-between'
                             }}
                         >
-                            <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', alignItems: 'center' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
                                 <TrackInfo>
                                 <TrackName>{album.albumName|| 'Unnamed Album'}</TrackName>
                                 <ArtistName>{artistName}</ArtistName>
