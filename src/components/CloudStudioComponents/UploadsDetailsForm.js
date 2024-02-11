@@ -143,6 +143,7 @@ useEffect(() => {
                         name="visibility"
                         value={formData.visibility}
                         onChange={handleInputChange}
+                        style={{ marginBottom: '3vh' }}
                     >
                         <option value="true">Public</option>
                         <option value="false">Private</option>
