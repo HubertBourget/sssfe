@@ -163,7 +163,7 @@ return (
         <div style={{ marginTop: '5vw' }}>
             {filter !== 'album' ? (
                 <>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold', marginBottom: '2vw' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold', marginBottom: '3vw' }}>
                         <span style={{ marginLeft:'3vw'}}>Track</span>
                         <span>Status</span>
                         <span></span>
@@ -171,16 +171,15 @@ return (
                     </div>
                     {getFilteredContent().map((item) => (
                         <div
-                            key={item.videoId}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                borderBottom: '0.1vw solid #ccc',
-                                padding: '1vw 0',
-                                margin: '1vw 0',
-                                justifyContent:'space-between'
-                            }}
-                        >
+                        key={item.videoId}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            borderBottom: '0.1vw solid #ccc',
+                            padding: '1vw 0',
+                            margin: '1vw 0',
+                            justifyContent:'space-between'
+                        }}>
                             <TrackInfo>
                                 <TrackName>{item.title}</TrackName>
                                 <ArtistName>{artistName}</ArtistName>
@@ -191,7 +190,7 @@ return (
                                     <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw' }} />
                                 </TransparentButton>
                             </span>
-                            <span style={{ width: '10vw'}}>
+                            <span>
                                 <TransparentButton onClick={() => handleDelete(item.videoId, artistId)}>
                                     <img src={TrashIcon} alt="Delete" style={{ width: '2vw', height: '2vw' }} />
                                 </TransparentButton>
@@ -201,7 +200,7 @@ return (
                 </>
             ) : (
                 <>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold', marginBottom: '2vw' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold', marginBottom: '3vw' }}>
                         <span style={{ marginLeft:'3vw'}}>Album</span>
                         <span >Date added</span>
                         <span ></span>
@@ -217,6 +216,7 @@ return (
                                 borderBottom: '0.1vw solid #ccc',
                                 padding: '1vw 0',
                                 margin: '1vw 0',
+                                justifyContent:'space-between'
                             }}
                         >
                             <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', alignItems: 'center' }}>
@@ -232,8 +232,8 @@ return (
                                     <img src={TrashIcon} alt="Delete" style={{ width: '2vw', height: '2vw' }} />
                                 </TransparentButton>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
-                            </div>
+                            {/* <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                            </div> */}
                         </div>
                     ))}
                 </>
@@ -251,7 +251,7 @@ const TrackInfo = styled.div`
     flex-direction: column;
     align-items: flex-start;
     min-width: 20vw; // Adjusted from 10vw
-    margin-left: 2vw; // Use vw for margin
+    margin-left: 3vw; // Use vw for margin
 `;
 
 const TrackName = styled.span`
