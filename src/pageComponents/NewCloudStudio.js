@@ -20,7 +20,8 @@ import FeedbackIcon from '../assets/FeedbackIcon.png';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Navigate, useNavigate } from 'react-router'; 
 import LoginButton from '../components/LoginButton';
-import VideoPlayer from '../components/CloudStudioComponents/VideoPlayer'
+import VideoPlayer from '../components/CloudStudioComponents/VideoPlayer';
+import LogoutButton from '../components/LogoutButton';
 
 export default function NewCloudStudio() {
     const { user, isAuthenticated } = useAuth0();
@@ -234,11 +235,12 @@ const [trackDetails, setTrackDetails] = useState([]);
                             <button onClick={() => {handleUploadClick();}}
                             style={{display:'flex'}}>
                                 <img src={UploadIcon} alt="Upload" style={{ marginRight: '8px'}}/>
-                                <div style={{alignItems:'center', color:'white', backgroundColor:"#434289"}}>
+                                <div style={{alignItems:'center', color:'white', backgroundColor:"#434289", fontFamily:'Montserrat', fontSize:'18px'}}>
                                     Upload
                                 </div>
                             </button>
-                            <AccountButton></AccountButton>
+                            {/* <AccountButton></AccountButton> */}
+                            <LogoutButton></LogoutButton>
                         </UploadAndAccountDiv>
                     )}                   
                 </HeaderRight>
@@ -446,7 +448,7 @@ const CloseButton = styled.button`
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    font-size: 20px;
+    font-size: 18px;
     color: rgb(67, 66, 137);
     text-decoration: underline;
     margin-left: 3vw;

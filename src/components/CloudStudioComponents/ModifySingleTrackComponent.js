@@ -345,15 +345,17 @@ const CustomLabel = styled.label`
 
 const DescriptionTextArea = styled.textarea`
     width: 90%;
-    height: 70px;
+    height: 800px; /* Adjusted height to fit two lines of text including padding */
     padding: 22px;
+    font-size: 14px; /* reaffirmed for clarity, though it's set globally */
+    line-height: 1.5; /* assuming the default, but now explicitly set for consistency */
     resize: none;
     border: 2px solid #D9D9D9;
-        color: #434289;
-        :focus {
-            outline: none;
-            border: 2px solid #434289;
-        }
+    color: #434289;
+    :focus {
+        outline: none;
+        border: 2px solid #434289;
+    }
 `;
 
 const CustomSelect = styled.select`
@@ -405,7 +407,7 @@ const CloseButton = styled.button`
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    font-size: 20px;
+    font-size: 18px;
     color: rgb(67, 66, 137);
     text-decoration: underline;
     margin-left: 4vw;

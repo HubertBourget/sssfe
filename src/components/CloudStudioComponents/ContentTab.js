@@ -163,7 +163,7 @@ return (
         <div style={{ marginTop: '5vw' }}>
             {filter !== 'album' ? (
                 <>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold', marginBottom: '3vw' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3vw' }}>
                         <span style={{ marginLeft:'3vw'}}>Track</span>
                         <span>Status</span>
                         <span></span>
@@ -200,7 +200,7 @@ return (
                 </>
             ) : (
                 <>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold', marginBottom: '3vw' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3vw' }}>
                         <span style={{ marginLeft:'3vw'}}>Album</span>
                         <span >Date added</span>
                         <span ></span>
@@ -256,13 +256,14 @@ const TrackInfo = styled.div`
 `;
 
 const TrackName = styled.span`
-    font-size: 2em; // Adjusted from 24px to viewport relative units
-    color: #434289; // Your primary color
+    font-size: 18px; 
+    color: #434289; 
 `;
 
 const ArtistName = styled.span`
-    font-size: 1.6em; // Adjusted from 16px to viewport relative units
-    color: #434289; // You can use a slightly different color if needed
+    font-size: 14px;
+    color: #434289; 
+    font-style: italic;
 `;
 
 const TransparentButton = styled.button`
@@ -284,10 +285,12 @@ const FilterButton = styled.button`
     padding-bottom: 0.25rem;
     font-size: 1rem;
     border-radius: 0px;
+    font-size: 18px;
 
     // Apply a thick underline if the button is selected
     ${props => props.selected && css`
         border-bottom: 2px solid #434289;
+        font-weight: bold;
     `}
 `;
 

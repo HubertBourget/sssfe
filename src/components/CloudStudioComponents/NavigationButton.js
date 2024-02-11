@@ -17,6 +17,7 @@ const Button = styled.button`
   border: none;
   border-right: ${({ active }) => (active ? '10px solid #434289' : 'none')};
   display: flex;
+  font-size: 16px;
 `;
 
 export default NavigationButton;

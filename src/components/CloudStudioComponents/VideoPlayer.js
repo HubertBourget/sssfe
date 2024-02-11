@@ -18,7 +18,7 @@ const VideoPlayerHeader = styled.div`
     background: transparent;
     border: none;
     color: #fff; // Set the color as needed
-    font-size: 1em; // Set size as needed
+    font-size: 18px; // Set size as needed
     cursor: pointer;
     // Add more styles as needed
     `;

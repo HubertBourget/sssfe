@@ -5,17 +5,17 @@ const LogoutButton = () => {
     const { logout, isAuthenticated } = useAuth0();
 
     return (
-        isAuthenticated && (
-            <SingupButton onClick={() => logout()}>
+        !isAuthenticated && (
+            <SingOutButton onClick={() => logout()}>
                 <h2>Logout</h2>
-            </SingupButton>
+            </SingOutButton>
         )
     )
 }
 
 export default LogoutButton
 
-const SingupButton = styled.button`
+const SingOutButton = styled.button`
 background-color: transparent;
 color: #434289;
 border: none;

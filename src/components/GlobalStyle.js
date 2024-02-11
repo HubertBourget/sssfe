@@ -3,43 +3,57 @@ import { createGlobalStyle } from 'styled-components';
 export const GlobalStyle = createGlobalStyle`
     /* Define the font families */
     @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Outfit:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Outfit:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Open+Sans&family=Outfit:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap');
 
-    /* Set the font family for H1, H2, and H3 */
-    h1, h2, h3 {
-        font-family: 'Outfit', sans-serif;
-        font-weight: 500;
-        line-height: 1.2;
-        margin-bottom: 1rem;
-        color: #434289;
+
+    :root {
+        /* Define your custom properties here */
+        --base-font-size: 16px; /* Base font size */
+        --text-font-size: 0.875rem; /* Text font size, equivalent to 14px */
+        --heading-one-font-size: 2.1875rem; /* H1 font size */
+        --heading-two-font-size: 1.5625rem;  /* H2 font size */
+        --heading-three-font-size: 1.125rem;
+        /* Add more custom properties as needed */
     }
+
+    html {
+        font-size: var(--base-font-size); /* Sets the base font size */
+    }
+
     h1 {
-        font-size: 35px;
+        font-family: 'Playfair';
+        font-size: var(--heading-one-font-size);
+        font-weight: 500;
     }
+
     h2 {
-        font-size: 25px;
+        font-size: var(--heading-two-font-size);
     }
+
+
     h3 {
-        font-size: 16px;
+        font-size: var(--heading-three-font-size);
     }
+
     /* Set the font family for paragraphs */
     p {
-        font-family: 'Outfit', sans-serif;
-        font-size: 14px;
+        font-size: var(--text-font-size); /* Adjusted from 14px */
         line-height: 1.5;
         margin-bottom: 1rem;
         color: #434289;
     }
-    /* Set the font family for buttons */
+    /* Set the font family for buttons
     button {
         font-family: 'Outfit', sans-serif;
-        font-size: 14px;
+        font-size: var(--text-font-size);
         font-weight: 100;
         line-height: 1.5;
         letter-spacing: 0.7px;
-    }
+    } */
     input[type=text] {
         font-family: 'Outfit', sans-serif;
-        font-size: 14px;
+        font-size: var(--text-font-size);
         border: 2px solid #D9D9D9;
         color: #434289;
         :focus {
@@ -51,6 +65,7 @@ export const GlobalStyle = createGlobalStyle`
         font-family: 'Outfit', sans-serif;
         border: 2px solid #D9D9D9;
         color: #434289;
+        font-size: var(--text-font-size);
         :focus {
             outline: none;
             border: 2px solid #434289;
@@ -60,26 +75,23 @@ export const GlobalStyle = createGlobalStyle`
         font-family: 'Outfit', sans-serif;
         color: #434289;
         background-color: #FFFFFF;
+        font-size: var(--text-font-size);
     }
     label {
         color: #434289;
         font-family: 'Outfit', sans-serif;
         color: #434289;
-        font-size: 25px;
+        font-size: var(--text-font-size);
     }
     span {
-        font-family: 'Outfit', sans-serif;
+        font-family: 'Montserrat', sans-serif;
         color: #434289;
-        font-size: 20px;
-    }
-    textarea {
-        color: #434289;
-        font-size: 14px;
+        font-size: var(--text-font-size);
     }
     select {
         color: #434289;
         padding: 22px;
-        font-size: 14px;
+        font-size: var(--text-font-size);
         border: 2px solid #434289;
     }
     input::placeholder, textarea::placeholder {
@@ -87,13 +99,14 @@ export const GlobalStyle = createGlobalStyle`
         opacity: 1; /* Optional: Adjust the opacity as needed */
     }
     button {
+        font-family:'Montserrat';
         border: none;
         color: rgb(245, 245, 245);
         background-color: rgb(67, 66, 137);
         border-radius: 33px;
         padding: 12px 30px;
         cursor: pointer;
-        font-size: 20px;
+        font-size: var(--text-font-size);
         height: 6vh;
         align-items: center;
     }

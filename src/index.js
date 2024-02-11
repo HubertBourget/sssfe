@@ -17,5 +17,5 @@ root.render(
   </Auth0Provider>
 );
 document.body.style.minHeight = '98vh';
-document.body.style.backgroundColor = '#F1F4F8';
+document.body.style.backgroundColor = '#FFFFFF';
 document.body.style.margin = "0px";

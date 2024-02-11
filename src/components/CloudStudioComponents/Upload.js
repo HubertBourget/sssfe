@@ -350,7 +350,7 @@ const Upload = ({
                 <DropZone onDragOver={handleDragOver} onDrop={handleDrop}>
                     <h1 style={{ marginTop: '5vh' }}>Drop your music here: single tracks or whole albums.</h1>
                     <UploadStyledLabel>
-                        <h3 style={{ color: "#F5F5F5", lineHeight: "0", padding: "5px" }}>or choose files to upload</h3>
+                        or choose files to upload
                         <input type="file" accept="video/*, audio/*" onChange={handleFileChange} multiple />
                     </UploadStyledLabel>
                     <BottomContainer>
@@ -528,9 +528,10 @@ const UploadStyledLabel = styled.label`
     color:white;
     margin-bottom: 11px;
     z-index: 11;
+    font-size: 14px;
+    padding: 22px;
 & input[type="file"] {
     position: absolute;
-    font-size: 100px;
     width: 100%;
     height: 100%;
     top: 0;
