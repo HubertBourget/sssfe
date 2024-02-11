@@ -204,6 +204,7 @@ return (
                         <span style={{ marginLeft:'3vw'}}>Album</span>
                         <span >Date added</span>
                         <span ></span>
+                        <span ></span>
                         
                     </div>
                     {getFilteredContent().map((album) => (
