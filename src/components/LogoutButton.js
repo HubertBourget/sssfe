@@ -5,11 +5,9 @@ const LogoutButton = () => {
     const { logout, isAuthenticated } = useAuth0();
 
     return (
-        !isAuthenticated && (
             <SingOutButton onClick={() => logout()}>
                 <h2>Logout</h2>
             </SingOutButton>
-        )
     )
 }
 
