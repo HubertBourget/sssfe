@@ -59,6 +59,7 @@ export const GlobalStyle = createGlobalStyle`
     div {
         font-family: 'Outfit', sans-serif;
         color: #434289;
+        background-color: #FFFFFF;
     }
     label {
         color: #434289;

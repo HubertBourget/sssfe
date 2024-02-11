@@ -234,7 +234,7 @@ const [trackDetails, setTrackDetails] = useState([]);
                             <button onClick={() => {handleUploadClick();}}
                             style={{display:'flex'}}>
                                 <img src={UploadIcon} alt="Upload" style={{ marginRight: '8px'}}/>
-                                <div style={{alignItems:'center', color:'white'}}>
+                                <div style={{alignItems:'center', color:'white', backgroundColor:"#434289"}}>
                                     Upload
                                 </div>
                             </button>

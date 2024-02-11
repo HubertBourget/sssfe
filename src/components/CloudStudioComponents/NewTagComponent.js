@@ -115,7 +115,7 @@ margin-top: 3vh;
 `;
 
 const Tag = styled.div`
-padding: 5px;
+    padding: 12px;
     cursor: pointer;
     margin: 5px;
     border-radius: 33px;
