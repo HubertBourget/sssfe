@@ -184,8 +184,8 @@ return (
                                 <TrackName>{item.title}</TrackName>
                                 <ArtistName>{artistName}</ArtistName>
                             </TrackInfo>
-                            <span style={{ width: '30vw' }}>{getStatus(item)}</span>
-                            <span style={{ width: '10vw' }}>
+                            <span>{getStatus(item)}</span>
+                            <span>
                                 <TransparentButton onClick={() => handleModify(item.videoId)}>
                                     <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw' }} />
                                 </TransparentButton>
