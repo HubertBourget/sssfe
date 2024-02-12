@@ -166,8 +166,8 @@ return (
                     <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw' }}>
                         <Column><span>Track</span></Column>
                         <Column><span>Status</span></Column>
-                        <Column></Column>
-                        <Column></Column>
+                        <Column><span></span></Column>
+                        <Column><span></span></Column>
                     </div>
                     {getFilteredContent().map((item) => (
                         <div
@@ -210,13 +210,13 @@ return (
                 <>
                     <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw' }}>
                         <Column>
-                            <span style={{ marginLeft:'3vw'}}>Album</span>
+                            <span>Album</span>
                         </Column>
                         <Column>
                             <span >Date added</span>
                         </Column>
-                        <Column></Column>
-                        <Column></Column>
+                        <Column><span></span></Column>
+                        <Column><span></span></Column>
                         
                     </div>
                     {getFilteredContent().map((album) => (
