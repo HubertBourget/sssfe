@@ -43,7 +43,8 @@ const Dashboard = ({ user }) => {
 
     return (
         <Container>
-            <h1 style={{ marginBottom: '3vh' }}>Dashboard</h1>
+            <h1 style={{ marginBottom: '10vh' }}>Dashboard</h1>
+            <h2 style={{ marginBottom: '3vh', fontWeight:'400' }}>Lastest Content</h2>
             <CardContainer>
                 {videos.map((video, index) => (
                     <Card 

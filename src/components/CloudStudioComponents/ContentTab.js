@@ -147,8 +147,9 @@ const ContentTab = ({user}) => {
 
 return (
     <>
+        <h1 style={{marginLeft:'3vw', marginBottom:'3vh'}}>Content</h1>
         {/* Filter buttons */}
-        <div>
+        <div style={{marginLeft:'3vw'}}>
             <FilterButton onClick={() => handleFilterChange('audio')} selected={filter === 'audio'}>
                 Music
             </FilterButton>
@@ -163,7 +164,7 @@ return (
         <div style={{ marginTop: '5vw' }}>
             {filter !== 'album' ? (
                 <>
-                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw', border:'1px solid #D9D9D9', padding:'11px'}}>
                         <Column><span>Track</span></Column>
                         <Column><span>Status</span></Column>
                         <Column><span></span></Column>
@@ -208,7 +209,7 @@ return (
                 </>
             ) : (
                 <>
-                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw', border:'1px solid #D9D9D9', padding:'11px' }}>
                         <Column>
                             <span>Album</span>
                         </Column>
