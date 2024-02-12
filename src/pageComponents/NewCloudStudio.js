@@ -11,7 +11,6 @@ import { v4 } from 'uuid';
 import { debounce } from 'lodash';
 import axios from 'axios';
 import ProfileCircle from '../assets/ProfileCircle.png';
-import SacredSoundLogo from '../assets/SacredSoundCloudStudioLogo.png';
 import UploadIcon from '../assets/UploadIcon.png';
 import DashboardIcon from '../assets/DashboardIcon.png';
 import YourContentIcon from '../assets/ContentIcon.png'
@@ -21,6 +20,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Navigate, useNavigate } from 'react-router'; 
 import LoginButton from '../components/LoginButton';
 import VideoPlayer from '../components/CloudStudioComponents/VideoPlayer';
+import SacredSoundLogo from '../assets/SacredSoundLogo.png'
 
 export default function NewCloudStudio() {
     const { user, isAuthenticated } = useAuth0();
