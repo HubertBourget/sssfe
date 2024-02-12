@@ -11,7 +11,7 @@ import { v4 } from 'uuid';
 import { debounce } from 'lodash';
 import axios from 'axios';
 import ProfileCircle from '../assets/ProfileCircle.png';
-import HorizontalLogo from '../assets/HorizontalLogo.png';
+import SacredSoundLogo from '../assets/SacredSoundCloudStudioLogo.png';
 import UploadIcon from '../assets/UploadIcon.png';
 import DashboardIcon from '../assets/DashboardIcon.png';
 import YourContentIcon from '../assets/ContentIcon.png'
@@ -21,7 +21,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Navigate, useNavigate } from 'react-router'; 
 import LoginButton from '../components/LoginButton';
 import VideoPlayer from '../components/CloudStudioComponents/VideoPlayer';
-import LogoutButton from '../components/LogoutButton';
 
 export default function NewCloudStudio() {
     const { user, isAuthenticated } = useAuth0();
@@ -233,14 +232,12 @@ const [trackDetails, setTrackDetails] = useState([]);
                     {!isUploadActive && (
                         <UploadAndAccountDiv>
                             <button onClick={() => {handleUploadClick();}}
-                            style={{display:'flex'}}>
+                            style={{display:'flex', marginRight:'3vw'}}>
                                 <img src={UploadIcon} alt="Upload" style={{ marginRight: '8px'}}/>
                                 <div style={{alignItems:'center', color:'white', backgroundColor:"#434289", fontFamily:'Montserrat', fontSize:'18px'}}>
                                     Upload
                                 </div>
                             </button>
-                            {/* <AccountButton></AccountButton> */}
-                            <LogoutButton></LogoutButton>
                         </UploadAndAccountDiv>
                     )}                   
                 </HeaderRight>
@@ -254,7 +251,7 @@ const [trackDetails, setTrackDetails] = useState([]);
                     </NavigationButton>
                     <NavigationButton onClick={() => handleSectionChange('component2', false)} active={activeComponent === 'component2'}>
                         <img src={YourContentIcon} alt="Your Channel" style={{ marginRight: '8px'}}/>
-                        Your Content
+                        Content
                     </NavigationButton>
 
                     {/* Disabling in current build */}
@@ -367,10 +364,11 @@ const NavigationPanel = styled.div`
 `;
 
 const Logo = styled.div`
-    height: 100%;
+    height: 80%;
+    width: 80%;
     font-size: 1.5em;
     margin-left: 1vw;
-    background-image: url(${HorizontalLogo});
+    background-image: url(${SacredSoundLogo});
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;

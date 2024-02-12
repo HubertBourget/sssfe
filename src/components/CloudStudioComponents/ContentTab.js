@@ -75,7 +75,7 @@ const ContentTab = ({user}) => {
     };
 
 
-    const handleModify = (videoId) => {
+    const handleModifyContent = (videoId) => {
         navigate(`/prepareForQA/${videoId}`);
     };
 
@@ -84,7 +84,7 @@ const ContentTab = ({user}) => {
     }
 
 
-    const handleDelete = async (videoId, artistId) => {
+    const handleDeleteContent = async (videoId, artistId) => {
         try {
             // Include the user ID in the request data or headers
             const response = await Axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/deleteContent?videoId=${videoId}`, {
@@ -163,11 +163,11 @@ return (
         <div style={{ marginTop: '5vw' }}>
             {filter !== 'album' ? (
                 <>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3vw' }}>
-                        <span style={{ marginLeft:'3vw'}}>Track</span>
-                        <span>Status</span>
-                        <span></span>
-                        <span></span>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw' }}>
+                        <Column><span>Track</span></Column>
+                        <Column><span>Status</span></Column>
+                        <Column></Column>
+                        <Column></Column>
                     </div>
                     {getFilteredContent().map((item) => (
                         <div
@@ -178,33 +178,45 @@ return (
                             borderBottom: '0.1vw solid #ccc',
                             padding: '1vw 0',
                             margin: '1vw 0',
-                            justifyContent:'space-between'
+                            justifyContent:'space-around'
                         }}>
-                            <TrackInfo>
-                                <TrackName>{item.title}</TrackName>
-                                <ArtistName>{artistName}</ArtistName>
-                            </TrackInfo>
-                            <span>{getStatus(item)}</span>
-                            <span>
-                                <TransparentButton onClick={() => handleModify(item.videoId)}>
-                                    <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw' }} />
-                                </TransparentButton>
-                            </span>
-                            <span>
-                                <TransparentButton onClick={() => handleDelete(item.videoId, artistId)}>
-                                    <img src={TrashIcon} alt="Delete" style={{ width: '2vw', height: '2vw' }} />
-                                </TransparentButton>
-                            </span>
+                            <Column>
+                                <TrackInfo>
+                                    <TrackName>{item.title}</TrackName>
+                                    <ArtistName>{artistName}</ArtistName>
+                                </TrackInfo>
+                            </Column>
+                            <Column>
+                                <span>{getStatus(item)}</span>
+                            </Column>
+                            <Column>
+                                <span>
+                                    <TransparentButton onClick={() => handleModifyContent(item.videoId)}>
+                                        <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw' }} />
+                                    </TransparentButton>
+                                </span>
+                            </Column>
+                            <Column>
+                                <span>
+                                    <TransparentButton onClick={() => handleDeleteContent(item.videoId, artistId)}>
+                                        <img src={TrashIcon} alt="Delete" style={{ width: '2vw', height: '2vw' }} />
+                                    </TransparentButton>
+                                </span>
+                            </Column>
                         </div>
                     ))}
                 </>
             ) : (
                 <>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3vw' }}>
-                        <span style={{ marginLeft:'3vw'}}>Album</span>
-                        <span >Date added</span>
-                        <span ></span>
-                        <span ></span>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw' }}>
+                        <Column>
+                            <span style={{ marginLeft:'3vw'}}>Album</span>
+                        </Column>
+                        <Column>
+                            <span >Date added</span>
+                        </Column>
+                        <Column></Column>
+                        <Column></Column>
                         
                     </div>
                     {getFilteredContent().map((album) => (
@@ -217,24 +229,30 @@ return (
                                 borderBottom: '0.1vw solid #ccc',
                                 padding: '1vw 0',
                                 margin: '1vw 0',
-                                justifyContent:'space-between'
+                                justifyContent:'space-around'
                             }}
                         >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                                <TrackInfo>
-                                <TrackName>{album.albumName|| 'Unnamed Album'}</TrackName>
-                                <ArtistName>{artistName}</ArtistName>
-                                </TrackInfo>
-                                <p>{new Date(album.timestamp).toLocaleDateString()}</p>
-                                <TransparentButton onClick={() => handleModifyAlbum(album.albumId)}>
-                                    <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw' }} />
-                                </TransparentButton>
-                                <TransparentButton onClick={() => handleDeleteAlbum(album.albumId, artistId)}>
-                                    <img src={TrashIcon} alt="Delete" style={{ width: '2vw', height: '2vw' }} />
-                                </TransparentButton>
+                            <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', alignItems: 'center' }}>
+                                <Column>
+                                    <TrackInfo>
+                                        <TrackName>{album.albumName|| 'Unnamed Album'}</TrackName>
+                                        <ArtistName>{artistName}</ArtistName>
+                                    </TrackInfo>
+                                </Column>
+                                <Column>
+                                    <p>{new Date(album.timestamp).toLocaleDateString()}</p>
+                                </Column>
+                                <Column>
+                                    <TransparentButton onClick={() => handleModifyAlbum(album.albumId)}>
+                                        <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw' }} />
+                                    </TransparentButton>
+                                </Column>
+                                <Column>
+                                    <TransparentButton onClick={() => handleDeleteAlbum(album.albumId, artistId)}>
+                                        <img src={TrashIcon} alt="Delete" style={{ width: '2vw', height: '2vw' }} />
+                                    </TransparentButton>
+                                </Column>
                             </div>
-                            {/* <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                            </div> */}
                         </div>
                     ))}
                 </>
@@ -251,8 +269,6 @@ const TrackInfo = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    min-width: 20vw; // Adjusted from 10vw
-    margin-left: 3vw; // Use vw for margin
 `;
 
 const TrackName = styled.span`
@@ -292,6 +308,14 @@ const FilterButton = styled.button`
         border-bottom: 2px solid #434289;
         font-weight: bold;
     `}
+`;
+
+const Column = styled.div`
+    flex: 1; // This assigns equal space to each column
+    display: flex;
+    justify-content: center; // Center the content
+    align-items: center;
+    padding: 0 10px; // Add some padding on the sides
 `;
 
 

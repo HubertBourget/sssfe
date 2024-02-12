@@ -239,13 +239,7 @@ const ModifySingleTrackComponent = () => {
                     Publish
                 </button>
             </Header>
-            <h1 style={{marginLeft:'3vw'}}>Edit Track</h1>
-            {/* <TrackHeaderDiv>
-                <FullBlueLine/>
-                <img src={uploadHamburgerIcon} alt="" />
-                <FileName>{formData.title}</FileName>
-                <img src={uploadTrashIcon} alt="" style={{cursor:'pointer'}} onClick={handleDelete} />
-            </TrackHeaderDiv> */}
+            <h1 style={{marginLeft:'3vw'}}>Track details</h1>
             <div style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
                 <LeftDiv>
                 <UploadProfileImageContainer 
@@ -345,7 +339,7 @@ const CustomLabel = styled.label`
 
 const DescriptionTextArea = styled.textarea`
     width: 90%;
-    height: 800px; /* Adjusted height to fit two lines of text including padding */
+    height: 86px; /* Adjusted height to fit two lines of text including padding */
     padding: 22px;
     font-size: 14px; /* reaffirmed for clarity, though it's set globally */
     line-height: 1.5; /* assuming the default, but now explicitly set for consistency */

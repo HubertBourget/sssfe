@@ -82,6 +82,7 @@ export const GlobalStyle = createGlobalStyle`
         font-family: 'Outfit', sans-serif;
         color: #434289;
         font-size: var(--text-font-size);
+        margin-bottom: 16px;
     }
     span {
         font-family: 'Montserrat', sans-serif;

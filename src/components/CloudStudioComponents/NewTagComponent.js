@@ -75,7 +75,9 @@ function NewTagComponent({ onTagsChange, value, style }) {
     return (
         <>
         <Container style={style}>
+            <label htmlFor="TagsTextArea">Tags</label>
             <TextArea
+                id='TagsTextArea'
                 row={4}
                 value={listOfTags.join(', ')} // Join array for display
                 onChange={handleTextareaChange}

@@ -185,7 +185,7 @@ const handleDelete = (trackId) => {
                     <CloseButton>Close</CloseButton>
                     <SaveButton type="submit">Save</SaveButton>
                 </div>
-                <h1 style={{marginLeft:'3vw', marginBottom:'6vh'}}>Edit Album</h1>
+                <h1 style={{marginLeft:'3vw', marginBottom:'6vh'}}>Album details</h1>
                 <div style={{display:'flex', flexDirection:'row'}}>
                     <div style={{display:'flex', flexDirection:'column', width:'50%'}}>
                     <label style={{marginLeft:'3vw'}} htmlFor="albumName">Title</label>
