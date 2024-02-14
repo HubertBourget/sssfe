@@ -9,6 +9,7 @@ import { getDownloadURL, uploadBytes } from 'firebase/storage';
 import styled from 'styled-components';
 import TagComponent from '../CloudStudioComponents/NewTagComponent';
 import { useAuth0 } from '@auth0/auth0-react';
+import WhiteEditIcon from '../../assets/WhiteEditIcon.png';
 
 const UploadDetailsForm = ({ file, trackDetails, progress, videoId, onTrackDetailChange, handleDelete, index  }) => {
     
@@ -79,10 +80,14 @@ const uploadAlbumPicture = (file, videoId) => {
     });
 
 
-const handleInputChange = (e) => {
-    const { name, value } = e.target;
+const handleInputChange = (event) => {
+    const { name, value } = typeof event === 'string' ? { name: 'tags', value: event } : event.target;
     setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
-    onTrackDetailChange(videoId, name, value);
+    if (name === 'tags') {
+        onTrackDetailChange(videoId, name, value.split(', ')); // Split the string back into an array for tags
+    } else {
+        onTrackDetailChange(videoId, name, value);
+    }
 };
 
 useEffect(() => {
@@ -108,9 +113,15 @@ useEffect(() => {
                 <div style={{display:'flex', flexDirection:'column', flex: '1'}}>
                     <CoverContainer>
                         <TrackCoverInput
+                        onClick={() => document.getElementById(inputId).click()}
+                        image={coverImage}
+                        >
+                        {!coverImage && <span>Upload Cover Image</span>}
+                        {coverImage !== null && (
+                            <EditCoverButton
                             onClick={() => document.getElementById(inputId).click()}
-                            image={coverImage}>
-                            {!coverImage && <span>Upload<br />Cover Image</span>}
+                            />
+                        )}
                         </TrackCoverInput>
                         <input 
                             style={{ display: 'none' }}
@@ -119,7 +130,6 @@ useEffect(() => {
                             accept="image/*" 
                             onChange={handleCoverChange}
                         />
-                        {coverImage !== null && <div onClick={() => document.getElementById('coverImage').click()} style={{width:'30%', height:'100%', alignItems:'center', display:'flex', cursor:'pointer'}}>Change <br/> Cover Image</div>}
                     </CoverContainer>
                     
                     <UploadsDetailsLabel>Title</UploadsDetailsLabel>
@@ -166,10 +176,13 @@ useEffect(() => {
                     <option value="Concert">Concert</option>
                 </UploadDetailsSelectInput>
                 <UploadsDetailsLabel >Tags</UploadsDetailsLabel>
+                <div style={{marginLeft:'3vw', marginRight:'3vw', width:'94%'}}>
                 <TagComponent 
                     style={{marginLeft:'3vw'}}
-                    onTagsChange={(tags) => handleInputChange(tags)} value={formData.tags}
+                    onTagsChange={handleInputChange}
+                    value={formData.tags}
                 />
+                </div>
                 </div>
             </form>
         </div>
@@ -196,10 +209,26 @@ const TrackCoverInput = styled.div`
     margin-bottom: 3vh;
     margin-top: 3vh;
     margin-left: 3vw;
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
 
     span {
         text-align: center;  // Center text horizontally within the span
     }
+`;
+
+const EditCoverButton = styled.div`
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    background-image: url(${WhiteEditIcon});
+    background-size: cover;
+    cursor: pointer;
+    background-color: transparent;
 `;
 
 const UploadsDetailsLabel = styled.label`

@@ -8,8 +8,7 @@ import { v4 } from 'uuid';
 import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import TagComponent from '../CloudStudioComponents/NewTagComponent';
-import uploadHamburgerIcon from '../../assets/uploadHamburgerIcon.png';
-import uploadTrashIcon from '../../assets/uploadTrashIcon.png';
+import WhiteEditIcon from '../../assets/WhiteEditIcon.png';
 
 const ModifySingleTrackComponent = () => { 
     const { user, isAuthenticated } = useAuth0();
@@ -58,35 +57,27 @@ const ModifySingleTrackComponent = () => {
 
     useEffect(() => {
         const fetchContentData = async () => {
-            try {
-                const response = await axios.get(
-                    `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
-                    {
-                        params: {
-                            videoId: videoId,
-                        },
-                    }
-                );
-                const contentData = response.data.contentDocument;
-                console.log("contentData.tags: ", contentData.tags)
-                setFormData({
-                    title: contentData.title || '',
-                    description: contentData.description || '',
-                    category: contentData.category || 'Music video',
-                    tags: contentData.tags, 
-                    visibility: contentData.visibility || 'Public',
-                });
-
-                // Set uploaded image thumbnail if coverImageUrl exists
-                if (contentData.coverImageUrl) {
-                    setUploadedImageThumbnail(contentData.coverImageUrl);
-                }
-
-            } catch (error) {
-                console.error(error);
-            }
+        try {
+            const response = await axios.get(
+            `${process.env.REACT_APP_API_BASE_URL}/api/getContentById`,
+            { params: { videoId: videoId } }
+            );
+            const contentData = response.data.contentDocument;
+            console.log("contentData: ", contentData);
+            setFormData({
+            title: contentData.title || '',
+            description: contentData.description || '',
+            category: contentData.category || 'Music video',
+            tags: contentData.tags,
+            visibility: contentData.visibility || 'Public',
+            });
+            setUploadedImageThumbnail(contentData.coverImageUrl); // Set cover image URL
+            setUploadedThumbnailUrl(contentData.selectedImageThumbnail); // Set selected image thumbnail URL
+        } catch (error) {
+            console.error(error);
+        }
         };
-        fetchContentData(); // Call the fetchContentData function when the component mounts
+        fetchContentData(); // Call the function when the component mounts
     }, [videoId]);
 
 
@@ -126,8 +117,7 @@ const ModifySingleTrackComponent = () => {
                 videoId: videoId,
                 thumbnailUrl: url,
             });
-
-            alert("Image Upload and Update Successful!");
+            console.log('setUploadedThumbnailUrl(url) :', url)
             setUploadedThumbnailUrl(url); // Update state if needed
         } catch (error) {
             console.error("Error in image upload: ", error);
@@ -247,13 +237,14 @@ const ModifySingleTrackComponent = () => {
                     onDrop={dropHandler}
                     onDragOver={dragOverHandler}
                 >
-                    {uploadedImageThumbnail ? (
+                    {!uploadedThumbnailUrl && (
+                        <span>Change Cover Image</span>
+                    )}
+                    {uploadedThumbnailUrl && (
                         <>
-                            <img src={uploadedImageThumbnail} alt="Cover" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                            <p>Change cover image</p>
+                            <img src={uploadedThumbnailUrl} alt="Cover" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <EditCoverButton/>
                         </>
-                    ) : (
-                        <p>Upload cover image</p>
                     )}
                     <input type="file" accept="image/*" id="file-input" hidden onChange={fileChangeHandler} />
                 </UploadProfileImageContainer>
@@ -268,7 +259,7 @@ const ModifySingleTrackComponent = () => {
                 </div> */}
                 </LeftDiv>
                 <RightDiv>
-                    <CustomLabel>Category</CustomLabel>
+                    <CustomLabel htmlFor='category'>Category</CustomLabel>
                         <CustomSelect id="category" name="category" value={formData.category} onChange={handleInputChange}>
                             <option value="Music video">Music video</option>
                             <option value="Integration support">Integration support</option>
@@ -278,6 +269,9 @@ const ModifySingleTrackComponent = () => {
                             <option value="Behind the scenes">Behind the scenes</option>
                             <option value="Concert">Concert</option>
                         </CustomSelect>
+                        <div style={{marginLeft:'3vw', marginRight:'3vw', width:'94%'}}>
+
+                        </div>
                         <TagComponent style={{width:"90%"}} id="tags" onTagsChange={handleTagsChange} value={formData.tags} />
                 </RightDiv>
             </div>
@@ -311,6 +305,8 @@ const LeftDiv = styled.div`
 `;
 
 const RightDiv = styled.div`
+    display: flex;
+    flex-direction: column;
     width: 45%;
     margin-right: 3%;
 `;
@@ -364,15 +360,6 @@ const CustomSelect = styled.select`
         }
 `;
 
-const DefaultButton = styled.button`
-    color: white;
-    border: none;
-    background-color: #434289;
-    border-radius: 33px;
-    padding: 7px 60px;
-    margin-top: 3%;
-`;
-
 const UploadProfileImageContainer = styled.div`
     height: 200px;
     width: 300px;
@@ -381,6 +368,7 @@ const UploadProfileImageContainer = styled.div`
     align-items: center;
     text-align: center;
     cursor: pointer;
+    position: relative;
 
 :hover {
     background-color: lightblue;
@@ -407,33 +395,14 @@ const CloseButton = styled.button`
     margin-left: 4vw;
 `;
 
-const TrackHeaderDiv = styled.div`
-    margin-top: 10px;
-    position: relative;
-    background-color: rgb(245, 245, 245);
-    padding: 22px;
-    border: 1px solid rgb(217, 217, 217);
-    display: flex;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    width: 100vh;
-`;
-
-const FullBlueLine = styled.div`
-    background-color: rgb(67, 66, 137);
-    width: 100%;
-    height: 6px;
-    transition: width 0.4s ease 0s;
+const EditCoverButton = styled.div`
     position: absolute;
-    top: 0px;
-    left: 0px;
-`;
-
-const FileName = styled.span`
-    position: absolute; // Normal flow, below the progress bar
-    color: #333; // Text color, change as needed
-    font-size: 20px; // Adjust as per your design
-    display: flex;
-    justify-content: center;
-    left: 45%;
+    top: 12px; // Adjust as needed
+    right: 12px; // Adjust as needed
+    width: 24px; // Adjust as needed
+    height: 24px; // Adjust as needed
+    background-image: url(${WhiteEditIcon});
+    background-size: cover;
+    cursor: pointer;
+    background-color: transparent;
 `;

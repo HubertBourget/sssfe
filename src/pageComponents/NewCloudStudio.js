@@ -33,6 +33,8 @@ export default function NewCloudStudio() {
     const [isSlideIn, setIsSlideIn] = useState(false);
     const [publishClicked, setPublishClicked] = useState(false);
     const [uploadViewState, setUploadViewState] = useState("initial");
+    const [allFilesUploaded, setAllFilesUploaded] = useState(false); //To prevent user to click the Publish button before file upload finishes
+    const [uploadProgress, setUploadProgress] = useState({});
     const navigate = useNavigate();
 
     //Verify via the Auth0 Hook if the user has an account inside MongoDb, if not it redirect the user toward the AccountNameSelectionPage
@@ -206,6 +208,22 @@ useEffect(() => {
     });
 }, [fileUploadsArray]);
 
+    //tracking if all file are uploaded
+    const updateFileProgress = (fileName, progress) => {
+    setUploadProgress(prevProgress => {
+        // Calculate the updated progress
+        const updatedProgress = {
+            ...prevProgress,
+            [fileName]: progress
+        };
+
+        // Check if all files are uploaded
+        const allUploaded = Object.values(updatedProgress).every(p => p === 100);
+        setAllFilesUploaded(allUploaded); // Update the state based on the new progress values
+
+        return updatedProgress; // Return the updated progress
+    });
+};
 
 const [trackDetails, setTrackDetails] = useState([]);
 
@@ -262,8 +280,7 @@ const [trackDetails, setTrackDetails] = useState([]);
                     */}
                     <SeparatorDiv/>
                     <NavigationButton 
-                        onClick={() => window.location.href = 'mailto:feedback@sacredsound.app'}> {/* active={activeComponent === 'component4'} */}
-                        
+                        onClick={() => window.open('mailto:feedback@sacredsound.app')}>
                         <img src={FeedbackIcon} alt="Feedback" style={{ marginRight: '8px'}}/>
                         Feedback
                     </NavigationButton>
@@ -282,8 +299,19 @@ const [trackDetails, setTrackDetails] = useState([]);
                             <button onClick={handleNextButtonClick} style={{display:'flex', flexDirection:'row-reverse', marginRight:'3vw'}}>Next</button>)}
                             
                             {isUploadActive && uploadViewState === "fileDetail" && (
-                            <button onClick={handlePublishButtonClick} style={{display:'flex', flexDirection:'row-reverse', marginRight:'3vw'}}>Publish</button>)}
-                        </TopHeaderSection>
+                            <button 
+                            onClick={handlePublishButtonClick} 
+                            disabled={!allFilesUploaded}
+                            style={{
+                                display:'flex',
+                                flexDirection:'row-reverse',
+                                marginRight:'3vw',
+                                cursor: allFilesUploaded ? 'pointer' : 'default', // Conditionally set the cursor
+                                opacity: allFilesUploaded ? '1' : '0.5'}}
+                            >
+                                {allFilesUploaded ? "Publish" : "Uploading in progress..."}
+                            </button>)}
+                            </TopHeaderSection>
                         {activeComponent === "component5" && (
                             <Upload
                             reorderedFiles={reorderedFiles}
@@ -302,6 +330,7 @@ const [trackDetails, setTrackDetails] = useState([]);
                             fileUploadsArray={fileUploadsArray}
                             setFileUploadsArray={setFileUploadsArray}
                             trackDetails={trackDetails}
+                            updateFileProgress={updateFileProgress}
                             />
                         )}
                         
@@ -332,6 +361,7 @@ const HeaderLeft = styled.div`
     position: relative;
     overflow: hidden;
     border-right: 1px solid rgb(191, 187, 187);
+    position: fixed;
 `;
 
 const HeaderRight = styled.div`
@@ -356,9 +386,10 @@ const FlexContainer = styled.div`
 `;
 
 const NavigationPanel = styled.div`
+position: fixed;
     display: flex;
     flex-direction: column;
-    height: 80vh;
+    height: 88vh;
     border-right: 1px solid rgb(191, 187, 187);
     width: 24%;
 `;
@@ -411,6 +442,7 @@ const BottomNavigationPanel = styled.div`
 const ScrollableFlexThree = styled.div`
     flex: 3;
     overflow-y: ${props => props.isUploadActive ? 'hidden' : 'auto'};
+        margin-left: 24vw;
 `;
 
 const PopupComponentWithSlideIn = styled.div`

@@ -1,37 +1,11 @@
 import React from 'react';
-import backgroundImage from '../assets/ArtistLandingPageBackgroundImage.png';
 import logo from '../assets/HorozontalLogoWhiteFont.png';
-import Tint from '../assets/ArtistLandingPageTint.png';
 import { useAuth0 } from '@auth0/auth0-react';
 import ExplainerVideo from '../assets/SacredSoundExplainerVideo.mp4';
+import styled from 'styled-components';
 
 const ArtistLandingPage = () => {
-    const { loginWithRedirect } = useAuth0();
-
-    // Style for the first section
-    const sectionStyle = {
-        position: 'relative',
-        height: '100vh',
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        width: "100%"
-    };
-
-    const tintStyle = {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${Tint})`,
-        backgroundSize: 'cover',
-        zIndex: 1, // Ensure it sits on top of the background image but below text/logo
-    };
+    const { loginWithRedirect } = useAuth0();;
 
     const contentStyle = {
         position: 'relative',
@@ -39,8 +13,9 @@ const ArtistLandingPage = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        height: '100%',
-        width: '100%'
+        height: '100vh',
+        width: '100vw',
+        backgroundColor: 'transparent'
     };
 
     const logoStyle = {
@@ -51,7 +26,8 @@ const ArtistLandingPage = () => {
     const textStyle = {
         color: 'white',
         textAlign: 'right',
-        width: '100%'
+        width: '100%',
+        backgroundColor:'transparent',
     };
 
     const buttonStyle = {
@@ -157,26 +133,26 @@ const ArtistLandingPage = () => {
 
     return (
         <>
-        <div style={sectionStyle}>
-            <div style={tintStyle} /> {/* Tint overlay */}
+        <SectionDiv>
+            <TintedOverlay/>
             <div style={contentStyle}>
             <img src={logo} alt="Logo" style={logoStyle} />
             <div style={textStyle}>
                 <h1 style={{ color: 'white', marginRight: '3vw', fontSize:'70px', marginBottom:'10vh' }}>
                 Amplify Your Sacred <br /> Music Journey
                 </h1>
-                <div style={{display:'flex', flexDirection:'row-reverse'}}>
+                <div style={{display:'flex', flexDirection:'row-reverse', backgroundColor:'transparent'}}>
                 <button style={buttonStyle} onClick={() =>
                     loginWithRedirect({
                     redirectUri: "https://staging.sacredsound.pages.dev/studio", 
                     })
                 }>
-                    Get Started
+                    Get Starteda
                 </button>
                 </div>
             </div>
             </div>
-        </div>
+        </SectionDiv>
 
         {/* Second section */}
         <div style={secondSectionStyle}>
@@ -227,3 +203,51 @@ const ArtistLandingPage = () => {
 }
 
 export default ArtistLandingPage;
+
+const SectionDiv = styled.div`
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    background-image: url('https://firebasestorage.googleapis.com/v0/b/staging-sacred-sound-f472b.appspot.com/o/Assets%2FArtistLandingPageBackgroundImage.png?alt=media&token=6896cce6-8c4a-44f3-91e6-7ef2fc2f51a7');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    overflow: hidden; // Ensures no overflow from children
+    z-index: 0; // Under the overlay
+`;
+
+const TintedOverlay = styled.div`
+    position: relative;
+    display: inline-block; // or 'block' depending on your layout
+
+    &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.2); // This creates the 20% black tint
+        z-index: 1;
+    }
+
+    img {
+    display: block;
+    width: 100%; // or 'auto' depending on your needs
+    height: auto; // or your custom height
+    z-index: 0;
+    }
+`;
+
+const LandingPageImage = styled.img`
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    overflow: ;
+`;

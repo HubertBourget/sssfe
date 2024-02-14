@@ -4,7 +4,15 @@ import { useEffect } from 'react';
 
 function NewTagComponent({ onTagsChange, value, style }) {
     // Directly use the value as the array of tags
-    const [listOfTags, setListOfTags] = useState(value || []);
+    const [listOfTags, setListOfTags] = useState(() => {
+        // Initialize state from value prop
+        if (Array.isArray(value)) {
+            return value;
+        } else if (typeof value === 'string') {
+            return value.split(',').map(tag => tag.trim()).filter(tag => tag);
+        }
+        return [];
+    });
 
     const tagArray = [
         "Acapella",
@@ -52,21 +60,21 @@ function NewTagComponent({ onTagsChange, value, style }) {
     if (!listOfTags.includes(tag)) {
         const updatedTags = [...listOfTags, tag];
         setListOfTags(updatedTags);
-        // Simulate an event object with the expected structure
-        const simulatedEvent = {
+        // Create a simulated event object
+        const event = {
             target: {
                 name: 'tags', // Assuming 'tags' is the name of your form field
                 value: updatedTags.join(', ') // Join the array into a string
             }
         };
-        onTagsChange(simulatedEvent); // Pass the simulated event to the parent component
+        onTagsChange(event); // Pass the simulated event to the parent component
     }
 };
 
     const handleTextareaChange = (e) => {
         const tags = e.target.value.split(',')
-                         .map(tag => tag.trim())
-                         .filter(tag => tag); // Split and clean tags, removing empty ones
+            .map(tag => tag.trim())
+            .filter(tag => tag); // Split and clean tags, removing empty ones
         setListOfTags(tags);
         onTagsChange(tags); // Pass array to parent
     };
@@ -74,30 +82,26 @@ function NewTagComponent({ onTagsChange, value, style }) {
 
     return (
         <>
-        <Container style={style}>
-            <label htmlFor="TagsTextArea">Tags</label>
-            <TextArea
-                id='TagsTextArea'
-                row={4}
-                value={listOfTags.join(', ')} // Join array for display
-                onChange={handleTextareaChange}
-                placeholder="Enter tags separated by commas."
-            />
-            <TagContainer>
-            {tagArray.map((tag, index) => (
-                <Tag
-                    key={index}
-                    onClick={(e) => {
-                        e.stopPropagation(); // Prevent the click event from propagating
-                        handleTagClick(tag);
-                    }}
-                >
-                    {tag}
-                </Tag>
-            ))}
-            </TagContainer>
-        </Container>
-
+            <Container>
+                <TextArea
+                    rows={4}
+                    value={listOfTags.join(', ')} // Join array for display
+                    onChange={handleTextareaChange}
+                    placeholder="Enter tags separated by commas."
+                />
+                <TagContainer>
+                    {tagArray.map((tag, index) => (
+                        <Tag
+                            key={index}
+                            onClick={() => handleTagClick(tag)}
+                            role="button" // For accessibility
+                            aria-label={`Add tag ${tag}`}
+                        >
+                            {tag}
+                        </Tag>
+                    ))}
+                </TagContainer>
+            </Container>
         </>
     );
 }
@@ -107,6 +111,7 @@ export default NewTagComponent;
 const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
 `;
 
 const TagContainer = styled.div`

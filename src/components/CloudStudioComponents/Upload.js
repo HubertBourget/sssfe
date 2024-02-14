@@ -8,6 +8,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import UploadDetailsForm from './UploadsDetailsForm';
 import Rectangle27 from '../../assets/Rectangle27.png';
 import { useAuth0 } from '@auth0/auth0-react';
+import WhiteEditIcon from '../../assets/WhiteEditIcon.png';
 
 const Upload = ({ 
     viewState, 
@@ -24,6 +25,7 @@ const Upload = ({
     fileUploadsArray, 
     setFileUploadsArray,
     trackDetails,
+    updateFileProgress,
     }) => {
     
     
@@ -170,6 +172,7 @@ const Upload = ({
                 ...prevProgress,
                 [fileObj.data.name]: progress,
             }));
+            updateFileProgress(fileObj.data.name, progress);
         });
         
         return uploadTask.then(() => getDownloadURL(fileRef))
@@ -252,8 +255,6 @@ const Upload = ({
 
     //Api calls:
     const postContentMetaData = async (videoId, fileUrl, isOnlyAudio) => {
-        console.log('inside postcontentMetaData, printing albumId:', albumId)
-        console.log('inside the function - postContentMetaData:', videoId, fileUrl, isOnlyAudio);
         const timestamp = new Date().toISOString();
         try {
             const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/postContentMetaData`, {
@@ -392,6 +393,8 @@ const Upload = ({
                             onClick={() => document.getElementById('albumCover').click()}
                             image={albumCover}
                         >
+                            {!albumCover && <span>Upload Cover Image</span>}
+                            {albumCover && <EditCoverButton/>}
                         </AlbumCoverInput>
                         <input 
                             style={{ display: 'none' }}
@@ -400,8 +403,6 @@ const Upload = ({
                             accept="image/*" 
                             onChange={handleAlbumCoverChange}
                         />
-                        {!albumCover && <span>Upload<br />Cover Image</span>}
-                        {albumCover && <span>Change<br />Cover Image</span>}
                     </div>
 
                     <label htmlFor="albumDescription">Description</label>
@@ -580,11 +581,23 @@ const AlbumCoverInput = styled.div`
     background-position: center;
     cursor: pointer;
     display: flex;
-    justify-content: space-between; /* Align children to the left and right */
+    justify-content: center;
     align-items: center; /* Align children vertically */
     position: relative; /* Position relative to the parent */
     margin-bottom: 3vh;
-    padding: 0 10px; /* Add horizontal padding */
+    padding: 0 10px; /* Horizontal padding */
+`;
+
+const EditCoverButton = styled.div`
+    position: absolute;
+    top: 12px; // Adjust as needed
+    right: 12px; // Adjust as needed
+    width: 24px; // Adjust as needed
+    height: 24px; // Adjust as needed
+    background-image: url(${WhiteEditIcon});
+    background-size: cover;
+    cursor: pointer;
+    background-color: transparent;
 `;
 
 const BottomContainer = styled.div`

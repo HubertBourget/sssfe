@@ -10,9 +10,12 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import uploadEditIcon from '../../assets/uploadEditIcon.png';
 import uploadHamburgerIcon from '../../assets/uploadHamburgerIcon.png';
 import uploadTrashIcon from '../../assets/uploadTrashIcon.png';
+import WhiteEditIcon from '../../assets/WhiteEditIcon.png';
+
 
 const ModifyAlbum = () => {
     const { user } = useAuth0();
+    // const user = { name: "debug9@debug.com" };
 
     const { albumId } = useParams();
     const navigate = useNavigate();
@@ -30,29 +33,26 @@ const ModifyAlbum = () => {
 
     useEffect(() => {
         const fetchAlbumData = async () => {
-        if (!albumId) return;
+            if (!albumId) return;
 
-        try {
-            // Fetch the album data as before
-            const albumResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getAlbumById`, {
-            params: { albumId: albumId },
-            });
+            try {
+                const albumResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getAlbumById`, {
+                    params: { albumId: albumId },
+                });
 
-            const album = albumResponse.data;
+                const album = albumResponse.data;
+                const trackDetailsPromises = album.albumOrder.map(videoId => getTitleForVideoId(videoId));
+                const trackDetails = await Promise.all(trackDetailsPromises);
 
-            // Fetch titles for each videoId
-            const trackDetailsPromises = album.albumOrder.map(videoId => getTitleForVideoId(videoId));
-            const trackDetails = await Promise.all(trackDetailsPromises);
-
-            setAlbumData({
-                albumId: album.albumId || '',
-                title: album.title || '',
-                albumName: album.albumName || '',
-                description: album.description || '',
-                visibility: album.visibility || 'public', // Default to 'public' if not specified
-                albumImageUrl: album.albumImageUrl || '',
-                albumOrder: trackDetails,
-            });
+                setAlbumData(prevState => ({
+                    ...prevState,
+                    albumName: album.albumName || '',
+                    description: album.description || '',
+                    title: album.title || '',
+                    visibility: album.visibility || 'public',
+                    albumImageUrl: album.albumImageUrl || '',
+                    albumOrder: trackDetails, // Update this to ensure it's an array of objects
+                }));
 
                 if (album.albumImageUrl) {
                     setPreviewAlbumCover(album.albumImageUrl);
@@ -67,32 +67,30 @@ const ModifyAlbum = () => {
 
 
     const onDragEnd = async (result) => {
-        if (!result.destination) return;
+        if (!result.destination) return; // Dropped outside the list
+
         const newAlbumOrder = Array.from(albumData.albumOrder);
-        const [movedItem] = newAlbumOrder.splice(result.source.index, 1);
-        newAlbumOrder.splice(result.destination.index, 0, movedItem);
-        console.log(albumData.albumOrder)
+        const [reorderedItem] = newAlbumOrder.splice(result.source.index, 1);
+        newAlbumOrder.splice(result.destination.index, 0, reorderedItem);
 
-        setAlbumData({ ...albumData, albumOrder: newAlbumOrder });
+        // Update local state with new order
+        setAlbumData(prevState => ({
+            ...prevState,
+            albumOrder: newAlbumOrder,
+        }));
 
+        // Update backend with new order, assuming albumOrder needs to be an array of video IDs
         try {
-        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/updateAlbumMetaData`, {
-            albumId: albumData.albumId,
-            albumOrder: newAlbumOrder.map(item => item.id) // Assuming the item structure has an 'id' field
-        });
-
-        if (response.status === 200) {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/updateAlbumMetaData`, {
+                albumId: albumId, // Directly use albumId from useParams
+                albumOrder: newAlbumOrder.map(item => item.id), // Ensure this matches the expected format
+            });
             console.log('Album order updated successfully');
-            // Handle successful update here
-        } else {
-            console.error('Failed to update album order');
-            // Handle error here
+        } catch (error) {
+            console.error('Error updating album order:', error);
         }
-    } catch (error) {
-        console.error('Error updating album order:', error);
-        // Handle error here
-    }
     };
+
 
 
     const handleInputChange = (event) => {
@@ -156,18 +154,22 @@ const ModifyAlbum = () => {
     };
 
     const getTitleForVideoId = async (videoId) => {
-    try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${videoId}`);
-        // Ensure that the response contains the video data you expect
-        if (response.data && response.data.title) {
-        return { id: videoId, title: response.data.title }; // Assuming the backend returns an object with a title property
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${videoId}`);
+            // Check if the response contains the expected video data
+            if (response.data && response.data.title) {
+                return { id: videoId, title: response.data.title };
+            } else {
+                // Log a warning to the console instead of throwing an error
+                console.warn(`No title returned for videoId ${videoId}. Using default title.`);
+                return { id: videoId, title: 'Untitled Video' }; // Provide a default title
+            }
+        } catch (error) {
+            console.error(`Error fetching title for videoId ${videoId}:`, error);
+            return { id: videoId, title: 'Error Fetching Title' }; // Indicate an error in fetching the title
         }
-        throw new Error(`No data returned for videoId ${videoId}`);
-    } catch (error) {
-        console.error(`Failed to get title for videoId ${videoId}:`, error);
-        return { id: videoId, title: '' }; // Return an object with id and an empty title as fallback
-    }
     };
+
 
     const handleEdit = (trackId) => {
         navigate(`/prepareForQA/${trackId}`);
@@ -189,12 +191,26 @@ const handleDelete = (trackId) => {
                 <div style={{display:'flex', flexDirection:'row'}}>
                     <div style={{display:'flex', flexDirection:'column', width:'50%'}}>
                     <label style={{marginLeft:'3vw'}} htmlFor="albumName">Title</label>
-                    <input style={{marginLeft:'3vw', width:'80%', padding:'22px'}} type="text" name="albumName" value={albumData.albumName} onChange={handleInputChange} placeholder="Write a catchy title for the content" />
+                    <input
+                        style={{ marginLeft: '3vw', width: '80%', padding: '22px' }}
+                        type="text"
+                        name="albumName"
+                        value={albumData.albumName}
+                        onChange={handleInputChange}
+                        placeholder="Write a catchy title for the content"
+                    />
                     <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
                         <AlbumCoverInput
                             onClick={() => document.getElementById('albumCover').click()}
                             image={previewAlbumCover}
                         >
+                            {!previewAlbumCover && <span>Upload Cover Image</span>}
+                            {previewAlbumCover && (
+                                <>
+                                    <img src={previewAlbumCover} alt="Album Cover" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    <EditCoverButton />
+                                </>
+                            )}
                         </AlbumCoverInput>
                         <input 
                             style={{ display: 'none' }}
@@ -203,17 +219,21 @@ const handleDelete = (trackId) => {
                             accept="image/*" 
                             onChange={handleCoverChange}
                         />
-                        {!previewAlbumCover && <span style={{cursor:'pointer'}} onClick={() => document.getElementById('albumCover').click()} >Upload<br />Cover Image</span>}
-                        {previewAlbumCover && <span onClick={() => document.getElementById('albumCover').click()} >Change<br />Cover Image</span>}
                     </div>
                     <label style={{marginLeft:'3vw', marginTop:'3vh'}} htmlFor="description">Description</label>
-                    <textarea style={{marginLeft:'3vw', width:'80%', padding:'22px'}} name="description" value={albumData.description} onChange={handleInputChange} placeholder="What describes this album"/>
+                    <textarea
+                        style={{ marginLeft: '3vw', width: '80%', padding: '22px' }}
+                        name="description"
+                        value={albumData.description}
+                        onChange={handleInputChange}
+                        placeholder="What describes this album"
+                    />
                     <label style={{marginLeft:'3vw', marginTop:'3vh'}} htmlFor="visibility">Visibility</label>
                     <select
-                    style={{marginLeft:'3vw', width: '36%', padding:'22px'}}
-                    name="visibility"
-                    value={albumData.visibility || 'public'}
-                    onChange={handleInputChange}
+                        style={{ marginLeft: '3vw', width: '36%', padding: '22px' }}
+                        name="visibility"
+                        value={albumData.visibility}
+                        onChange={handleInputChange}
                     >
                         <option value="public">Public</option>
                         <option value="private">Private</option>
@@ -226,23 +246,21 @@ const handleDelete = (trackId) => {
                             {(provided) => (
                             <div ref={provided.innerRef} {...provided.droppableProps}>
                                 {albumData.albumOrder.map((track, index) => (
-                                <Draggable key={track.id} draggableId={track.id} index={index}>
-                                    {(provided) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                    >
-                                        <TrackComponent 
-                                        track={track} 
-                                        onEdit={handleEdit} 
-                                        onDelete={handleDelete}
-                                        dragHandleProps={provided.dragHandleProps}
-                                        />
-                                    </div>
-                                    )}
-                                </Draggable>
-                                ))}
-                                
+                                    <Draggable key={track.id.toString()} draggableId={track.id.toString()} index={index}>
+                                        {(provided) => (
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}>
+                                                <TrackComponent
+                                                    track={track}
+                                                    onEdit={() => handleEdit(track.id)}
+                                                    onDelete={() => handleDelete(track.id)}
+                                                />
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                ))}                                
                                 {provided.placeholder}
                             </div>
                             )}
@@ -290,9 +308,11 @@ const AlbumCoverInput = styled.div`
     margin-left: 3vw;
     margin-top: 3vh;
     padding: 0 10px; /* Add horizontal padding */
+    justify-content: center;
 `;
 
 const TrackComponent = ({ track, onEdit, onDelete, dragHandleProps }) => {
+    console.log(track)
     return (
         <TrackContainer>
         <Icon src={uploadHamburgerIcon} alt="Drag handle" {...dragHandleProps} />
@@ -310,6 +330,7 @@ const TrackComponent = ({ track, onEdit, onDelete, dragHandleProps }) => {
         </TrackContainer>
     );
     };
+    
 
 const TrackContainer = styled.div`
     background-color: #F5F5F5;
@@ -332,10 +353,20 @@ const FileName = styled.span`
     color: #434289;
     font-size: 20px;
     flex-grow: 1;
-    margin: 0 15px; // Adjust margin as needed
+    margin-left: 3vw;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 `;
 
-
+const EditCoverButton = styled.div`
+    position: absolute;
+    top: 12px; // Adjust as needed
+    right: 12px; // Adjust as needed
+    width: 24px; // Adjust as needed
+    height: 24px; // Adjust as needed
+    background-image: url(${WhiteEditIcon});
+    background-size: cover;
+    cursor: pointer;
+    background-color: transparent;
+`;
