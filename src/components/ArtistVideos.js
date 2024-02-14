@@ -47,11 +47,7 @@ const handleDelete = async (videoId, artistId) => {
         });
 
         if (response.status === 200) {
-            // Delete was successful, you can update the UI accordingly
-            console.log(`Deleted video with ID: ${videoId}`);
-            
-            // Now, you can update the contentDocuments state to reflect the changes
-            // For example, you can filter out the deleted video from the state
+            // Filter out the deleted video from the state
             setContentDocuments((prevContentDocuments) =>
                 prevContentDocuments.filter((contentDocument) => contentDocument.videoId !== videoId)
             );

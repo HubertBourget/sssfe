@@ -85,7 +85,6 @@ const ModifyAlbum = () => {
                 albumId: albumId, // Directly use albumId from useParams
                 albumOrder: newAlbumOrder.map(item => item.id), // Ensure this matches the expected format
             });
-            console.log('Album order updated successfully');
         } catch (error) {
             console.error('Error updating album order:', error);
         }
@@ -108,7 +107,6 @@ const ModifyAlbum = () => {
     try {
         await uploadBytes(fileRef, uploadedAlbumCover);
         const coverUrl = await getDownloadURL(fileRef);
-        console.log("Uploaded Album Cover URL:", coverUrl); // Debug log
         return coverUrl;
     } catch (error) {
         console.error("Error uploading album cover:", error);
@@ -134,7 +132,6 @@ const ModifyAlbum = () => {
         });
 
         if (response.status === 200) {
-            console.log('Album metadata updated successfully', response.data);
             navigate('/studio'); // Redirect to studio page or another relevant page
         } else {
             setFormError('Failed to update album metadata. Please try again.');
@@ -312,7 +309,6 @@ const AlbumCoverInput = styled.div`
 `;
 
 const TrackComponent = ({ track, onEdit, onDelete, dragHandleProps }) => {
-    console.log(track)
     return (
         <TrackContainer>
         <Icon src={uploadHamburgerIcon} alt="Drag handle" {...dragHandleProps} />

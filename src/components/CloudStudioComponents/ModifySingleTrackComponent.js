@@ -43,7 +43,6 @@ const ModifySingleTrackComponent = () => {
                 },
                 }
             );
-            console.log("getContentById - response.data: ",response.data);
             setVideoURL(response.data.contentDocument.fileUrl);
             setVideoUrlRetrived(true);
 
@@ -63,7 +62,6 @@ const ModifySingleTrackComponent = () => {
             { params: { videoId: videoId } }
             );
             const contentData = response.data.contentDocument;
-            console.log("contentData: ", contentData);
             setFormData({
             title: contentData.title || '',
             description: contentData.description || '',
@@ -102,7 +100,6 @@ const ModifySingleTrackComponent = () => {
 
     const uploadImageThumbnail = async (file) => {
         if (!file) {
-            console.log("No file provided for upload.");
             return;
         }
         const fileUploadName = v4();
@@ -117,7 +114,6 @@ const ModifySingleTrackComponent = () => {
                 videoId: videoId,
                 thumbnailUrl: url,
             });
-            console.log('setUploadedThumbnailUrl(url) :', url)
             setUploadedThumbnailUrl(url); // Update state if needed
         } catch (error) {
             console.error("Error in image upload: ", error);
@@ -143,7 +139,6 @@ const ModifySingleTrackComponent = () => {
     const fileChangeHandler = (event) => {
         const file = event.target.files[0];
         if (file) {
-            console.log("Selected file type:", file.type); // Log the file type
             setUploadedImageThumbnail(file);
             uploadImageThumbnail(file); // Pass the file directly
         }
@@ -168,9 +163,6 @@ const ModifySingleTrackComponent = () => {
         if (file && file.type.match('image.*')) {
             setUploadedImageThumbnail(file); // Update your state with the new file
             uploadImageThumbnail(file); // Pass the file directly
-            console.log('Profile image dropped:', file.name);
-        } else {
-            console.log('File is not an image:', file.name);
         }
 
         // Clear the drag data cache
@@ -198,7 +190,6 @@ const ModifySingleTrackComponent = () => {
                 tags: formData.tags,
                 // The image URL is already updated separately
             });
-            console.log('ContentMetaData updated successfully');
             navigate('/studio');
         } catch (error) {
             setFormError('An error occurred while updating the ContentMetaData');

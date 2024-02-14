@@ -42,7 +42,6 @@
 //     //         `${process.env.REACT_APP_API_BASE_URL}/api/getRecommendations/${user.name}`
 //     //       );
 //     //       setRecombeeDataResponse(response.data || "");
-//     //       console.log("recombeeDataResponse: " + recombeeDataResponse);
 //     //     } catch (error) {
 //     //       console.error(error);
 //     //     }
@@ -62,7 +61,6 @@
 //             if (error.response && error.response.status === 404) {
 //             navigate('/AccountNameSelection');
 //             } else {
-//             console.log('Error:', error.message);
 //             }
 //         }
 //     };

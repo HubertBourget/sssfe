@@ -101,9 +101,6 @@ const Upload = ({
 
     setFileUploadsArray(reorderedFiles);
     onAlbumDataChange("albumOrder", reorderedFiles.map(file => file.videoId));
-
-    // Log using videoId instead of file name
-    console.log("Rearranged array:", reorderedFiles.map(file => file.videoId));
 };
     
     //uploadDetailsForm handle changes in uploads details
@@ -128,7 +125,6 @@ const Upload = ({
         // Process the submission for the file at the given index
         // For example, you might want to upload the file details to a server
         const fileDetails = fileUploadsArray[index];
-        console.log('Submitting details for file:', fileDetails);
     };
 
     //set the viewstate based on the properties of the upload event 
@@ -220,15 +216,10 @@ const Upload = ({
         }, [publishClicked]);
     
     const handleUpdateReviewStatus = async () => {
-        // setIsUpdating(true);
         const fileIds = fileUploadsArray.map(file => file.videoId);
-
-        console.log("Starting the update process for review status.");
-
         try {
             // Send a batch request or individual requests to update MongoDB
             const promises = fileIds.map(videoId => {
-                console.log(`Updating review status for file ID: ${videoId}`);
                 return fetch(`${process.env.REACT_APP_API_BASE_URL}/api/updateReviewStatus`, {
                     method: 'POST',
                     headers: {
@@ -236,16 +227,11 @@ const Upload = ({
                     },
                     body: JSON.stringify({ videoId, b_isPreparedForReview: true }),
                 }).then(response => {
-                    console.log(`Response received for file ID: ${videoId}`);
                     return response.json();
-                }).then(result => {
-                    console.log(`Update result for file ID ${videoId}:`, result);
-                });
+                })
             });
 
         await Promise.all(promises);
-        console.log("Review status updated for all files.");
-        // setIsUpdating(false);
         onAllUpdatesComplete();
         handlePublishHandled(); // Reset publishClicked to false
         } catch (error) {
@@ -286,7 +272,6 @@ const Upload = ({
 
     const uploadAlbumPicture = (uploadingPicture) => {
         if (uploadingPicture == null) {
-            console.log("profilePicture was null");
             return;
         }
         const fileUploadName = v4();
@@ -323,11 +308,9 @@ const Upload = ({
         }),
         })
         .then((res) => res.json())
-        .then((data) => console.log(data));
     };
 
     const postNewAlbum = (albumId) => {
-        console.log('postNewAlbum: id:', albumId)
         const timestamp = new Date().toISOString();
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/postNewAlbum`, {
             method: 'POST',

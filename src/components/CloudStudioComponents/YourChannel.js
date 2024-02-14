@@ -110,7 +110,6 @@ const YourChannel= () => { //{user} was in props
 
     const uploadProfilePicture = (uploadingPicture) => {
         if (uploadingPicture == null) {
-            console.log("profilePicture was null");
             return;
         }
         const fileUploadName = v4();
@@ -137,7 +136,6 @@ const YourChannel= () => { //{user} was in props
 
     const uploadBannerPicture = (uploadingPicture) => {
         if (uploadingPicture == null) {
-            console.log("profilePicture was null");
             return;
         }
         const fileUploadName = v4();
@@ -175,7 +173,6 @@ const YourChannel= () => { //{user} was in props
             }),
         })
         .then((res) => res.json())
-        .then((data) => console.log(data));
     };
 
     const postBannerImage = (url) => {
@@ -191,7 +188,6 @@ const YourChannel= () => { //{user} was in props
             }),
         })
         .then((res) => res.json())
-        .then((data) => console.log(data));
     }
 
     const handleBannerImageChange = (event) => {

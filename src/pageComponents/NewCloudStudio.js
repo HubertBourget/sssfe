@@ -47,8 +47,6 @@ export default function NewCloudStudio() {
         } catch (error) {
             if (error.response && error.response.status === 404) {
             navigate('/AccountNameSelection');
-            } else {
-            console.log('Error:', error.message);
             }
         }
     };
@@ -111,15 +109,13 @@ export default function NewCloudStudio() {
     //lifting the state up of the array order inside the album:
     const [reorderedFiles, setReorderedFiles] = useState([]);
     const updateReorderedFiles = (newFiles) => {
-        console.log('updateReorderedFiles :', newFiles )
     setReorderedFiles(newFiles);
     };
     const handleAlbumDataChange = (key, value) => {
-        console.log('handleAlbumDataChange: ', key, value)
-    if (key === "description") setAlbumDescription(value);
-    if (key === "visibility") setVisibility(value);
-    if (key === "albumTitle") setAlbumTitle(value);
-    if (key === "albumOrder") setReorderedFiles(value);
+        if (key === "description") setAlbumDescription(value);
+        if (key === "visibility") setVisibility(value);
+        if (key === "albumTitle") setAlbumTitle(value);
+        if (key === "albumOrder") setReorderedFiles(value);
     };
     //On buttonNext click, sends the request ot sets the albumData in MongoDb and change the viewState
     const handleNextButtonClick = () => {
@@ -131,7 +127,6 @@ export default function NewCloudStudio() {
             visibility: visibility,
             albumOrder: reorderedFiles,
         };
-        console.log('inspecting albumData: ', albumData)
         // Call the function to update album metadata
         handleAlbumMetaDataUpdate(albumData);
         // Change the view state
@@ -140,7 +135,6 @@ export default function NewCloudStudio() {
     //The album update API call:
     const handleAlbumMetaDataUpdate = async (albumData) => {
         const { albumId, title, description, visibility, albumOrder } = albumData;
-        console.log("albumData: ", albumData);
         try {
             const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/updateAlbumMetaData`, {
                 method: 'POST',
@@ -150,7 +144,6 @@ export default function NewCloudStudio() {
                 body: JSON.stringify({ albumId, title, description, visibility, albumOrder }),
             });
             const result = await response.json();
-            console.log(result);
         } catch (error) {
             console.error('Error updating album metadata:', error);
         }
@@ -160,27 +153,20 @@ export default function NewCloudStudio() {
     // Function & useStates to handle tracks data update:
     // Define the debounced function
     const debouncedUpdate = useRef(debounce(async (trackId) => {
-        console.log(trackId);
         const itemId = trackId.trackId.toString();
         const itemKey = trackId.key;
         const itemValue = trackId.value;
-        console.log("itemId::", itemId);
-        console.log("key::", itemKey);
-        console.log("value::", itemValue);
     const dataToUpdate = { [itemKey]: itemValue };
 
     if (!itemId || itemValue === undefined) {
-        console.log("Invalid itemId or value", { itemId, itemValue });
         return;
     }
 
     try {
-        console.log('Sending data:', { videoId: itemId, ...dataToUpdate });
         const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/updatePartialContentMetaData`, {
             videoId: itemId,
             ...dataToUpdate
         });
-        console.log('Response:', response.data);
     } catch (error) {
         console.error('Error updating data:', error);
     }

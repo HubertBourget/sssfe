@@ -29,7 +29,6 @@ const UploadDetailsForm = ({ file, trackDetails, progress, videoId, onTrackDetai
     };
 const uploadAlbumPicture = (file, videoId) => {
         if (file == null) {
-            console.log("profilePicture was null");
             return;
         }
         const fileUploadName = v4();
@@ -65,7 +64,6 @@ const uploadAlbumPicture = (file, videoId) => {
         }),
         })
         .then((res) => res.json())
-        .then((data) => console.log(data));
     };
 
 
@@ -96,10 +94,6 @@ useEffect(() => {
         album: trackDetails.albumId || ''
     }));
 }, [trackDetails.albumId]);
-
-useEffect(() => {
-    console.log("Updated formData: ", formData);
-}, [formData]);
 
 
     return (

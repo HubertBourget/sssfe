@@ -92,7 +92,6 @@
 
 // const uploadImageThumbnail = () => {
 //     if (uploadedImageThumbnail == null) {
-//         console.log("uploadedImageThumbnail was null");
 //         return Promise.resolve(null);
 //     }
 //     const fileUploadName = v4();
@@ -159,7 +158,6 @@
 //             selectedImageThumbnail: imageThumbnailURL,
 //             tags: tags,
 //         });
-//         console.log('ContentMetaData updated successfully');
 //         navigate('/studio');
 //     } catch (error) {
 //         setFormError('An error occurred while updating the ContentMetaData');

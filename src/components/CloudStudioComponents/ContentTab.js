@@ -64,7 +64,6 @@ const ContentTab = ({user}) => {
     const handleDeleteAlbum = async (albumId, artistId) => {
         try {
             const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/deleteAlbum/${albumId}?artistId=${artistId}`);
-            console.log(response.data.message);
             // After successful deletion, filter out the deleted album from the state
             setContentDocuments(prevContentDocuments =>
                 prevContentDocuments.filter((contentDocument) => contentDocument.albumId !== albumId)
@@ -94,11 +93,7 @@ const ContentTab = ({user}) => {
             });
 
             if (response.status === 200) {
-                // Delete was successful, you can update the UI accordingly
-                console.log(`Deleted video with ID: ${videoId}`);
-                
-                // Now, you can update the contentDocuments state to reflect the changes
-                // For example, you can filter out the deleted video from the state
+                // Filter out the deleted video from the state
                 setContentDocuments((prevContentDocuments) =>
                     prevContentDocuments.filter((contentDocument) => contentDocument.videoId !== videoId)
                 );
