@@ -15,7 +15,8 @@ const ArtistLandingPage = () => {
         justifyContent: 'space-between',
         height: '100vh',
         width: '100vw',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        overflow: 'hidden'
     };
 
     const logoStyle = {
@@ -53,6 +54,7 @@ const ArtistLandingPage = () => {
         padding: '4vw',
         alignItems:'center',
         boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 2px 0px', 
+        
     };
 
     const leftColumnStyle = {
@@ -144,7 +146,7 @@ const ArtistLandingPage = () => {
                 <div style={{display:'flex', flexDirection:'row-reverse', backgroundColor:'transparent'}}>
                 <button style={buttonStyle} onClick={() =>
                     loginWithRedirect({
-                    redirectUri: "https://staging.sacredsound.pages.dev/studio", 
+                    redirectUri: "https://sacredsound.app/studio", 
                     })
                 }>
                     Get Starteda
@@ -192,7 +194,7 @@ const ArtistLandingPage = () => {
             <h2 style={headingStyle}>Ready to Share Your Sound?</h2>
             <button style={ctaButtonStyle} onClick={() =>
                     loginWithRedirect({
-                    redirectUri: "https://staging.sacredsound.pages.dev/studio", 
+                    redirectUri: "https://sacredsound.app/studio", 
                     })
                 }>
                 Start Your Musical Journey
@@ -207,7 +209,6 @@ export default ArtistLandingPage;
 const SectionDiv = styled.div`
     position: relative;
     height: 100vh;
-    width: 100vw;
     background-image: url('https://firebasestorage.googleapis.com/v0/b/staging-sacred-sound-f472b.appspot.com/o/Assets%2FArtistLandingPageBackgroundImage.png?alt=media&token=6896cce6-8c4a-44f3-91e6-7ef2fc2f51a7');
     background-size: cover;
     background-position: center;
@@ -233,6 +234,7 @@ const TintedOverlay = styled.div`
         bottom: 0;
         background-color: rgba(0, 0, 0, 0.2); // This creates the 20% black tint
         z-index: 1;
+        
     }
 
     img {
@@ -240,6 +242,7 @@ const TintedOverlay = styled.div`
     width: 100%; // or 'auto' depending on your needs
     height: auto; // or your custom height
     z-index: 0;
+    
     }
 `;
 
@@ -249,5 +252,5 @@ const LandingPageImage = styled.img`
     height: 100vh;
     width: 100vw;
     position: relative;
-    overflow: ;
+    overflow: hidden;
 `;
