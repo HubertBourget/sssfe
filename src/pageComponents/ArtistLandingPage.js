@@ -207,7 +207,6 @@ export default ArtistLandingPage;
 const SectionDiv = styled.div`
     position: relative;
     height: 100vh;
-    width: 100vw;
     background-image: url('https://firebasestorage.googleapis.com/v0/b/staging-sacred-sound-f472b.appspot.com/o/Assets%2FArtistLandingPageBackgroundImage.png?alt=media&token=6896cce6-8c4a-44f3-91e6-7ef2fc2f51a7');
     background-size: cover;
     background-position: center;
