@@ -27,6 +27,7 @@ const ContentTab = ({user}) => {
 
             const response = await Axios.get(url);
             if (response.status === 200) {
+                console.log("api/getAlbumsByArtist?artistId :",response.data)
                 setContentDocuments(response.data);
             } else {
                 console.error(`Request failed with status: ${response.status}`);
