@@ -12,7 +12,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import WhiteEditIcon from '../../assets/WhiteEditIcon.png';
 
 const UploadDetailsForm = ({ file, trackDetails, progress, videoId, onTrackDetailChange, handleDelete, index  }) => {
-    
+    console.log("UploadDetailsForm (videoId) :", videoId)
     const { user } = useAuth0();
     // const user = { name: "debug9@debug.com" };
 
@@ -53,6 +53,7 @@ const uploadAlbumPicture = (file, videoId) => {
             });
     };
     const postCoverImage = (url, videoId) => {
+        console.log("postCoverImage :", url, videoId)
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/postCoverImage`, {
         method: "POST",
         headers: {

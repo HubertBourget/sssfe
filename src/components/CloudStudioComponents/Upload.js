@@ -161,10 +161,19 @@ useEffect(() => {
             [fileObj.data.name]: { uploading: true }
         }));
 
-        const fileUploadName = v4();
-        const fileRef = ref(storage, `Uploads/${user.name.toString()}/${fileUploadName}`);
+        const videoId = v4();
+        const fileRef = ref(storage, `Uploads/${user.name.toString()}/${videoId}`);
         const metadata = { contentType: fileObj.data.type };
         const uploadTask = uploadBytesResumable(fileRef, fileObj.data, metadata);
+        setFileUploadsArray(prevArray => {
+            const newArray = [...prevArray];
+            const index = newArray.findIndex(f => f.data.name === fileObj.data.name);
+            if(index !== -1){
+                newArray[index] = { ...newArray[index], videoId: videoId };
+            }
+            return newArray;
+        });
+        const call = await postContentMetaData(videoId, 'temp', fileObj.data.type.startsWith('audio/'), albumId);
 
         uploadTask.on('state_changed', 
             (snapshot) => {
@@ -185,19 +194,8 @@ useEffect(() => {
             async () => {
                 const fileUrl = await getDownloadURL(uploadTask.snapshot.ref);
                 console.log("File uploaded successfully:", fileUrl);
-
-                // Call postContentMetaData immediately with a placeholder for the fileUrl
-                const videoId = await postContentMetaData(fileUploadName, fileUrl, fileObj.data.type.startsWith('audio/'), albumId);
-
-                // Update fileUploadsArray with videoId
-                setFileUploadsArray(prevArray => {
-                    const newArray = [...prevArray];
-                    const index = newArray.findIndex(f => f.data.name === fileObj.data.name);
-                    if(index !== -1){
-                        newArray[index] = { ...newArray[index], videoId: videoId, fileUrl: fileUrl };
-                    }
-                    return newArray;
-                });
+                updatePartialContentMetaData(videoId, fileUrl)
+                
 
                 setFileUploadStatus(prevStatus => ({
                     ...prevStatus,
