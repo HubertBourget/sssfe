@@ -233,6 +233,7 @@ const ModifySingleTrackComponent = () => {
             <div style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
                 <LeftDiv>
                 <UploadProfileImageContainer 
+                    image={uploadedImageThumbnail}
                     onClick={() => document.getElementById('file-input').click()}
                     onDrop={dropHandler}
                     onDragOver={dragOverHandler}
@@ -369,10 +370,8 @@ const UploadProfileImageContainer = styled.div`
     text-align: center;
     cursor: pointer;
     position: relative;
-
-:hover {
-    background-color: lightblue;
-}
+    background-color: ${props => props.image ? 'transparent' : '#F5F5F5'};
+    background-image: url(${props => props.image});
 `
 const Header = styled.div`
     width: 100%;

@@ -152,8 +152,8 @@ const Upload = ({
 
 
 //handling file upload useEffect:
-    useEffect(() => {
-        const uploadFile = async (fileObj) => {
+useEffect(() => {
+    const uploadFile = async (fileObj) => {
         if (!fileObj.data || fileUploadStatus[fileObj.data.name]) return;
 
         setFileUploadStatus(prevStatus => ({
@@ -161,52 +161,55 @@ const Upload = ({
             [fileObj.data.name]: { uploading: true }
         }));
 
-        // Generate a unique name for this upload
         const fileUploadName = v4();
-        // Reference to where the file will be stored in Firebase
         const fileRef = ref(storage, `Uploads/${user.name.toString()}/${fileUploadName}`);
-        // Metadata for the upload
         const metadata = { contentType: fileObj.data.type };
-
-        // Start the upload
         const uploadTask = uploadBytesResumable(fileRef, fileObj.data, metadata);
 
-        // Track the upload progress
-        uploadTask.on('state_changed', (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setUploadProgress(prevProgress => ({
-                ...prevProgress,
-                [fileObj.data.name]: progress,
-            }));
-            updateFileProgress(fileObj.data.name, progress);
-        });
+        uploadTask.on('state_changed', 
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setUploadProgress(prevProgress => ({
+                    ...prevProgress,
+                    [fileObj.data.name]: progress,
+                }));
+                updateFileProgress(fileObj.data.name, progress);
+            }, 
+            (error) => {
+                console.error('Upload error:', error);
+                setFileUploadStatus(prevStatus => ({
+                    ...prevStatus,
+                    [fileObj.data.name]: { uploading: false, error: true }
+                }));
+            }, 
+            async () => {
+                const fileUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                console.log("File uploaded successfully:", fileUrl);
 
-        // Call postContentMetaData immediately with a placeholder for the fileUrl
-        const videoId = await postContentMetaData(fileUploadName, "Upload_in_Progress", fileObj.data.type.startsWith('audio/'), albumId);
+                // Call postContentMetaData immediately with a placeholder for the fileUrl
+                const videoId = await postContentMetaData(fileUploadName, fileUrl, fileObj.data.type.startsWith('audio/'), albumId);
 
-        // Update fileUploadsArray with videoId (before URL is available)
-        setFileUploadsArray(prevArray => {
-            const newArray = [...prevArray];
-            const updatedFile = { ...newArray.find(f => f.data.name === fileObj.data.name), videoId: videoId };
-            newArray[newArray.findIndex(f => f.data.name === fileObj.data.name)] = updatedFile;
-            return newArray;
-        });
+                // Update fileUploadsArray with videoId
+                setFileUploadsArray(prevArray => {
+                    const newArray = [...prevArray];
+                    const index = newArray.findIndex(f => f.data.name === fileObj.data.name);
+                    if(index !== -1){
+                        newArray[index] = { ...newArray[index], videoId: videoId, fileUrl: fileUrl };
+                    }
+                    return newArray;
+                });
 
-        // After upload completes, get the download URL
-        getDownloadURL(fileRef).then(fileUrl => {
-            // Use updatePartialContentMetaData to set the file's URL
-            updatePartialContentMetaData(videoId, { fileUrl: fileUrl });
-        }).catch(error => console.error('Error in uploading file:', error))
-        .finally(() => {
-            setFileUploadStatus(prevStatus => ({
-                ...prevStatus,
-                [fileObj.data.name]: { uploading: false, completed: true }
-            }));
-        });
+                setFileUploadStatus(prevStatus => ({
+                    ...prevStatus,
+                    [fileObj.data.name]: { uploading: false, completed: true }
+                }));
+            }
+        );
     };
 
     fileUploadsArray.forEach(fileObj => uploadFile(fileObj));
 }, [fileUploadsArray, user.name]);
+
 
 
 //updating parent with Album Order:

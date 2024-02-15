@@ -164,10 +164,9 @@ return (
         <div style={{ marginTop: '5vw' }}>
             {filter !== 'album' ? (
                 <>
-                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw', border:'1px solid #D9D9D9', padding:'11px'}}>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw', border:'1px solid #D9D9D9', height:'32px'}}>
                         <Column><span>Track</span></Column>
                         <Column><span>Status</span></Column>
-                        <Column><span></span></Column>
                         <Column><span></span></Column>
                     </div>
                     {getFilteredContent().map((item) => (
@@ -193,12 +192,8 @@ return (
                             <Column>
                                 <span>
                                     <TransparentButton onClick={() => handleModifyContent(item.videoId)}>
-                                        <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw' }} />
+                                        <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw', marginRight:'3vw' }} />
                                     </TransparentButton>
-                                </span>
-                            </Column>
-                            <Column>
-                                <span>
                                     <TransparentButton onClick={() => handleDeleteContent(item.videoId, artistId)}>
                                         <img src={TrashIcon} alt="Delete" style={{ width: '2vw', height: '2vw' }} />
                                     </TransparentButton>
@@ -209,14 +204,13 @@ return (
                 </>
             ) : (
                 <>
-                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw', border:'1px solid #D9D9D9', padding:'11px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '3vw', border:'1px solid #D9D9D9', height:'32px' }}>
                         <Column>
                             <span>Album</span>
                         </Column>
                         <Column>
                             <span >Date added</span>
                         </Column>
-                        <Column><span></span></Column>
                         <Column><span></span></Column>
                         
                     </div>
@@ -245,10 +239,8 @@ return (
                                 </Column>
                                 <Column>
                                     <TransparentButton onClick={() => handleModifyAlbum(album.albumId)}>
-                                        <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw' }} />
+                                        <img src={EditIcon} alt="Edit" style={{ width: '2vw', height: '2vw', marginRight:'3vw' }} />
                                     </TransparentButton>
-                                </Column>
-                                <Column>
                                     <TransparentButton onClick={() => handleDeleteAlbum(album.albumId, artistId)}>
                                         <img src={TrashIcon} alt="Delete" style={{ width: '2vw', height: '2vw' }} />
                                     </TransparentButton>
@@ -314,9 +306,9 @@ const FilterButton = styled.button`
 const Column = styled.div`
     flex: 1; // This assigns equal space to each column
     display: flex;
-    justify-content: center; // Center the content
+    justify-content: flex-start;
     align-items: center;
-    padding: 0 10px; // Add some padding on the sides
+    margin-left: 3vw;
 `;
 
 
