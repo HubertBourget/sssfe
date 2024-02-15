@@ -142,6 +142,7 @@ useEffect(() => {
                     />
                     <UploadsDetailsLabel>Description</UploadsDetailsLabel>
                     <UploadDetailsTextInput 
+                        style={{height: '86px'}}
                         type="text"
                         placeholder="What describes this track"
                         name="description"
@@ -175,7 +176,6 @@ useEffect(() => {
                     <option value="Behind the scenes">Behind the scenes</option>
                     <option value="Concert">Concert</option>
                 </UploadDetailsSelectInput>
-                <UploadsDetailsLabel >Tags</UploadsDetailsLabel>
                 <div style={{marginLeft:'3vw', marginRight:'3vw', width:'94%'}}>
                 <TagComponent 
                     style={{marginLeft:'3vw'}}

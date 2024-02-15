@@ -9,6 +9,7 @@ import UploadDetailsForm from './UploadsDetailsForm';
 import Rectangle27 from '../../assets/Rectangle27.png';
 import { useAuth0 } from '@auth0/auth0-react';
 import WhiteEditIcon from '../../assets/WhiteEditIcon.png';
+import axios from 'axios';
 
 const Upload = ({ 
     viewState, 
@@ -25,7 +26,7 @@ const Upload = ({
     fileUploadsArray, 
     setFileUploadsArray,
     trackDetails,
-    updateFileProgress,
+    updateFileProgress,   
     }) => {
     
     
@@ -160,9 +161,14 @@ const Upload = ({
             [fileObj.data.name]: { uploading: true }
         }));
 
+        // Generate a unique name for this upload
         const fileUploadName = v4();
+        // Reference to where the file will be stored in Firebase
         const fileRef = ref(storage, `Uploads/${user.name.toString()}/${fileUploadName}`);
+        // Metadata for the upload
         const metadata = { contentType: fileObj.data.type };
+
+        // Start the upload
         const uploadTask = uploadBytesResumable(fileRef, fileObj.data, metadata);
 
         // Track the upload progress
@@ -174,30 +180,34 @@ const Upload = ({
             }));
             updateFileProgress(fileObj.data.name, progress);
         });
-        
-        return uploadTask.then(() => getDownloadURL(fileRef))
-            .then(fileUrl => postContentMetaData(fileUploadName, fileUrl, fileObj.data.type.startsWith('audio/'), albumId))
-            .then(videoId => {
-                // Update fileUploadsArray with videoId
-                setFileUploadsArray(prevArray => {
-                    const newArray = [...prevArray];
-                    const updatedFile = { ...newArray.find(f => f.data.name === fileObj.data.name), videoId: videoId };
-                    newArray[newArray.findIndex(f => f.data.name === fileObj.data.name)] = updatedFile;
-                    return newArray;
-                });
-                return videoId; // return videoId for further use if needed
-            })
-            .catch(error => console.error('Error in uploading file:', error))
-            .finally(() => {
-                setFileUploadStatus(prevStatus => ({
-                    ...prevStatus,
-                    [fileObj.data.name]: { uploading: false, completed: true }
-                }));
-            });
+
+        // Call postContentMetaData immediately with a placeholder for the fileUrl
+        const videoId = await postContentMetaData(fileUploadName, "Upload_in_Progress", fileObj.data.type.startsWith('audio/'), albumId);
+
+        // Update fileUploadsArray with videoId (before URL is available)
+        setFileUploadsArray(prevArray => {
+            const newArray = [...prevArray];
+            const updatedFile = { ...newArray.find(f => f.data.name === fileObj.data.name), videoId: videoId };
+            newArray[newArray.findIndex(f => f.data.name === fileObj.data.name)] = updatedFile;
+            return newArray;
+        });
+
+        // After upload completes, get the download URL
+        getDownloadURL(fileRef).then(fileUrl => {
+            // Use updatePartialContentMetaData to set the file's URL
+            updatePartialContentMetaData(videoId, { fileUrl: fileUrl });
+        }).catch(error => console.error('Error in uploading file:', error))
+        .finally(() => {
+            setFileUploadStatus(prevStatus => ({
+                ...prevStatus,
+                [fileObj.data.name]: { uploading: false, completed: true }
+            }));
+        });
     };
 
     fileUploadsArray.forEach(fileObj => uploadFile(fileObj));
 }, [fileUploadsArray, user.name]);
+
 
 //updating parent with Album Order:
     useEffect(() => {
@@ -280,6 +290,21 @@ const Upload = ({
         } catch (error) {
             console.error('Error posting metadata:', error);
             return null;
+        }
+    };
+
+    const updatePartialContentMetaData = async (videoId, fileUrl) => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/updatePartialContentMetaData`, {
+                videoId: videoId,
+                fileUrl: fileUrl, // Assuming this is the field you want to update
+            });
+
+            console.log('Update successful:', response.data);
+            return response.data; // You can return the response data here if needed
+        } catch (error) {
+            console.error('Error updating content meta data:', error);
+            throw error; // Rethrow the error if you want to handle it elsewhere
         }
     };
 

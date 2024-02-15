@@ -83,6 +83,7 @@ function NewTagComponent({ onTagsChange, value, style }) {
     return (
         <>
             <Container>
+                <label>Tags</label>
                 <TextArea
                     rows={4}
                     value={listOfTags.join(', ')} // Join array for display

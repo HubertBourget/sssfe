@@ -184,7 +184,7 @@ export default function NewCloudStudio() {
     } catch (error) {
         console.error('Error updating data:', error);
     }
-}, 100)).current;
+    }, 100)).current;
     // Function to handle changes in track details
     const handleTrackDetailChange = (trackId, key, value) => {
         debouncedUpdate({ trackId, key, value });
@@ -197,12 +197,10 @@ useEffect(() => {
         if (!trackDetails.some(detail => detail.id === file.videoId)) {
             const newTrack = {
                 id: file.videoId,
-                visibility: 'public', // Default value
-                category: 'music video', // Default value
+                visibility: 'public',
+                category: 'music video',
                 albumId:albumId,
-                // ... other default values
             };
-
             setTrackDetails(prevDetails => [...prevDetails, newTrack]);
         }
     });
