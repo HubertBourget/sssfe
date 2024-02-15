@@ -248,5 +248,4 @@ const LandingPageImage = styled.img`
     height: 100vh;
     width: 100vw;
     position: relative;
-    overflow: ;
 `;
