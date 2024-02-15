@@ -7,6 +7,7 @@ import TrashIcon from '../../assets/TrashIcon.png';
 import axios from 'axios';
 
 const ContentTab = ({user}) => {
+    console.log("user :", user)
     const artistId = user;
     const [contentDocuments, setContentDocuments] = useState([]);
     const [artistName, setArtistName] = useState('');
