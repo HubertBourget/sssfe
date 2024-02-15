@@ -9,7 +9,7 @@ const LoginButton = () => {
         <SignupButton
           onClick={() =>
             loginWithRedirect({
-              redirectUri: "https://staging.sacredsound.pages.dev/studio", //Change this URL for Staging : "https://staging.sacredsound.pages.dev/studio", Change this Uri for prod: "https://sacredsound.app/studio" or to this uri for local testing : "http://localhost:3000/studio"
+              redirectUri: process.env.REACT_APP_REDIRECTURL, //Change this URL for Staging : "https://staging.sacredsound.pages.dev/studio", Change this Uri for prod: "https://sacredsound.app/studio" or to this uri for local testing : "http://localhost:3000/studio"
             })
           }
         >

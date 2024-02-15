@@ -144,7 +144,7 @@ const ArtistLandingPage = () => {
                 <div style={{display:'flex', flexDirection:'row-reverse', backgroundColor:'transparent'}}>
                 <button style={buttonStyle} onClick={() =>
                     loginWithRedirect({
-                    redirectUri: "https://staging.sacredsound.pages.dev/studio", 
+                    redirectUri: process.env.REACT_APP_REDIRECTURL, //this for staging : https://staging.sacredsound.pages.dev/studio 
                     })
                 }>
                     Get Starteda
@@ -192,7 +192,7 @@ const ArtistLandingPage = () => {
             <h2 style={headingStyle}>Ready to Share Your Sound?</h2>
             <button style={ctaButtonStyle} onClick={() =>
                     loginWithRedirect({
-                    redirectUri: "https://staging.sacredsound.pages.dev/studio", 
+                    redirectUri: process.env.REACT_APP_REDIRECTURL, //this for staging : https://staging.sacredsound.pages.dev/studio 
                     })
                 }>
                 Start Your Musical Journey
