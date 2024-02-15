@@ -27,7 +27,6 @@ const ModifySingleTrackComponent = () => {
     const [formError, setFormError] = useState('');
     const [videoURL, setVideoURL] = useState('');//Disabled to match design
     const [videoUrlRetrived, setVideoUrlRetrived] = useState(false);//Disabled to match design
-    const [uploadedImageThumbnail, setUploadedImageThumbnail] = useState('');
     const [selectedImageSource, setSelectedImageSource] = useState("previewImage");
     const [uploadedThumbnailUrl, setUploadedThumbnailUrl] = useState('');// Necessary for passing the url of the Track's image to MongoDB
 
@@ -71,7 +70,6 @@ const ModifySingleTrackComponent = () => {
             tags: contentData.tags,
             visibility: contentData.visibility || 'Public',
             });
-            setUploadedImageThumbnail(contentData.coverImageUrl); // Set cover image URL
             setUploadedThumbnailUrl(contentData.selectedImageThumbnail); // Set selected image thumbnail URL
         } catch (error) {
             console.error(error);
@@ -144,7 +142,7 @@ const ModifySingleTrackComponent = () => {
         const file = event.target.files[0];
         if (file) {
             console.log("Selected file type:", file.type); // Log the file type
-            setUploadedImageThumbnail(file);
+            setUploadedThumbnailUrl(file);
             uploadImageThumbnail(file); // Pass the file directly
         }
     };
@@ -166,7 +164,7 @@ const ModifySingleTrackComponent = () => {
 
         // Check if a file is actually selected
         if (file && file.type.match('image.*')) {
-            setUploadedImageThumbnail(file); // Update your state with the new file
+            setUploadedThumbnailUrl(file); // Update your state with the new file
             uploadImageThumbnail(file); // Pass the file directly
             console.log('Profile image dropped:', file.name);
         } else {
@@ -233,7 +231,6 @@ const ModifySingleTrackComponent = () => {
             <div style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
                 <LeftDiv>
                 <UploadProfileImageContainer 
-                    image={uploadedImageThumbnail}
                     onClick={() => document.getElementById('file-input').click()}
                     onDrop={dropHandler}
                     onDragOver={dragOverHandler}

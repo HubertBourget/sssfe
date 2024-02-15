@@ -12,7 +12,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import WhiteEditIcon from '../../assets/WhiteEditIcon.png';
 
 const UploadDetailsForm = ({ file, trackDetails, progress, videoId, onTrackDetailChange, handleDelete, index  }) => {
-    console.log("UploadDetailsForm (videoId) :", videoId)
     const { user } = useAuth0();
     // const user = { name: "debug9@debug.com" };
 
@@ -62,7 +61,7 @@ const uploadAlbumPicture = (file, videoId) => {
         },
         body: JSON.stringify({
             videoId: videoId,
-            coverImageUrl: url,
+            selectedImageThumbnail: url,
         }),
         })
         .then((res) => res.json())
