@@ -20,7 +20,7 @@ const ContentTab = ({user}) => {
         try {
             const encodedArtistId = encodeURIComponent(artistId);
             let url = `${process.env.REACT_APP_API_BASE_URL}/api/getContentByArtist?artistId=${encodedArtistId}`;
-            console.log(url);
+            console.log(url); //This should fix it
             
             // If the filter is set to 'album', change the URL to fetch albums instead
             if (filter === 'album') {
