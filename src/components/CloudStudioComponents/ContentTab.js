@@ -132,6 +132,7 @@ const ContentTab = ({user}) => {
 
 
     const getFilteredContent = () => {
+        console.log('ContentDocuments before filtering:', contentDocuments);
     let filteredContent = [];
     switch (filter) {
         case 'audio':
