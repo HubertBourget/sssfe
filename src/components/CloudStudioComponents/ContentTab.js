@@ -20,7 +20,6 @@ const ContentTab = ({user}) => {
         try {
             const encodedArtistId = encodeURIComponent(artistId);
             let url = `${process.env.REACT_APP_API_BASE_URL}/api/getContentByArtist?artistId=${encodedArtistId}`;
-            console.log(url); //This should fix it
             
             // If the filter is set to 'album', change the URL to fetch albums instead
             if (filter === 'album') {
@@ -30,12 +29,8 @@ const ContentTab = ({user}) => {
             const response = await Axios.get(url);
             if (response.status === 200) {
                 setContentDocuments(response.data);
-            } else if (response.status === 404) {
-                console.log(response.data.message); // Log the message
-                setContentDocuments([]); // Ensure the state is set to an empty array if no albums
             } else {
                 console.error(`Request failed with status: ${response.status}`);
-                setContentDocuments([]); // Fallback to an empty array on other errors
             }
         } catch (error) {
             console.error(`An error occurred: ${error}`);
