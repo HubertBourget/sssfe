@@ -275,7 +275,7 @@ useEffect(() => {
                     Accept: 'application/json',
                 },
                 body: JSON.stringify({
-                    owner: user.name.toString(),
+                    videoOwner: user.name.toString(),
                     videoId: videoId,
                     timestamp: timestamp,
                     fileUrl: fileUrl,
