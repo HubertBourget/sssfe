@@ -12,6 +12,7 @@ const Dashboard = ({ user }) => {
         const fetchRecommendations = async () => {
             try {
                 if (user) {
+                    console.log('user :', user)
                     const recoResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getRecommendations/${user}`);
                     const videoIds = recoResponse.data.recomms.map(recomm => recomm.id);
 
