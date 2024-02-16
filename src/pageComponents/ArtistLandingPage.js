@@ -147,7 +147,7 @@ const ArtistLandingPage = () => {
                     redirectUri: process.env.REACT_APP_REDIRECTURL, //this for staging : https://staging.sacredsound.pages.dev/studio 
                     })
                 }>
-                    Get Starteda
+                    Get Started
                 </button>
                 </div>
             </div>
