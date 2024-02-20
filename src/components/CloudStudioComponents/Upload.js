@@ -33,7 +33,8 @@ const Upload = ({
     const { user } = useAuth0();
     // const user = { name: "debug9@debug.com" };
     useEffect(() => {
-        console.log(user);
+        console.log("user :"user);
+        console.log("user.name :"user.name);
     }, [user])
 
 
@@ -278,7 +279,7 @@ useEffect(() => {
                     Accept: 'application/json',
                 },
                 body: JSON.stringify({
-                    videoOwner: user.name.toString(),
+                    videoOwner: user.toString(),
                     videoId: videoId,
                     timestamp: timestamp,
                     fileUrl: fileUrl,
