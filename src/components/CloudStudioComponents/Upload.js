@@ -34,10 +34,9 @@ const Upload = ({
     // const user = { name: "debug9@debug.com" };
 
     // debugging AUth0
-    // useEffect(() => {
-    //     console.log("user :", user);
-    //     console.log("user :", user);
-    // }, [user])
+    useEffect(() => {
+        console.log("user :", user);
+    }, [user])
 
 
     //Upload tracking:
