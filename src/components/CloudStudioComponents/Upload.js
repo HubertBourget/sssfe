@@ -32,6 +32,9 @@ const Upload = ({
     
     const { user } = useAuth0();
     // const user = { name: "debug9@debug.com" };
+    useEffect(() => {
+        console.log(user);
+    }, [user])
 
 
     //Upload tracking:
