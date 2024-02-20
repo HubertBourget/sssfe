@@ -96,7 +96,7 @@
 //         return Promise.resolve(null);
 //     }
 //     const fileUploadName = v4();
-//     const fileRef = ref(storage, `thumbnails/${user.name}/${fileUploadName}`);
+//     const fileRef = ref(storage, `thumbnails/${user}/${fileUploadName}`);
 //     return uploadBytes(fileRef, uploadedImageThumbnail)
 //         .then(() => getDownloadURL(fileRef))
 //         .then((url) => {

@@ -32,7 +32,7 @@ const uploadAlbumPicture = (file, videoId) => {
             return;
         }
         const fileUploadName = v4();
-        const fileRef = ref(storage, `thumbnails/${user.name}/${fileUploadName}`);
+        const fileRef = ref(storage, `thumbnails/${user}/${fileUploadName}`);
         const metadata = {
             contentType: 'image/jpeg',
         };

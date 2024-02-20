@@ -28,7 +28,7 @@ const YourChannel= () => { //{user} was in props
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${user.name}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${user}`);
                 setAccountName(response.data.accountName || '');
                 setInitialBio(response.data.bio || '');
                 setInitialArtistLink(response.data.artistLink || '');
@@ -47,7 +47,7 @@ const YourChannel= () => { //{user} was in props
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getCheckAccountName`,
                 {
                     params: {
-                    email: user.name,
+                    email: user,
                     accountName: accountName,
                     },
                 }
@@ -95,7 +95,7 @@ const YourChannel= () => { //{user} was in props
         await axios.post(
             `${process.env.REACT_APP_API_BASE_URL}/api/updateUserProfile`,
             {
-                email: user.name,
+                email: user,
                 accountName: accountName,
                 bio: bio || initialBio,
                 artistLink: artistLink || initialArtistLink,
@@ -114,7 +114,7 @@ const YourChannel= () => { //{user} was in props
             return;
         }
         const fileUploadName = v4();
-        const fileRef = ref(storage, `ProfilePictures/${user.name}/${fileUploadName}`);
+        const fileRef = ref(storage, `ProfilePictures/${user}/${fileUploadName}`);
         const metadata = {
             contentType: 'image/jpeg',
         };
@@ -141,7 +141,7 @@ const YourChannel= () => { //{user} was in props
             return;
         }
         const fileUploadName = v4();
-        const fileRef = ref(storage, `BannerPictures/${user.name}/${fileUploadName}`);
+        const fileRef = ref(storage, `BannerPictures/${user}/${fileUploadName}`);
         const metadata = {
             contentType: 'image/jpeg',
         };
@@ -170,7 +170,7 @@ const YourChannel= () => { //{user} was in props
                 Accept: "application/json",
             },
             body: JSON.stringify({
-                email: user.name,
+                email: user,
                 profileImageUrl: url,
             }),
         })
@@ -186,7 +186,7 @@ const YourChannel= () => { //{user} was in props
                 Accept: "application/json",
             },
             body: JSON.stringify({
-                email: user.name,
+                email: user,
                 bannerImageUrl: url,
             }),
         })

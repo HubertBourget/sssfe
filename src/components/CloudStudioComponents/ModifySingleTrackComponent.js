@@ -87,7 +87,7 @@ const ModifySingleTrackComponent = () => {
         axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/deleteContent`, {
         params: { videoId },
         headers: {
-            'user-id': user.name // Setting the custom header for user ID
+            'user-id': user // Setting the custom header for user ID
         }
     })
     .then(response => {
@@ -104,7 +104,7 @@ const ModifySingleTrackComponent = () => {
             return;
         }
         const fileUploadName = v4();
-        const fileRef = ref(storage, `thumbnails/${user.name}/${fileUploadName}`);
+        const fileRef = ref(storage, `thumbnails/${user}/${fileUploadName}`);
 
         try {
             await uploadBytes(fileRef, file, { contentType: file.type });

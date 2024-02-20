@@ -32,10 +32,12 @@ const Upload = ({
     
     const { user } = useAuth0();
     // const user = { name: "debug9@debug.com" };
-    useEffect(() => {
-        console.log("user :", user);
-        console.log("user.name :", user.name);
-    }, [user])
+
+    // debugging AUth0
+    // useEffect(() => {
+    //     console.log("user :", user);
+    //     console.log("user :", user);
+    // }, [user])
 
 
     //Upload tracking:
@@ -166,7 +168,7 @@ useEffect(() => {
         }));
 
         const videoId = v4();
-        const fileRef = ref(storage, `Uploads/${user.name.toString()}/${videoId}`);
+        const fileRef = ref(storage, `Uploads/${user.toString()}/${videoId}`);
         const metadata = { contentType: fileObj.data.type };
         const uploadTask = uploadBytesResumable(fileRef, fileObj.data, metadata);
         setFileUploadsArray(prevArray => {
@@ -210,7 +212,7 @@ useEffect(() => {
     };
 
     fileUploadsArray.forEach(fileObj => uploadFile(fileObj));
-}, [fileUploadsArray, user.name]);
+}, [fileUploadsArray, user]);
 
 
 
@@ -320,7 +322,7 @@ useEffect(() => {
             return;
         }
         const fileUploadName = v4();
-        const fileRef = ref(storage, `AlbumPictures/${user.name}/${fileUploadName}`);
+        const fileRef = ref(storage, `AlbumPictures/${user}/${fileUploadName}`);
         const metadata = {
             contentType: 'image/jpeg',
         };
@@ -366,7 +368,7 @@ useEffect(() => {
                 Accept: 'application/json',
             },
             body: JSON.stringify({
-                owner: user.name.toString(),
+                owner: user.toString(),
                 albumId: albumId,
                 timestamp: timestamp,
             }),

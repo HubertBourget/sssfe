@@ -24,7 +24,7 @@ export default function ProfileEditSection() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${user.name}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${user}`);
                 setAccountName(response.data.accountName || '');
                 setInitialBio(response.data.bio || '');
                 setInitialArtistLink(response.data.artistLink || '');
@@ -42,7 +42,7 @@ export default function ProfileEditSection() {
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getCheckAccountName`,
                 {
                     params: {
-                        email: user.name,
+                        email: user,
                         accountName: accountName,
                     },
                 }
@@ -85,7 +85,7 @@ export default function ProfileEditSection() {
         await axios.post(
             `${process.env.REACT_APP_API_BASE_URL}/api/updateUserProfile`,
             {
-                email: user.name,
+                email: user,
                 accountName: accountName,
                 bio: bio || initialBio,
                 artistLink: artistLink || initialArtistLink,
@@ -103,7 +103,7 @@ const uploadProfilePicture = (uploadingPicture) => {
         return;
     }
     const fileUploadName = v4();
-    const fileRef = ref(storage, `ProfilePictures/${user.name}/${fileUploadName}`);
+    const fileRef = ref(storage, `ProfilePictures/${user}/${fileUploadName}`);
     const metadata = {
         contentType: 'image/jpeg',
     };
@@ -133,7 +133,7 @@ const uploadProfilePicture = (uploadingPicture) => {
                 Accept: "application/json",
             },
             body: JSON.stringify({
-                email: user.name,
+                email: user,
                 profileImageUrl: url,
             }),
             })
