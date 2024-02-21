@@ -13,7 +13,7 @@ const Dashboard = ({ user }) => {
             try {
                 if (user) {
                     console.log('user :', user);
-                    const recoResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getRecommendations/${user}`);
+                    const recoResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getItemToUserRecommendations/${user}`);
                     const videoIds = recoResponse.data.recomms.map(recomm => recomm.id);
                     console.log(videoIds);
 
