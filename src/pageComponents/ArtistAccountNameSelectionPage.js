@@ -23,7 +23,7 @@ export default function ArtistAccountNameSelectionPage() {
             try {
             const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getCheckAccountName`, {
                 params: {
-                email: user.name,
+                email: user,
                 accountName: accountName,
                 },
             });
@@ -67,7 +67,7 @@ const postNewUserWithAccountName = () => {
         Accept: "application/json",
       },
       body: JSON.stringify({
-        email: user.name,
+        email: user,
         accountName: accountName,
         isArtist: true,
         timestamp: timestamp,

@@ -41,8 +41,8 @@ export default function NewCloudStudio() {
     useEffect(() => {
         const fetchUser = async () => {
         try {
-            if (user && user.name) {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/b_getUserExist/${user.name}`);
+            if (user) {
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/b_getUserExist/${user}`);
             }
         } catch (error) {
             if (error.response && error.response.status === 404) {

@@ -104,7 +104,7 @@ const ModifyAlbum = () => {
     // Function to handle album cover upload to Firebase and get URL
     const uploadAlbumCover = async () => {
     if (!uploadedAlbumCover) return null; // Return null to explicitly indicate no upload happened
-    const fileRef = ref(storage, `album-covers/${user.name}/${uuidv4()}`);
+    const fileRef = ref(storage, `album-covers/${user}/${uuidv4()}`);
     try {
         await uploadBytes(fileRef, uploadedAlbumCover);
         const coverUrl = await getDownloadURL(fileRef);

@@ -39,7 +39,7 @@
 //     //   const fetchRecommendations = async () => {
 //     //     try {
 //     //       const response = await axios.get(
-//     //         `${process.env.REACT_APP_API_BASE_URL}/api/getRecommendations/${user.name}`
+//     //         `${process.env.REACT_APP_API_BASE_URL}/api/getRecommendations/${user}`
 //     //       );
 //     //       setRecombeeDataResponse(response.data || "");
 //     //       console.log("recombeeDataResponse: " + recombeeDataResponse);
@@ -55,8 +55,8 @@
 //     useEffect(() => {
 //         const fetchUser = async () => {
 //         try {
-//             if (user && user.name) {
-//                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/b_getUserExist/${user.name}`);
+//             if (user && user) {
+//                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/b_getUserExist/${user}`);
 //             }
 //         } catch (error) {
 //             if (error.response && error.response.status === 404) {
@@ -71,10 +71,10 @@
 
 //     useEffect(() => {
 //     const fetchVideos = async () => {
-//         if (user && user.name) {
+//         if (user && user) {
 //         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getPreReviewedVideoList`, {
 //             params: {
-//             owner: user.name,
+//             owner: user,
 //             b_isPreparedForReview: false,
 //             },
 //         });
@@ -122,7 +122,7 @@
 //         body: JSON.stringify({
 //           video_url: video_url,
 //           video_id: video_id,
-//           email: user.name,
+//           email: user,
 //         }),
 //       }
 //     ).then((res) => res.json());
@@ -154,7 +154,7 @@
 //         return;
 //     }
 //     const fileUploadName = v4();
-//     const fileRef = ref(storage, `Uploads/${user.name}/${fileUploadName}`);
+//     const fileRef = ref(storage, `Uploads/${user}/${fileUploadName}`);
 //     const uploadTask = uploadBytesResumable(fileRef, fileUpload);
 
 //     setIsUploading(true);
@@ -195,7 +195,7 @@
 //             Accept: 'application/json',
 //         },
 //         body: JSON.stringify({
-//             owner: user.name,
+//             owner: user,
 //             videoId: videoId,
 //             timestamp: timestamp,
 //             fileUrl: fileUrl,
