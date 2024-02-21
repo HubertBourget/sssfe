@@ -19,6 +19,7 @@ const ContentTab = ({user}) => {
     const fetchData = async () => {
         try {
             const encodedArtistId = encodeURIComponent(artistId);
+            console.log(encodedArtistId)
             let url = `${process.env.REACT_APP_API_BASE_URL}/api/getContentByArtist?artistId=${encodedArtistId}`;
             
             // If the filter is set to 'album', change the URL to fetch albums instead
@@ -27,6 +28,7 @@ const ContentTab = ({user}) => {
             }
 
             const response = await Axios.get(url);
+            console.log(response.data)
             if (response.status === 200) {
                 setContentDocuments(response.data);
             } else {
