@@ -239,6 +239,7 @@ useEffect(() => {
     const handleUpdateReviewStatus = async () => {
         // setIsUpdating(true);
         const fileIds = fileUploadsArray.map(file => file.videoId);
+        console.log("fileIds :", fileIds);
 
         console.log("Starting the update process for review status.");
 
