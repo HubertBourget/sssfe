@@ -83,11 +83,11 @@ const uploadAlbumPicture = (file, videoId) => {
 const handleInputChange = (event) => {
     const { name, value } = typeof event === 'string' ? { name: 'tags', value: event } : event.target;
     setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
-    // if (name === 'tags') {
-    //     onTrackDetailChange(videoId, name, value.split(', ')); // Split the string back into an array for tags
-    // } else {
+    if (name === 'tags') {
+        onTrackDetailChange(videoId, name, value.split(', ')); // Split the string back into an array for tags
+    } else {
         onTrackDetailChange(videoId, name, value);
-    // }
+    }
 };
 
 useEffect(() => {
