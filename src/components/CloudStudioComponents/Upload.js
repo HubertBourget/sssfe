@@ -232,7 +232,7 @@ useEffect(() => {
 
         useEffect(() => {
         if (publishClicked) {
-            console.log("Publishclicked, fileUploadsArray :", fileUploadsArray)
+            console.log("Publishclicked, setFileUploadsArray :", setFileUploadsArray)
             handleUpdateReviewStatus();
         }
         }, [publishClicked]);
