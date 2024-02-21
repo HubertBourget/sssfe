@@ -232,6 +232,7 @@ useEffect(() => {
 
         useEffect(() => {
         if (publishClicked) {
+            console.log("Publishclicked, fileUploadsArray :", fileUploadsArray)
             handleUpdateReviewStatus();
         }
         }, [publishClicked]);
