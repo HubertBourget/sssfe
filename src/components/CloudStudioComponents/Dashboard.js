@@ -22,7 +22,7 @@ const Dashboard = ({ user }) => {
                         const videoData = videoResp.data;
                         console.log(videoData);
 
-                        const userResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${videoData.videoOwner}`);
+                        const userResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${videoData.owner}`);
                         const userData = userResp.data;
 
                         return {
