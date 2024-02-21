@@ -67,7 +67,7 @@ export default function NewCloudStudio() {
         setPublishClicked(true);
         setTimeout(() => {
             resetUploadState();
-        }, 3000);
+        }, 2000);
     };
     const resetUploadState = () => {
         setAlbumId(null);
