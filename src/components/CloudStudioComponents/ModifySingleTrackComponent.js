@@ -115,6 +115,7 @@ const ModifySingleTrackComponent = () => {
                 videoId: videoId,
                 thumbnailUrl: url,
             });
+            console.log('setUploadedThumbnailUrl(url) :', url)
             setUploadedThumbnailUrl(url); // Update state if needed
         } catch (error) {
             console.error("Error in image upload: ", error);
