@@ -179,9 +179,9 @@ const ModifySingleTrackComponent = () => {
         }
     };
 
-    const handleTagsChange = (newTags) => {
-        setFormData({ ...formData, tags: newTags });
-        console.log("formData after handleTagsChange :", formData)
+    const handleTagsChange = (event) => {
+        const { name, value } = typeof event === 'string' ? { name: 'tags', value: event } : event.target;
+        setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
     };
 
     const handleSubmit = async (event) => {
