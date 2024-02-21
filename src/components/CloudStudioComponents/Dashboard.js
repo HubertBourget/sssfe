@@ -20,7 +20,7 @@ const Dashboard = ({ user }) => {
                     const videosData = await Promise.all(videoIds.map(async (id) => {
                         const videoResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${id}`);
                         const videoData = videoResp.data;
-                        console.log(videoData);
+                        console.log("videoData", videoData);
 
                         const userResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${videoData.owner}`);
                         const userData = userResp.data;
