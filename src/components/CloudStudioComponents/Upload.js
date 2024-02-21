@@ -32,9 +32,11 @@ const Upload = ({
     
     const { user } = useAuth0();
     // const user = { name: "debug9@debug.com" };
+
+    // debugging AUth0
     useEffect(() => {
         console.log("user :", user);
-        console.log("user.name :", user.name);
+        console.log("user.name :", user.name)
     }, [user])
 
 
