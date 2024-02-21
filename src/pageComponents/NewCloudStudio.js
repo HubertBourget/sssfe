@@ -65,7 +65,9 @@ export default function NewCloudStudio() {
     const handlePublishButtonClick = () => {
         debouncedUpdate.flush(); // Flush any pending updates
         setPublishClicked(true);
-        resetUploadState();
+        setTimeout(() => {
+            resetUploadState();
+        }, 3000);
     };
     const resetUploadState = () => {
         setAlbumId(null);
