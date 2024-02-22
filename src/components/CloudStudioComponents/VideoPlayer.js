@@ -30,7 +30,7 @@ import axios from 'axios';
         const fetchItemToItemRecommendations = async () => {
             if (videoId && userId) {
                 try {
-                    const response = await recombeeClient.send(recommendItemsToItemRequest)
+                    const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getItemToItemRecommendations/${userId}/${videoId}`);
                     setRecommendations(response.data.recomms || []);
                     console.log('Recommendations:', response.data.recomms);
                 } catch (error) {
