@@ -179,8 +179,14 @@ const ModifySingleTrackComponent = () => {
         }
     };
 
-    const handleTagsChange = (newTags) => {
-        setFormData({ ...formData, tags: newTags });
+    const handleTagsChange = (event) => {
+        const { name, value } = typeof event === 'string' ? { name: 'tags', value: event } : event.target;
+        if (name === 'tags') {
+            const tagsArray = value.split(',').map(tag => tag.trim()); // Trim whitespace
+            setFormData(prevFormData => ({ ...prevFormData, [name]: tagsArray }));
+        } else {
+            setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
+        }
     };
 
     const handleSubmit = async (event) => {
