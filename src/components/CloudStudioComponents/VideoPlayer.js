@@ -25,19 +25,12 @@ import axios from 'axios';
         }
     }, [videoId]);
 
-    //Hello Sanjay!
-    //Don't worry about this additional code in the component.
-    //This is just to test Recombee with Item to Item recommendations.
-    //Just like the rest of the component, you can overwrite this:
     // Fetch item-to-item recommendations
     useEffect(() => {
         const fetchItemToItemRecommendations = async () => {
             if (videoId && userId) {
                 try {
-                    const response = await recombeeClient.send(recommendItemsToItemRequest).catch(error => {
-                        console.error("Error sending request to Recombee:", error);
-                        throw error; // Rethrow or handle accordingly
-                    });
+                    const response = await recombeeClient.send(recommendItemsToItemRequest)
                     setRecommendations(response.data.recomms || []);
                     console.log('Recommendations:', response.data.recomms);
                 } catch (error) {
