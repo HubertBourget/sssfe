@@ -10,22 +10,24 @@ import ModifySingleTrackComponent from './components/CloudStudioComponents/Modif
 import ArtistLandingPage from './pageComponents/ArtistLandingPage';
 import VideoPlayer from './components/CloudStudioComponents/VideoPlayer';
 import ModifyAlbum from './components/CloudStudioComponents/ModifyAlbum';
+import NowPlaying from './pageComponents/NowPlaying';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
   return (
-    
+
     <BrowserRouter>
-<GlobalStyle></GlobalStyle>
+      <GlobalStyle></GlobalStyle>
       <Routes>
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/profile/:artistId" element={<ArtistProfilePage />} />
-        <Route exact path="/prepareForQA/:videoId" element={<ModifySingleTrackComponent/>}/>
-        <Route exact path="/studio" element={<NewCloudStudio/>}/>
-        <Route exact path="/create" element={<ArtistLandingPage/>}/>
-        <Route exact path="/AccountNameSelection" element={<AccountNameSelection/>}/>
+        <Route exact path="/prepareForQA/:videoId" element={<ModifySingleTrackComponent />} />
+        <Route exact path="/studio" element={<NewCloudStudio />} />
+        <Route exact path="/create" element={<ArtistLandingPage />} />
+        <Route exact path="/AccountNameSelection" element={<AccountNameSelection />} />
         <Route exact path="/play/:videoId" element={<VideoPlayer />} />
-        <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum/>} />
+        <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
+        <Route exact path="/now-playing" element={<NowPlaying />} />
       </Routes>
     </BrowserRouter>
   );
