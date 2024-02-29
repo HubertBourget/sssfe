@@ -14,13 +14,14 @@ const Dashboard = ({ user }) => {
                 if (user) {
                     console.log('user :', user);
                     const recoResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getItemToUserRecommendations/${user}`);
+                    console.log("recoResponse: ", recoResponse )
                     const videoIds = recoResponse.data.recomms.map(recomm => recomm.id);
-                    console.log(videoIds);
+                    console.log("VideoIds: ", videoIds);
 
                     const videosData = await Promise.all(videoIds.map(async (id) => {
                         const videoResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${id}`);
                         const videoData = videoResp.data;
-                        console.log("videoData", videoData);
+                        console.log("videoData: ", videoData);
 
                         const userResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${videoData.owner}`);
                         const userData = userResp.data;
