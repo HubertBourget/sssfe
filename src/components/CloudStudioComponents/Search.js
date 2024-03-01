@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Search = () => {
     const { searchQuery } = useParams(); // Extract searchQuery from URL
     const [searchResults, setSearchResults] = useState({ tracks: [], albums: [], artists: [] });
     const [isLoading, setIsLoading] = useState(true);
 
-    // Simulate obtaining userId from Auth0 or another auth service
-    // Replace this with your actual method of obtaining the userId
-    const userId = 'your_user_id_from_auth_service';
+    const { user, isAuthenticated } = useAuth0();
 
     useEffect(() => {
         if (!searchQuery) return;
@@ -18,7 +17,7 @@ const Search = () => {
             setIsLoading(true);
             try {
                 const response = await axios.get(`https://monkfish-app-nb3ck.ondigitalocean.app/api/getSearchResult`, {
-                    params: { userId, searchQuery }
+                    params: { user, searchQuery }
                 });
                 setSearchResults(response.data);
             } catch (error) {
