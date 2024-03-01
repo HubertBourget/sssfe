@@ -11,6 +11,7 @@ import ArtistLandingPage from './pageComponents/ArtistLandingPage';
 import VideoPlayer from './components/CloudStudioComponents/VideoPlayer';
 import ModifyAlbum from './components/CloudStudioComponents/ModifyAlbum';
 import NowPlaying from './pageComponents/NowPlaying';
+import Search from './components/CloudStudioComponents/Search';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -28,6 +29,7 @@ const App = () => {
         <Route exact path="/play/:videoId" element={<VideoPlayer />} />
         <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
         <Route exact path="/now-playing" element={<NowPlaying />} />
+        <Route exact path="/search/:searchQuery" element={<Search/>}/>
       </Routes>
     </BrowserRouter>
   );
