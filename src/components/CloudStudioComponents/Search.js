@@ -23,6 +23,7 @@ const Search = () => {
                 console.error('Failed to fetch search results:', error);
                 // Handle error as appropriate for your application
             } finally {
+                console.log(searchResults)
                 setIsLoading(false);
             }
         };
