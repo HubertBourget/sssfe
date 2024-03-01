@@ -29,7 +29,7 @@ const Search = () => {
         };
 
         fetchSearchResults();
-    }, [searchQuery, userId]);
+    }, [searchQuery, user]);
 
     if (isLoading) return <div>Loading...</div>;
 
