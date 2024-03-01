@@ -16,7 +16,7 @@ const Search = () => {
         const fetchSearchResults = async () => {
             setIsLoading(true);
             try {
-                const userId = isAuthenticated ? user.sub : null; // Use an identifier like user.sub
+                const userId = isAuthenticated ? user.name : null; // Use an identifier like user.sub
                 const response = await axios.get(`https://monkfish-app-nb3ck.ondigitalocean.app/api/getSearchResult`, {
                     params: { userId, searchQuery } // Ensure you're sending userId, not the entire user object
                 });
