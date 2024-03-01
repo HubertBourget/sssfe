@@ -333,21 +333,20 @@ const PaymentDetails = styled.div`
       display: flex;
       gap: 20px;
       justify-content: space-between;
-      max-width: 94.5%;
-      @media (max-width: 767px) {
-        max-width: calc(100% - 20px);
-      }
+      max-width: 100%;
+      
       img {
         width: 30px;
         height: 30px;
         position: absolute;
         right: 12px;
-        top: 46px;
+        top: 38px;
       }
     }
     .form-group {
       margin-bottom: 20px;
       position: relative;
+      width:100%;
       label {
         display: block;
         font-size: 14px;
@@ -360,7 +359,8 @@ const PaymentDetails = styled.div`
         padding: 5px 15px;
         font-size: 16px;
         font-weight: 400;
-        width: 90%;
+        width:100%;
+        box-sizing:border-box;
         &::placeholder {
           color: #d9d9d9 !important;
         }

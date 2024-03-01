@@ -10,6 +10,7 @@ const Checkout = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const amount = queryParams.get("amount");
   const [paymentMethods, setMethods] = useState([]);
+  const card = useRef('')
   const plan = queryParams.get("plan") === "1" ? "Year" : "Month";
   const [formData, setFormData] = useState({
     card: "",
@@ -26,32 +27,32 @@ const Checkout = () => {
     const tilopayObj = window.Tilopay;
     tilopay.current = tilopayObj;
     if (tilopayObj) {
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/getTilopayToken`)
+fetch(`${process.env.REACT_APP_API_BASE_URL}/api/getTilopayToken`)
         .then((res) => res.json())
         .then(async (data) => {
-          let initialize = await tilopayObj.Init({
-            token: data.token,
-            currency: "USD",
-            language: "en",
-            amount: amount,
-            orderNumber: "115a1a1aa5",
-            billToFirstName: "firstName",
-            billToLastName: "lastName",
-            billToAddress: "San Jose",
-            billToAddress2: "sdfd",
-            billToCity: "adf",
-            billToState: "sfsfd",
-            billToEmail: "namne@gmail.com",
-            billToZipPostCode: "353545",
-            billToCountry: "CR",
-            billToTelephone: "42343242344",
-            subscription: 1,
-            capture: 0,
-            redirect: "http://localhost:3000/checkout-result",
-          });
-          console.log(initialize);
-          setMethods(initialize.methods);
-        });
+      let initialize = await tilopayObj.Init({
+        token: data.token,
+        currency: "USD",
+        language: "en",
+        amount: amount,
+        orderNumber: (Math.random() * 1000).toFixed(0),
+        billToFirstName: "firstName",
+        billToLastName: "lastName",
+        billToAddress: "San Jose",
+        billToAddress2: "sdfd",
+        billToCity: "adf",
+        billToState: "sfsfd",
+        billToEmail: "namne@gmail.com",
+        billToZipPostCode: "353545",
+        billToCountry: "CR",
+        billToTelephone: "42343242344",
+        subscription: 1,
+        capture: 0,
+        redirect: "http://localhost:3000/checkout-result",
+      });
+      console.log(initialize);
+      setMethods(initialize.methods);
+});
     } else {
       console.error("Function not available");
     }
@@ -59,9 +60,9 @@ const Checkout = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    const payment = await tilopay.current.startPayment();
-    console.log(payment);
-  };
+      const payment = await tilopay.current.startPayment();
+      console.log(payment);
+     };
   return (
     <MangePlanWrapper>
       <div>
@@ -92,7 +93,7 @@ const Checkout = () => {
                 </li>
               </ul>
             </div>
-          </MngePlanRight>
+                     </MngePlanRight>
         </ManagePlanMain>
       </div>
       <AddCardDetails>
@@ -105,91 +106,87 @@ const Checkout = () => {
         <PaymentDetails>
           <h2>Payment details</h2>
 
-          <div className="payFormTilopay form-wrapper">
-            <select
-              name="tlpy_payment_method"
-              id="tlpy_payment_method"
-              style={{ display: "none" }}
-            >
-              {paymentMethods.map((method) => (
-                  <option value={method.id} key={method.id}>{method.name}</option>
-              ))}
-              {/* <option value="">Select payment method</option> */}
-            </select>
+            <div className="payFormTilopay form-wrapper">
+              <select name="tlpy_payment_method" id="tlpy_payment_method" style={{display: 'none'}}>
+                {paymentMethods.map((method) => (
+                    <option value={method.id} key={method.id}>{method.name}</option>
+                ))}
+                {/* <option value="">Select payment method</option> */}
+              </select>
 
-            <div className="form-group">
-              <label>Card number</label>
-              <input
-                type="text"
-                id="tlpy_cc_number"
-                name="tlpy_cc_number"
-                //   ref={card}
-                placeholder="1234 1234 1234 1234"
-                onChange={(event) => {
-                  setFormData({ ...formData, card: event.target.value });
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <label>Name on card</label>
-              <input
-                type="text"
-                placeholder="Your full name"
-                value={formData.nameOnCard}
-                onChange={(event) => {
-                  setFormData({
-                    ...formData,
-                    nameOnCard: event.target.value,
-                  });
-                }}
-              />
-            </div>
-            <div className="flex-col">
               <div className="form-group">
-                <label>Expiry</label>
+                <label className="label">Card number</label>
                 <input
                   type="text"
-                  placeholder="MM/YY"
-                  value={formData.expire}
-                  id="tlpy_cc_expiration_date"
-                  name="tlpy_cc_expiration_date"
+                  id="tlpy_cc_number"
+                  name="tlpy_cc_number"
+                //   ref={card}
+                  placeholder="1234 1234 1234 1234"
                   onChange={(event) => {
-                    let newValue = event.target.value;
-
-                    newValue = newValue.replace(/\D/g, "");
-
-                    newValue = newValue.slice(0, 4);
-
-                    if (newValue.length >= 2) {
-                      newValue = `${newValue.slice(0, 2)}/${newValue.slice(2)}`;
-                    }
+                    setFormData({ ...formData, card: event.target.value });
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <label>Name on card</label>
+                <input
+                  type="text"
+                  placeholder="Your full name"
+                  value={formData.nameOnCard}
+                  onChange={(event) => {
                     setFormData({
                       ...formData,
-                      expire: newValue,
+                      nameOnCard: event.target.value,
                     });
                   }}
                 />
               </div>
-              <div className="form-group">
-                <label>CVV</label>
-                <input
-                  type="text"
-                  placeholder="cvv"
-                  id="tlpy_cvv"
-                  name="tlpy_cvv"
-                  value={formData.cvv}
-                  onChange={(event) => {
-                    setFormData({ ...formData, cvv: event.target.value });
-                  }}
-                />
-                <img src={CVV} alt="icon" />
+              <div className="flex-col">
+                <div className="form-group">
+                  <label>Expiry</label>
+                  <input
+                    type="text"
+                    placeholder="MM/YY"
+                    value={formData.expire}
+                    id="tlpy_cc_expiration_date"
+                    name="tlpy_cc_expiration_date"
+                    onChange={(event) => {
+                      let newValue = event.target.value;
+
+                      newValue = newValue.replace(/\D/g, "");
+
+                      newValue = newValue.slice(0, 4);
+
+                      if (newValue.length >= 2) {
+                        newValue = `${newValue.slice(0, 2)}/${newValue.slice(2)}`;
+                      }
+                      setFormData({
+                        ...formData,
+                        expire: newValue,
+                      });
+                    }}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>CVV</label>
+                  <input
+                    type="text"
+                    placeholder="cvv"
+                    id="tlpy_cvv"
+                    name="tlpy_cvv"
+                    value={formData.cvv}
+                    onChange={(event) => {
+                      setFormData({ ...formData, cvv: event.target.value });
+                    }}
+                  />
+                  <img src={CVV} alt="icon" />
+                </div>
               </div>
             </div>
-          </div>
-          <div id="responseTilopay"></div>
-          <button to="" className="PlanCta" onClick={onSubmit} type="submit">
-            Complete Purchase
-          </button>
+            <div id="responseTilopay"></div>
+            <button to="" className="PlanCta" onClick={onSubmit} type="submit">
+              Complete Purchase
+            </button>
         </PaymentDetails>
       </AddCardDetails>
     </MangePlanWrapper>
@@ -301,26 +298,27 @@ const PaymentDetails = styled.div`
       display: flex;
       gap: 20px;
       justify-content: space-between;
-      max-width: 94.5%;
-      @media (max-width: 767px) {
-        max-width: calc(100% - 20px);
-      }
+      max-width: 100%;
+     
       img {
         width: 30px;
         height: 30px;
         position: absolute;
         right: 12px;
-        top: 46px;
+        top: 38px;
       }
     }
     .form-group {
       margin-bottom: 20px;
       position: relative;
+      width:100%;
+      text-align:center;
       label {
         display: block;
         font-size: 14px;
         font-weight: 400;
         margin-bottom: 10px;
+        text-align:left;
       }
       input {
         height: 50px;
@@ -328,7 +326,8 @@ const PaymentDetails = styled.div`
         padding: 5px 15px;
         font-size: 16px;
         font-weight: 400;
-        width: 90%;
+        width: 100%;
+        box-sizing: border-box;
         &::placeholder {
           color: #d9d9d9 !important;
         }
