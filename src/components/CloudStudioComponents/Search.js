@@ -10,6 +10,11 @@ const Search = () => {
 
     const { user, isAuthenticated } = useAuth0();
 
+    //debugging FE request
+    useEffect(() => {
+        console.log(searchResults);
+    }, [searchResults]);
+
     useEffect(() => {
         if (!searchQuery) return;
 
@@ -23,7 +28,6 @@ const Search = () => {
                 console.error('Failed to fetch search results:', error);
                 // Handle error as appropriate for your application
             } finally {
-                console.log(searchResults)
                 setIsLoading(false);
             }
         };
