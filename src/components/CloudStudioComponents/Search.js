@@ -36,6 +36,7 @@ const Search = () => {
     return (
         <div>
             <h2>Search Results for "{searchQuery}"</h2>
+            <h2>user is : {user} </h2>
             <div>
                 <h3>Tracks</h3>
                 <ul>
