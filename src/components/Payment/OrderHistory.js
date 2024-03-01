@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Arrowleft from "../../assets/Arrowleft.svg";
 import ArrowRight from "../../assets/Arrowright.svg";
 import { Link } from "react-router-dom";
 
+const options = { 
+  month: 'long', 
+  day: 'numeric', 
+  year: 'numeric'
+};
 const OrderHistory = () => {
+  const [orders, setOrders] = useState([]);
+  function fetchOrders(userId) {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/orders/${userId}`)
+      .then((res) => res.json())
+      .then((data) => setOrders(data.orders));
+  }
+  useEffect(() => {
+    fetchOrders("65e073195bdcf11766875821");
+  }, []);
   return (
     <OrderHistoryWrapper>
       <h1>Order history</h1>
@@ -17,15 +31,21 @@ const OrderHistory = () => {
             <th>Status</th>
             <th>Receipt</th>
           </tr>
-          <tr>
-            <td>Dec. 24, 2023</td>
-            <td>Angel Membership</td>
-            <td>$88.00</td>
-            <td>Paid</td>
-            <td>
-              <Link to="">More details</Link>
-            </td>
-          </tr>
+         
+          {orders?.map((order) => {
+            console.log(order)
+            return (
+              <tr>
+                <td>{new Date(order.time).toLocaleDateString('en-US', options)}</td>
+                <td>{order.description}</td>
+                <td>${order.amount}</td>
+                <td>{order.status}</td>
+                <td>
+                  <Link to="">More details</Link>
+                </td>
+              </tr>
+            );
+          })}
         </table>
         <div className="OrderArrows">
           <img src={Arrowleft} alt="arrow-left" />

@@ -1,9 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import ThankYou from "../../assets/icon-thanks.svg";
 
 const CheckoutResult = () => {
-
+  
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const code = queryParams.get("code");
+    const order = queryParams.get("order");
+    if(code === '1'){
+      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/saveOrder`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          userId: '65e073195bdcf11766875821',
+          amount: 100,
+          status: 'Paid',
+          description: order
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
+    }
+  }, [])
   return (
     <>
       <Thankyou>
@@ -54,3 +78,4 @@ const Thankyou = styled.div`
     margin-top: 40px;
   }
 `;
+
