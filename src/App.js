@@ -44,7 +44,7 @@ const App = () => {
         <Route exact path="/play/:videoId" element={<VideoPlayer />} />
         <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
         <Route exact path="/make-order" element={<Subscribe />} />
-        <Route exact path="/now-playing" element={<MangePlan />} />
+        <Route exact path="/manage-plan" element={<MangePlan />} />
         <Route exact path="/orders" element={<OrderHistory />} />
         <Route exact path="/save-card" element={<SaveCard />} />
         <Route exact path="/checkout" element={<Checkout/>} />

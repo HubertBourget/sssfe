@@ -51,6 +51,24 @@ function Subscribe() {
     setCurrentTab(tabId);
     setTabData(updatedTabs);
   };
+  
+
+  const savePlan = () => {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/save-plan`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        amount: price,
+        type: currentTab === "1" ? "Year" : "Month",
+        userId: '65e073195bdcf11766875821'
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {console.log(data);navigate(`/checkout?amount=${price}&plan=${currentTab}`)})
+  }
   return (
     <SubscibeWrapper>
       <HeadingSection>
@@ -97,7 +115,7 @@ function Subscribe() {
                       <p>per {tab.tabTitle === "Yearly" ? "year" : "month"}</p>
                       <span>$</span>
                     </div>
-                    <img src={AddCircle} alt="icon" />
+                    <img src={AddCircle} alt="icon" onClick={() => {setPrice((pre) => Number(pre) + 1)}}/>
                   </div>
                   <div className="input-range">
                     <div>
@@ -119,7 +137,7 @@ function Subscribe() {
         </CardBody>
       </div>
       <SubmitButton>
-        <button onClick={() => {navigate(`/checkout?amount=${price}&plan=${currentTab}`)}}>Select</button>
+        <button onClick={() => savePlan()}>Select</button>
       </SubmitButton>
     </SubscibeWrapper>
   );

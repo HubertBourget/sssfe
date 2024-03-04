@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import CardIcon from "../../assets/credit-card.svg";
 import CheckIcon from "../../assets/check.svg";
 
 const MangePlan = () => {
+  const [planDetails, setPlanDetails] = useState({amount: 0, plan: null})
+
+  function fetchPlans(userId) {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/get-plan/${userId}`)
+      .then((res) => res.json())
+      .then((data) => {setPlanDetails({amount:data.plan.amount, plan: data.plan.type}); console.log(data)});
+  }
+  useEffect(() => {
+    fetchPlans('65e073195bdcf11766875821')
+  },[])
   return (
     <MangePlanWrapper>
       <h1>Manage your plan</h1>
@@ -13,7 +23,7 @@ const MangePlan = () => {
           <div className="flexible-plan-card">
             <h2>Flexible Plan</h2>
             <p>
-              <sup>$</sup>120<span>per year</span>
+              {planDetails.amount > 0 ? <><sup>$</sup>{planDetails.amount}<span>per {planDetails.plan}</span></>: <><sup>$</sup>0</> }
             </p>
           </div>
           <div className="flexible-content">
@@ -32,14 +42,14 @@ const MangePlan = () => {
               </li>
             </ul>
           </div>
-          <Link to="" className="PlanCta">
+          <Link to="/make-order" className="PlanCta">
             Change plan
           </Link>
         </MngePlanRight>
         <MangePlanLeft>
           <div className="header">
             <h2>Payment</h2>
-            <p>Your next bill is for $120 on January 24, 2024.</p>
+            <p>Your next bill is for ${planDetails.amount || '0'} on January 24, 2024.</p>
           </div>
           <div className="payment-url">
             <img src={CardIcon} alt="card-icon" />
@@ -47,7 +57,7 @@ const MangePlan = () => {
               Visa ending in 8643<p> Expires: 07/2027</p>
             </p>
           </div>
-          <Link to="">Update payment method</Link>
+          <Link to="/save-card">Update payment method</Link>
         </MangePlanLeft>
       </ManagePlanMain>
     </MangePlanWrapper>
