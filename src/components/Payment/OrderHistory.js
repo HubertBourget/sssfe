@@ -33,7 +33,6 @@ const OrderHistory = () => {
           </tr>
          
           {orders?.map((order) => {
-            console.log(order)
             return (
               <tr>
                 <td>{new Date(order.time).toLocaleDateString('en-US', options)}</td>

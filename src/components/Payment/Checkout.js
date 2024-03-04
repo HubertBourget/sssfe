@@ -49,6 +49,7 @@ fetch(`${process.env.REACT_APP_API_BASE_URL}/api/getTilopayToken`)
         subscription: 1,
         capture: 0,
         redirect: "http://localhost:3000/checkout-result",
+        returnData: amount
       });
       console.log(initialize);
       setMethods(initialize.methods);

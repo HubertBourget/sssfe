@@ -8,6 +8,7 @@ const CheckoutResult = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const code = queryParams.get("code");
     const order = queryParams.get("order");
+    const amount = queryParams.get("returnData");
     if(code === '1'){
       fetch(`${process.env.REACT_APP_API_BASE_URL}/api/saveOrder`, {
         method: "POST",
@@ -17,7 +18,7 @@ const CheckoutResult = () => {
         },
         body: JSON.stringify({
           userId: '65e073195bdcf11766875821',
-          amount: 100,
+          amount: amount,
           status: 'Paid',
           description: order
         }),
