@@ -6,6 +6,7 @@ import MasterCard from "../../assets/mastercard.svg";
 import CardIcon2 from "../../assets/credit-card-gray.svg";
 import Polygon from "../../assets/Polygon-9.svg";
 import CVV from "../../assets/CVV.svg";
+import { encryptData } from "../../utils/encryption";
 
 function SaveCard() {
   const [toggle, setToggle] = useState(false);
@@ -41,8 +42,12 @@ function SaveCard() {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          ...formData,
-          cardCompany,
+          nameOnCard: encryptData(formData.nameOnCard),
+          card: encryptData(formData.card),
+          cardCompany: encryptData(cardCompany),
+          expire: encryptData(formData.expire),
+          cvv: encryptData(formData.cvv),
+          userId: formData.userId
         }),
       })
         .then((res) => res.json())
@@ -86,7 +91,7 @@ function SaveCard() {
                 </div>
                 <div className="middle-content">
                   <p>{card.cardCompany}</p>
-                  <span>{`.... ${card?.card?.slice(-4)} | ${
+                  <span>{`.... ${card.card} | ${
                     card.expire
                   }`}</span>
                 </div>
@@ -334,7 +339,7 @@ const PaymentDetails = styled.div`
       gap: 20px;
       justify-content: space-between;
       max-width: 100%;
-      
+
       img {
         width: 30px;
         height: 30px;
