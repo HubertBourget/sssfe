@@ -3,7 +3,6 @@ import styled from "styled-components";
 import ThankYou from "../../assets/icon-thanks.svg";
 
 const CheckoutResult = () => {
-  
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const code = queryParams.get("code");
@@ -20,6 +19,24 @@ const CheckoutResult = () => {
           userId: '65e073195bdcf11766875821',
           amount: amount,
           status: 'Paid',
+          description: order
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
+    }else{
+      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/saveOrder`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          userId: '65e073195bdcf11766875821',
+          amount: amount,
+          status: 'Failed',
           description: order
         }),
       })

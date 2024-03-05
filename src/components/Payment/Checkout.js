@@ -1,69 +1,29 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CheckIcon from "../../assets/check.svg";
 import Visa from "../../assets/visa.svg";
 import American from "../../assets/american-express.svg";
 import MasterCard from "../../assets/mastercard.svg";
-import CVV from "../../assets/CVV.svg";
+import CardIcon2 from "../../assets/credit-card-gray.svg";
+import TilopayPaymentForm from "./TilopayPaymentForm";
 
 const Checkout = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const amount = queryParams.get("amount");
-  const [paymentMethods, setMethods] = useState([]);
-  const card = useRef('')
+  const [cards, setCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState({index: 0, cardId: ''})
   const plan = queryParams.get("plan") === "1" ? "Year" : "Month";
-  const [formData, setFormData] = useState({
-    card: "",
-    expire: "",
-    cvv: "",
-    nameOnCard: "",
-    userId: "65e073195bdcf11766875821",
-  });
-  const tilopay = useRef(null);
   useEffect(() => {
-    exicuteScript();
+    fetchCards('65e073195bdcf11766875821');
   }, []);
-  const exicuteScript = async () => {
-    const tilopayObj = window.Tilopay;
-    tilopay.current = tilopayObj;
-    if (tilopayObj) {
-fetch(`${process.env.REACT_APP_API_BASE_URL}/api/getTilopayToken`)
-        .then((res) => res.json())
-        .then(async (data) => {
-      let initialize = await tilopayObj.Init({
-        token: data.token,
-        currency: "USD",
-        language: "en",
-        amount: amount,
-        orderNumber: (Math.random() * 1000).toFixed(0),
-        billToFirstName: "firstName",
-        billToLastName: "lastName",
-        billToAddress: "San Jose",
-        billToAddress2: "sdfd",
-        billToCity: "adf",
-        billToState: "sfsfd",
-        billToEmail: "namne@gmail.com",
-        billToZipPostCode: "353545",
-        billToCountry: "CR",
-        billToTelephone: "42343242344",
-        subscription: 1,
-        capture: 0,
-        redirect: "http://localhost:3000/checkout-result",
-        returnData: amount
-      });
-      console.log(initialize);
-      setMethods(initialize.methods);
-});
-    } else {
-      console.error("Function not available");
-    }
-  };
-  const onSubmit = async (event) => {
-    event.preventDefault();
 
-      const payment = await tilopay.current.startPayment();
-      console.log(payment);
-     };
+
+  function fetchCards(userId) {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/getAllCards/${userId}`)
+      .then((res) => res.json())
+      .then((data) => {setCards(data.cards);setSelectedCard({index: 0, cardId: data.cards[0]._id})});
+  }
+ 
   return (
     <MangePlanWrapper>
       <div>
@@ -104,91 +64,57 @@ fetch(`${process.env.REACT_APP_API_BASE_URL}/api/getTilopayToken`)
           <img src={MasterCard} alt="icon" />
           <img src={American} alt="icon" />
         </CardLogo>
-        <PaymentDetails>
-          <h2>Payment details</h2>
-
-            <div className="payFormTilopay form-wrapper">
-              <select name="tlpy_payment_method" id="tlpy_payment_method" style={{display: 'none'}}>
-                {paymentMethods.map((method) => (
-                    <option value={method.id} key={method.id}>{method.name}</option>
-                ))}
-                {/* <option value="">Select payment method</option> */}
-              </select>
-
-              <div className="form-group">
-                <label className="label">Card number</label>
-                <input
-                  type="text"
-                  id="tlpy_cc_number"
-                  name="tlpy_cc_number"
-                //   ref={card}
-                  placeholder="1234 1234 1234 1234"
-                  onChange={(event) => {
-                    setFormData({ ...formData, card: event.target.value });
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <label>Name on card</label>
-                <input
-                  type="text"
-                  placeholder="Your full name"
-                  value={formData.nameOnCard}
-                  onChange={(event) => {
-                    setFormData({
-                      ...formData,
-                      nameOnCard: event.target.value,
-                    });
-                  }}
-                />
-              </div>
-              <div className="flex-col">
-                <div className="form-group">
-                  <label>Expiry</label>
-                  <input
-                    type="text"
-                    placeholder="MM/YY"
-                    value={formData.expire}
-                    id="tlpy_cc_expiration_date"
-                    name="tlpy_cc_expiration_date"
-                    onChange={(event) => {
-                      let newValue = event.target.value;
-
-                      newValue = newValue.replace(/\D/g, "");
-
-                      newValue = newValue.slice(0, 4);
-
-                      if (newValue.length >= 2) {
-                        newValue = `${newValue.slice(0, 2)}/${newValue.slice(2)}`;
-                      }
-                      setFormData({
-                        ...formData,
-                        expire: newValue,
-                      });
-                    }}
+        <MyCards>
+        {cards.length > 0 ? (
+          cards.map((card, index) => {
+            return (
+              <div className="card-tab" key={card._id} onClick={() => setSelectedCard({index: index,cardId: card._id})}>
+                <input type="radio"  checked={index === selectedCard.index ? true: false}></input>
+                <div className="visa-img">
+                  <img
+                    src={
+                      card.cardCompany === "visa"
+                        ? Visa
+                        : card.cardCompany === "mastercard"
+                        ? MasterCard
+                        : American
+                    }
+                    alt="card type"
                   />
                 </div>
-                <div className="form-group">
-                  <label>CVV</label>
-                  <input
-                    type="text"
-                    placeholder="cvv"
-                    id="tlpy_cvv"
-                    name="tlpy_cvv"
-                    value={formData.cvv}
-                    onChange={(event) => {
-                      setFormData({ ...formData, cvv: event.target.value });
-                    }}
-                  />
-                  <img src={CVV} alt="icon" />
+                <div className="middle-content">
+                  <p>{card.cardCompany}</p>
+                  <span>{`.... ${card.card} | ${
+                    card.expire
+                  }`}</span>
                 </div>
+              
+                
               </div>
+            );
+          })
+        ) : (
+          <p style={{color: 'red'}}>Any card is not saved</p>
+        )}
+        </MyCards>
+          <div onClick={() => setSelectedCard({index: -1, cardId: ''})}>
+          <AddCardTab>
+            <input type="radio" checked={-1 === selectedCard.index ? true: false}></input>
+            <div className="wallet-img">
+              <img src={CardIcon2} alt="visa" />
             </div>
-            <div id="responseTilopay"></div>
-            <button to="" className="PlanCta" onClick={onSubmit} type="submit">
-              Complete Purchase
-            </button>
-        </PaymentDetails>
+            <div className="middle-content">
+              <span>.... 0000 | MM/YY</span>
+            </div>
+
+            <div className="card-cta" >
+              <button>New Card</button>
+            </div>
+          </AddCardTab>
+          </div>
+        
+        {/* )} */}
+         <TilopayPaymentForm selectedCard={selectedCard}/>
       </AddCardDetails>
     </MangePlanWrapper>
   );
@@ -287,85 +213,81 @@ const AddCardDetails = styled.div`
 `;
 const CardLogo = styled.div``;
 
-const PaymentDetails = styled.div`
-  h2 {
-    font-size: 24px;
-    font-weight: 500;
+const AddCardTab = styled.div`
+  padding: 17px 10px;
+  width: 610px;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  @media (max-width: 767px) {
+    max-width: calc(100% - 20px);
   }
-  .form-wrapper {
-    display: flex;
-    flex-direction: column;
-    .flex-col {
-      display: flex;
-      gap: 20px;
-      justify-content: space-between;
-      max-width: 100%;
-     
-      img {
-        width: 30px;
-        height: 30px;
-        position: absolute;
-        right: 12px;
-        top: 38px;
-      }
+  .middle-content {
+    width: 78%;
+    @media (max-width: 767px) {
+      width: 100%;
     }
-    .form-group {
-      margin-bottom: 20px;
-      position: relative;
-      width:100%;
-      text-align:center;
-      label {
-        display: block;
-        font-size: 14px;
-        font-weight: 400;
-        margin-bottom: 10px;
-        text-align:left;
-      }
-      input {
-        height: 50px;
-        border: 1px solid #d9d9d9;
-        padding: 5px 15px;
-        font-size: 16px;
-        font-weight: 400;
-        width: 100%;
-        box-sizing: border-box;
-        &::placeholder {
-          color: #d9d9d9 !important;
-        }
-      }
-    }
-    .checkbox-outer {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      input {
-        width: 40px;
-        height: 20px;
-        cursor: pointer;
-      }
-      label {
-        cursor: pointer;
-        font-size: 16px;
-        margin-bottom: 0 !important;
-      }
+    span {
+      font-size: 16px;
+      line-height: 20px;
+      font-weight: 500;
+      color: #616567;
     }
   }
-  .card-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 20px;
-    margin: 30px 0;
+  .card-cta {
     button {
-      border: 1px solid #434289;
-      height: 50px;
-      min-width: 133px;
+      background: transparent;
+      color: rgb(67, 66, 137);
+      padding: 0;
+      height: auto;
+      font-size: 16px;
+      font-weight: 700;
     }
-    .cancel-btn {
-      background-color: transparent;
-      color: #434289;
+  }
+`;
+
+const MyCards = styled.div`
+  margin-top: 78px;
+  h1 {
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 700;
+  }
+  .card-tab {
+    padding: 17px 10px;
+    width: 610px;
+    border: 1px solid #d9d9d9;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    @media (max-width: 767px) {
+      max-width: calc(100% - 20px);
     }
-    .save-btn {
-      box-shadow: 0px 4px 4px 0px #00000040;
+    .middle-content {
+      width: 89%;
+      p {
+        margin: 0;
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 400;
+      }
+      span {
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 700;
+        display: block;
+        margin-top: 10px;
+      }
+    }
+    .arrow-img {
+      img {
+        cursor: pointer;
+      }
     }
   }
 `;
