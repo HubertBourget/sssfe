@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
+import React, { useEffect, useRef } from 'react';v
+import ReactPlayer from 'react-player';
 
 const VideoStreaming = () => {
     const videoRef = useRef();
@@ -22,9 +21,16 @@ const VideoStreaming = () => {
     }, [streamUrl]);
 
     return (
-        <div data-vjs-player>
-            <video ref={videoRef} className="video-js" controls />
-        </div>
+    <div className='player-wrapper'>
+        <ReactPlayer
+            url={streamUrl}
+            className='react-player'
+            playing
+            controls
+            width='100%'
+            height='100%'
+        />
+    </div>
     );
 };
 
