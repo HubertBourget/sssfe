@@ -14,7 +14,7 @@ const VideoStreaming = ({ initialStreamUrl }) => {
 
         // Simulating a response with a timeout
         setTimeout(() => {
-            const simulatedResponseUrl = "https://stream.mux.com/RVWRe01pJejwTUnAQ4YftfCNHQnP9f700fc2LNGIZon7o.m3u8";
+            const simulatedResponseUrl = "https://stream.mux.com/jtWsSvIKOwsShwND2dxoKqOZ8xjgGO3lj67QC1rfYzE.m3u8";
             setStreamUrl(simulatedResponseUrl);
         }, 1000); // Simulate network request delay
         };
