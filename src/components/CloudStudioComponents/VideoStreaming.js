@@ -6,7 +6,7 @@ const VideoStreaming = () => {
     const videoRef = useRef();
     
     // Replace YOUR_PLAYBACK_ID with the actual playbackId provided by Mux
-    const streamUrl = "https://stream.mux.com/GziSG02lsouwBJQOc029kU52exgSp9l00iGOEEDwLX01bg00.m3u8";
+    const streamUrl = "https://stream.mux.com/RVWRe01pJejwTUnAQ4YftfCNHQnP9f700fc2LNGIZon7o.m3u8";
 
     useEffect(() => {
         const player = videojs(videoRef.current, { fluid: true });
