@@ -12,6 +12,7 @@ import VideoPlayer from './components/CloudStudioComponents/VideoPlayer';
 import ModifyAlbum from './components/CloudStudioComponents/ModifyAlbum';
 import NowPlaying from './pageComponents/NowPlaying';
 import Search from './components/CloudStudioComponents/Search';
+import VideoStreaming from './components/CloudStudioComponents/VideoStreaming';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
