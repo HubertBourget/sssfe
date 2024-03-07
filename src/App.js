@@ -30,6 +30,7 @@ const App = () => {
         <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
         <Route exact path="/now-playing" element={<NowPlaying />} />
         <Route exact path="/search/:searchQuery" element={<Search/>}/>
+        <Route exact path="/stream" element={<VideoStreaming/>}/>
       </Routes>
     </BrowserRouter>
   );
