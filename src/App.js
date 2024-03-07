@@ -12,6 +12,10 @@ import VideoPlayer from './components/CloudStudioComponents/VideoPlayer';
 import ModifyAlbum from './components/CloudStudioComponents/ModifyAlbum';
 import NowPlaying from './pageComponents/NowPlaying';
 import Search from './components/CloudStudioComponents/Search';
+import Library from './pageComponents/Library';
+import Sidebar from './components/Sidebar';
+import Artist from './pageComponents/Artist';
+import TrackPage from './pageComponents/Track';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -30,6 +34,11 @@ const App = () => {
         <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
         <Route exact path="/now-playing" element={<NowPlaying />} />
         <Route exact path="/search/:searchQuery" element={<Search/>}/>
+        <Route exact path="/main" element={<Sidebar/>}>
+          <Route exact path="library" element={<Library/>}/>
+          <Route exact path="artist" element={<Artist/>}/>
+          <Route exact path="track" element={<TrackPage/>}/>
+        </Route>
       </Routes>
     </BrowserRouter>
   );

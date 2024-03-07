@@ -17,22 +17,28 @@ const Dashboard = ({ user }) => {
                     console.log("recoResponse: ", recoResponse )
                     const videoIds = recoResponse.data.recomms.map(recomm => recomm.id);
                     console.log("VideoIds: ", videoIds);
-
-                    const videosData = await Promise.all(videoIds.map(async (id) => {
+                    const list = []
+                    await Promise.allSettled(videoIds.map(async (id) => {
                         const videoResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${id}`);
                         const videoData = videoResp.data;
                         console.log("videoData: ", videoData);
-
                         const userResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getUserProfile/${videoData.owner}`);
                         const userData = userResp.data;
+                        if(videoData){
+                            list.push({
+                                ...videoData,
+                                accountName: userData.accountName // Assume this field exists in your user response
+                            })
+                        }
 
                         return {
                             ...videoData,
                             accountName: userData.accountName // Assume this field exists in your user response
                         };
                     }));
-
-                    setVideos(videosData);
+                    
+                    console.log("🚀 ~ fetchRecommendations ~ list:", list)
+                    setVideos(list);
                 }
             } catch (error) {
                 console.error(error);
@@ -50,7 +56,7 @@ const Dashboard = ({ user }) => {
             <h1 style={{ marginBottom: '10vh' }}>Dashboard</h1>
             <h2 style={{ marginBottom: '3vh', fontWeight:'400' }}>Lastest Content</h2>
             <CardContainer>
-                {videos.map((video, index) => (
+                {videos?.map((video, index) => (
                     <Card 
                         key={index} 
                         style={{ 
@@ -59,7 +65,7 @@ const Dashboard = ({ user }) => {
                             backgroundSize: 'cover',
                             backgroundPosition: 'center'
                         }} 
-                        onClick={() => handleCardClick(video.videoId)} // Pass video.videoId here
+                        onClick={() => handleCardClick(video._id)} // Pass video.videoId here
                     >
                         <TrackName>{video.title}</TrackName>
                         <ArtistName>{video.accountName}</ArtistName>

@@ -23,9 +23,9 @@ import VideoPlayer from '../components/CloudStudioComponents/VideoPlayer';
 import SacredSoundLogo from '../assets/SacredSoundLogo.png'
 
 export default function NewCloudStudio() {
-    const { user, isAuthenticated } = useAuth0();
-    // const user = { name: "debug9@debug.com" };
-    // const isAuthenticated = true;
+    // const { user, isAuthenticated } = useAuth0();
+    const user = { name: "debug9@debug.com" };
+    const isAuthenticated = true;
 
     //Navigation, viewStates and button flow:
     const [isUploadActive, setIsUploadActive] = useState(false);
