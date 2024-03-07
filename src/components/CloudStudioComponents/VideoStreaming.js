@@ -1,36 +1,47 @@
-import React, { useEffect, useRef } from 'react';v
+import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 
-const VideoStreaming = () => {
-    const videoRef = useRef();
-    
-    // Replace YOUR_PLAYBACK_ID with the actual playbackId provided by Mux
-    const streamUrl = "https://stream.mux.com/RVWRe01pJejwTUnAQ4YftfCNHQnP9f700fc2LNGIZon7o.m3u8";
+const VideoStreaming = ({ initialStreamUrl }) => {
+    const [streamUrl, setStreamUrl] = useState(initialStreamUrl);
 
     useEffect(() => {
-        const player = videojs(videoRef.current, { fluid: true });
-        player.src({
-            src: streamUrl,
-            type: 'application/x-mpegURL',
-        });
-        return () => {
-            if (player) {
-                player.dispose();
-            }
+        // Simulate fetching a stream URL from an API
+        const fetchStreamUrl = async () => {
+        // This is just a placeholder. Replace it with your actual fetch call
+        // For example: const response = await fetch('your-api-endpoint');
+        // const data = await response.json();
+        // setStreamUrl(data.streamUrl);
+
+        // Simulating a response with a timeout
+        setTimeout(() => {
+            const simulatedResponseUrl = "https://stream.mux.com/RVWRe01pJejwTUnAQ4YftfCNHQnP9f700fc2LNGIZon7o.m3u8";
+            setStreamUrl(simulatedResponseUrl);
+        }, 1000); // Simulate network request delay
         };
-    }, [streamUrl]);
+
+        fetchStreamUrl();
+    }, []); // Empty dependency array means this effect runs once on mount
 
     return (
-    <div className='player-wrapper'>
+        <div className='player-wrapper' style={{ position: 'relative', paddingTop: '56.25%' /* 16:9 Aspect Ratio */ }}>
         <ReactPlayer
             url={streamUrl}
-            className='react-player'
-            playing
-            controls
             width='100%'
             height='100%'
+            style={{ position: 'absolute', top: '0', left: '0' }}
+            controls={true}
+            playing={true}
+            light={false}
+            pip={true}
+            config={{
+            file: {
+                attributes: {
+                crossOrigin: 'anonymous',
+                },
+            },
+            }}
         />
-    </div>
+        </div>
     );
 };
 
