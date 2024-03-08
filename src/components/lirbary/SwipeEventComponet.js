@@ -1,16 +1,14 @@
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-// import "swiper/css";
-// import "swiper/css/navigation";
-import video from "../assets/footage.png";
-import music from "../assets/music-file.png";
-import SliderArrow from "../assets/slider-arrow.svg";
+import "swiper/css";
+import "swiper/css/navigation";
+import video from "../../assets/footage.png";
+import music from "../../assets/music-file.png";
+import SliderArrow from "../../assets/slider-arrow.svg";
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import picture from '../assets/picture.png'
+import picture from '../../assets/picture.png'
 export default function SwipeEventComponet({ arr }) {
-  let navigate = useNavigate();
 
   return (
     <Discography>

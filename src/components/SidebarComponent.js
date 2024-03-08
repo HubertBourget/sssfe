@@ -3,8 +3,9 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Link, Outlet } from "react-router-dom";
 import SacredSoundLogo from "../assets/Logo.png";
 import LibraryIcon from "../assets/library-icon.png";
+import Feed from "../assets/Vector.png";
+import Concert from "../assets/Group 189.png";
 import MenuBar from "../assets/menubar.svg";
-
 import styled from "styled-components";
 
 const SidebarComponent = () => {
@@ -40,9 +41,9 @@ const SidebarComponent = () => {
               <img src={LibraryIcon} alt="Upload" /> Lirbary
             </MenuItem>
             <MenuItem component={<Link to="#" />}>
-              <img src={LibraryIcon} alt="Upload" /> Concert Hall</MenuItem>
+              <img src={Concert} alt="Upload" /> Concert Hall</MenuItem>
             <MenuItem component={<Link to="#" />}>
-              <img src={LibraryIcon} alt="Upload" /> Feed</MenuItem>
+              <img src={Feed} alt="Upload" /> Feed</MenuItem>
           </Menu>
         </Sidebar>
 

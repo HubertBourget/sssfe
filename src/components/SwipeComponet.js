@@ -53,7 +53,7 @@ export default function SwipeComponet({ arr }) {
                 <div className="item" id="content-card" onClick={() => handleClick()} style={{ cursor: content.contentType === 'album' ? 'pointer' : 'default' }}>
                   <img src={thumbnail} alt="Disc Thumb"></img>
                   <div style={{marginLeft: 0}}>
-                  <h1 className="slider-trackname">{content.title}</h1>
+                  <h1 className="slider-trackname">{content.contentType !== 'album' ? content.title: content.albumName}</h1>
                   <h1 className="slider-artist">
                    
                     Artist -

@@ -1,25 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
-import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-
-import "swiper/css";
-import "swiper/css/navigation";
-
+import axios from "axios";
 import artistCover from "../assets/artist-cover.png";
 import BackImg from "../assets/back.svg";
 import Share from "../assets/share-android.svg";
 import PersonAdd from "../assets/person-add-outline.svg";
-import Pause from "../assets/pause.svg";
 import Play from "../assets/playicon.svg";
 import Shuffle from "../assets/Shuffle-blue.svg";
 import Thanks from "../assets/thanks.svg";
 import Thumb from "../assets/playlist.jpg";
 import TrackLike from "../assets/track-like.svg";
-import SliderArrow from "../assets/slider-arrow.svg";
 
 export default function Album() {
+  const [album, setAlbum] = useState({})
+  async function fetchAlbum() {
+    const queryParams = new URLSearchParams(window.location.search);
+    const albumId = queryParams.get("id");
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/api/getAlbum/${albumId}`
+    );
+    console.log(response.data)
+    setAlbum(response.data.album);
+  }
+  useEffect(() => {
+    fetchAlbum()
+  }, [])
   return (
     <MainContainer>
       <HeadPart>
@@ -31,10 +36,10 @@ export default function Album() {
         </CoverImage>
         <HeadProfile>
           <ProfileImage>
-            <img src={artistCover} alt="not loaded"></img>
+            <img src={album.selectedImageThumbnail} alt="not loaded"></img>
             <div className="artist-info">
-              <span>Artist</span>
-              <h3>Sound of Light</h3>
+              <span>Album</span>
+              <h3>{album.albumName}</h3>
               <span># Followers</span>
             </div>
           </ProfileImage>
@@ -48,8 +53,7 @@ export default function Album() {
       <MusicInfo>
         <div>
           <h5 className="music-disc">
-            Sound of light is a Sacred Medicine Music community and School,
-            based on the forest of Costa Rica.
+           {album.description}
           </h5>
         </div>
         <div className="music-play">
@@ -76,41 +80,33 @@ export default function Album() {
           <h1>Spot Light</h1>
         </HeadingText>
 
-        <div className="track-bar active">
-          <div className="track-left">
-            <div className="icon-number">
-              <img src={Play} className="track-icon" alt="track-icon"></img>
-              {/* <h5>01</h5> */}
+        {album?.tracksArray?.length > 0 ? album?.tracksArray?.map((element, index) => (
+          <div className="track-bar active" key={element._id}>
+            <div className="track-left">
+              <div className="icon-number">
+                {/* <img src={Play} className="track-icon" alt="track-icon"></img> */}
+                <h5>{index + 1}</h5>
+              </div>
+              <img
+                className="track-thumb"
+                src={
+                  element.selectedImageThumbnail
+                    ? element.selectedImageThumbnail
+                    : Thumb
+                }
+                alt="track-thumb"
+              ></img>
+              <div className="flex-line">
+                <h5 className="track-title">{element.title}</h5>
+                <h5 className="album-title">{album.albumName}</h5>
+              </div>
             </div>
-            <img className="track-thumb" src={Thumb} alt="track-thumb"></img>
-            <div className="flex-line">
-              <h5 className="track-title">Track title</h5>
-              <h5 className="album-title">Album title</h5>
-            </div>
-          </div>
-          <div className="track-right">
-            <h5 className="track-time">02:36</h5>
-            <img src={TrackLike} alt="track-like"></img>
-          </div>
-        </div>
-
-        <div className="track-bar">
-          <div className="track-left">
-            <div className="icon-number">
-              {/* <img src={Play} className="track-icon" alt="track-icon"></img> */}
-              <h5>02</h5>
-            </div>
-            <img className="track-thumb" src={Thumb} alt="track-thumb"></img>
-            <div className="flex-line">
-              <h5 className="track-title">Track title</h5>
-              <h5 className="album-title">Album title</h5>
+            <div className="track-right">
+              <h5 className="track-time">02:36</h5>
+              <img src={TrackLike} alt="track-like"></img>
             </div>
           </div>
-          <div className="track-right">
-            <h5 className="track-time">02:36</h5>
-            <img src={TrackLike} alt="track-like"></img>
-          </div>
-        </div>
+        )): <p>This album has not any track</p>}
       </FeaturedTracks>
 
      

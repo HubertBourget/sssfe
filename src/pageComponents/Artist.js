@@ -15,7 +15,7 @@ import TrackLike from "../assets/track-like.svg";
 import SliderArrow from "../assets/slider-arrow.svg";
 import axios from "axios";
 import SwipeComponet from "../components/SwipeComponet";
-import SwipeEventComponet from "../components/SwipeEventComponet";
+import SwipeEventComponet from "../components/lirbary/SwipeEventComponet";
 
 export default function Artist() {
   const [artist, setArtist] = useState({});
