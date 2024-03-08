@@ -150,7 +150,7 @@ const PlayerFooter = styled.div`
   justify-content: space-between;
   background-color: #000;
   padding: 20px 15px;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: auto;
   left: 0;
@@ -452,7 +452,7 @@ const VolumeBar = styled.div`
 `;
 
 const TimelineTime = styled.div`
-  position: absolute;
+  position: fixed;
   width: 100%;
   bottom: 90px;
   z-index: 99;

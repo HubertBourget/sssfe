@@ -13,34 +13,39 @@ import ModifyAlbum from './components/CloudStudioComponents/ModifyAlbum';
 import NowPlaying from './pageComponents/NowPlaying';
 import Search from './components/CloudStudioComponents/Search';
 import Library from './pageComponents/Library';
-import Sidebar from './components/Sidebar';
+import SidebarComponent from './components/SidebarComponent';
 import Artist from './pageComponents/Artist';
 import TrackPage from './pageComponents/Track';
+import Album from './pageComponents/Album';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
   return (
+    <>
+      <BrowserRouter>
+        <GlobalStyle></GlobalStyle>
+        <Routes>
+          <Route exact path="/" element={<HomePage />} />
+          <Route exact path="/profile/:artistId" element={<ArtistProfilePage />} />
+          <Route exact path="/prepareForQA/:videoId" element={<ModifySingleTrackComponent />} />
+          <Route exact path="/studio" element={<NewCloudStudio />} />
+          <Route exact path="/create" element={<ArtistLandingPage />} />
+          <Route exact path="/AccountNameSelection" element={<AccountNameSelection />} />
+          <Route exact path="/play/:videoId" element={<VideoPlayer />} />
+          <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
+          <Route exact path="/now-playing" element={<NowPlaying />} />
+          <Route exact path="/search/:searchQuery" element={<Search/>}/>
+          <Route exact path="/main" element={<SidebarComponent/>}>
+            <Route exact path="library" element={<Library/>}/>
+            <Route exact path="artist" element={<Artist/>}/>
+            <Route exact path="track" element={<TrackPage/>}/>
+            <Route exact path="album" element={<Album/>}/>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+      {/* <NowPlaying/> */}
+    </>
 
-    <BrowserRouter>
-      <GlobalStyle></GlobalStyle>
-      <Routes>
-        <Route exact path="/" element={<HomePage />} />
-        <Route exact path="/profile/:artistId" element={<ArtistProfilePage />} />
-        <Route exact path="/prepareForQA/:videoId" element={<ModifySingleTrackComponent />} />
-        <Route exact path="/studio" element={<NewCloudStudio />} />
-        <Route exact path="/create" element={<ArtistLandingPage />} />
-        <Route exact path="/AccountNameSelection" element={<AccountNameSelection />} />
-        <Route exact path="/play/:videoId" element={<VideoPlayer />} />
-        <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
-        <Route exact path="/now-playing" element={<NowPlaying />} />
-        <Route exact path="/search/:searchQuery" element={<Search/>}/>
-        <Route exact path="/main" element={<Sidebar/>}>
-          <Route exact path="library" element={<Library/>}/>
-          <Route exact path="artist" element={<Artist/>}/>
-          <Route exact path="track" element={<TrackPage/>}/>
-        </Route>
-      </Routes>
-    </BrowserRouter>
   );
 }
 

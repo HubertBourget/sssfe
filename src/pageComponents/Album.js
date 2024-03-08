@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
+
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+
 import "swiper/css";
 import "swiper/css/navigation";
 
+import artistCover from "../assets/artist-cover.png";
 import BackImg from "../assets/back.svg";
 import Share from "../assets/share-android.svg";
 import PersonAdd from "../assets/person-add-outline.svg";
@@ -13,98 +18,8 @@ import Thanks from "../assets/thanks.svg";
 import Thumb from "../assets/playlist.jpg";
 import TrackLike from "../assets/track-like.svg";
 import SliderArrow from "../assets/slider-arrow.svg";
-import axios from "axios";
-import SwipeComponet from "../components/SwipeComponet";
-import SwipeEventComponet from "../components/SwipeEventComponet";
 
-export default function Artist() {
-  const [artist, setArtist] = useState({});
-  const [featured, setFeatured] = useState([]);
-  const [tab, setTab] = useState(0);
-  const [contents, setContent] = useState([]);
-  const [events, setEvents] = useState([]);
-  async function fetchArtist() {
-    const queryParams = new URLSearchParams(window.location.search);
-    const artistId = queryParams.get("id");
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_BASE_URL}/api/getUserProfileById/${artistId}`
-    );
-    setArtist(response.data);
-  }
-  useEffect(() => {
-    fetchArtist();
-  }, []);
-  useEffect(() => {
-    fetchEvents();
-    fetchFeatured();
-  }, [artist]);
-  useEffect(() => {
-    fetchContent();
-  }, [tab, artist]);
-
-  const fetchContent = async () => {
-    try {
-      let type;
-      if (tab === 1) type = "video";
-      else if (tab === 2) type = "audio";
-      else if (tab === 0) type = "album";
-      if (tab !== 0) {
-        let url = `${process.env.REACT_APP_API_BASE_URL}/api/getAllContent?type=${type}`;
-
-        const response = await axios.get(url);
-        if (response.status === 200) {
-          response.data = response.data.map((ele) => {return {...ele, contentType: type}});
-          setContent(response.data);
-        } else {
-          console.error(`Request failed with status: ${response.status}`);
-        }
-      } else {
-        let url = `${process.env.REACT_APP_API_BASE_URL}/api/getAlbumsByArtist?artistId=${artist.email}`;
-
-        const response = await axios.get(url);
-        response.data = response.data.map((ele) => {return {...ele, contentType: type}});
-        if (response.status === 200) {
-          setContent(response.data);
-        } else {
-          console.error(`Request failed with status: ${response.status}`);
-        }
-      }
-    } catch (error) {
-      console.error(`An error occurred: ${error}`);
-    }
-  };
-  const fetchFeatured = async () => {
-    try {
-      let url = `${process.env.REACT_APP_API_BASE_URL}/api/getFeaturedByArtist?artistId=${artist.email}`;
-
-      const response = await axios.get(url);
-      if (response.status === 200) {
-        console.log(response.data);
-        setFeatured(response.data)
-      } else {
-        console.error(`Request failed with status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error(`An error occurred: ${error}`);
-    }
-  };
-
-  const fetchEvents = async () => {
-    try {
-      let url = `${process.env.REACT_APP_API_BASE_URL}/api/getEvents/${artist._id}`;
-
-      const response = await axios.get(url);
-      if (response.status === 200) {
-        console.log(response.data);
-        setEvents(response.data.events);
-      } else {
-        console.error(`Request failed with status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error(`An error occurred: ${error}`);
-    }
-  };
-
+export default function Album() {
   return (
     <MainContainer>
       <HeadPart>
@@ -112,14 +27,14 @@ export default function Artist() {
           <img src={BackImg} alt="not loaded"></img>
         </BackIcon>
         <CoverImage>
-          <img src={artist.bannerImageUrl} alt="not loaded"></img>
+          <img src={artistCover} alt="not loaded"></img>
         </CoverImage>
         <HeadProfile>
           <ProfileImage>
-            <img src={artist.profileImageUrl} alt="not loaded"></img>
+            <img src={artistCover} alt="not loaded"></img>
             <div className="artist-info">
               <span>Artist</span>
-              <h3>{artist.artistTitle}</h3>
+              <h3>Sound of Light</h3>
               <span># Followers</span>
             </div>
           </ProfileImage>
@@ -132,7 +47,10 @@ export default function Artist() {
 
       <MusicInfo>
         <div>
-          <h5 className="music-disc">{artist.bio}</h5>
+          <h5 className="music-disc">
+            Sound of light is a Sacred Medicine Music community and School,
+            based on the forest of Costa Rica.
+          </h5>
         </div>
         <div className="music-play">
           <div className="music-icons">
@@ -155,78 +73,56 @@ export default function Artist() {
 
       <FeaturedTracks>
         <HeadingText>
-          <h1>Featured tracks</h1>
+          <h1>Spot Light</h1>
         </HeadingText>
-        {featured.map((element, index) => (
-          <div className="track-bar active" key={element._id}>
-            <div className="track-left">
-              <div className="icon-number">
-                {/* <img src={Play} className="track-icon" alt="track-icon"></img> */}
-                <h5>{index + 1}</h5>
-              </div>
-              <img
-                className="track-thumb"
-                src={
-                  element.selectedImageThumbnail
-                    ? element.selectedImageThumbnail
-                    : Thumb
-                }
-                alt="track-thumb"
-              ></img>
-              <div className="flex-line">
-                <h5 className="track-title">{element.title}</h5>
-                <h5 className="album-title">Album title</h5>
-              </div>
+
+        <div className="track-bar active">
+          <div className="track-left">
+            <div className="icon-number">
+              <img src={Play} className="track-icon" alt="track-icon"></img>
+              {/* <h5>01</h5> */}
             </div>
-            <div className="track-right">
-              <h5 className="track-time">02:36</h5>
-              <img src={TrackLike} alt="track-like"></img>
+            <img className="track-thumb" src={Thumb} alt="track-thumb"></img>
+            <div className="flex-line">
+              <h5 className="track-title">Track title</h5>
+              <h5 className="album-title">Album title</h5>
             </div>
           </div>
-        ))}
-      </FeaturedTracks>
-      <HeadingText>
-        <h1>Discography</h1>
-      </HeadingText>
-      <Tabs>
-        <button
-          className={`btn btn-tab ${tab === 0 ? "active" : ""}`}
-          onClick={() => setTab(0)}
-        >
-          Albums
-        </button>
-        <button
-          className={`btn btn-tab ${tab === 1 ? "active" : ""}`}
-          onClick={() => setTab(1)}
-        >
-          Videos
-        </button>
-        <button
-          className={`btn btn-tab ${tab === 2 ? "active" : ""}`}
-          onClick={() => setTab(2)}
-        >
-          Audio
-        </button>
-      </Tabs>
-      <SwipeComponet arr={contents}></SwipeComponet>
+          <div className="track-right">
+            <h5 className="track-time">02:36</h5>
+            <img src={TrackLike} alt="track-like"></img>
+          </div>
+        </div>
 
-      <HeadingText>
-        <h1>Upcoming Events</h1>
-      </HeadingText>
-      <Events>
-        <SwipeEventComponet arr={events} />
-      </Events>
+        <div className="track-bar">
+          <div className="track-left">
+            <div className="icon-number">
+              {/* <img src={Play} className="track-icon" alt="track-icon"></img> */}
+              <h5>02</h5>
+            </div>
+            <img className="track-thumb" src={Thumb} alt="track-thumb"></img>
+            <div className="flex-line">
+              <h5 className="track-title">Track title</h5>
+              <h5 className="album-title">Album title</h5>
+            </div>
+          </div>
+          <div className="track-right">
+            <h5 className="track-time">02:36</h5>
+            <img src={TrackLike} alt="track-like"></img>
+          </div>
+        </div>
+      </FeaturedTracks>
+
+     
     </MainContainer>
   );
 }
 
-const Events = styled.div``;
 const MainContainer = styled.div`
   min-height: 100vh;
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100vh;
   overflow-x: hidden;
 `;
 const HeadPart = styled.div`
@@ -310,7 +206,6 @@ const ProfileImage = styled.div`
     width: 175px;
     height: 175px;
     object-fit: cover;
-    border-radius: 50%;
     @media (max-width: 767px) {
       position: absolute;
       top: -190px;
@@ -433,7 +328,6 @@ const MusicInfo = styled.div`
 
 const HeadingText = styled.div`
   h1 {
-    margin-left: 2%;
     font-size: 24px;
     font-weight: 400;
   }
@@ -501,7 +395,7 @@ const FeaturedTracks = styled.div`
       gap: 40px;
       @media (max-width: 767px) {
         gap: 20px;
-      }
+        }
       img {
         cursor: pointer;
       }
@@ -509,28 +403,3 @@ const FeaturedTracks = styled.div`
   }
 `;
 
-const Tabs = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 0;
-  margin-left: 2%;
-  @media (max-width: 575px) {
-    gap: 10px;
-    justify-content: space-between;
-  }
-  .btn-tab {
-    height: 40px;
-    background-color: #d9d9d9;
-    color: #434289;
-    transition: all 0.5s ease;
-    @media (max-width: 575px) {
-      padding: 10px 18px;
-    }
-    &:hover,
-    &.active {
-      background-color: #434289;
-      color: #fff;
-    }
-  }
-`;
