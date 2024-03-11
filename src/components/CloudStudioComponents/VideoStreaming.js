@@ -4,6 +4,7 @@ import ReactPlayer from 'react-player';
 const VideoStreaming = ({ initialStreamUrl }) => {
     const [streamUrl, setStreamUrl] = useState(initialStreamUrl);
 
+    //Remove this entire useEffect on implementation, we get the streamUrl through the props:
     useEffect(() => {
         // Simulate fetching a stream URL from an API
         const fetchStreamUrl = async () => {
