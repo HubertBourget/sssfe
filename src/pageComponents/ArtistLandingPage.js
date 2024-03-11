@@ -51,7 +51,7 @@ const ArtistLandingPage = () => {
     
     const thirdSectionStyle = {
         display: 'flex',
-        height: '77.7vh', // Ensure this section is also at least the height of the viewport
+        height: '93vh', // Ensure this section is also at least the height of the viewport
         backgroundColor: '#f8f8f8', // Replace with your desired background color
         padding: '4vw',
         alignItems:'center',
@@ -62,7 +62,7 @@ const ArtistLandingPage = () => {
         backgroundColor: '#A3C4A3',
         width: '50%',
         boxSizing: 'border-box',
-        height:'77.7vh',
+        height:'93vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -79,7 +79,7 @@ const ArtistLandingPage = () => {
         justifyContent: 'center',
         boxSizing: 'border-box',
         backgroundColor: 'transparent',
-        height: '77.7vh'
+        height: '93vh'
     };
 
     const leftTextStyle = {
