@@ -1,7 +1,7 @@
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-// import "swiper/css";
-// import "swiper/css/navigation";
+import "swiper/css";
+import "swiper/css/navigation";
 import video from "../assets/footage.png";
 import music from "../assets/music-file.png";
 import SliderArrow from "../assets/slider-arrow.svg";
@@ -43,7 +43,9 @@ export default function SwipeComponet({ arr }) {
                 const handleClick = () => {
                   if (content.contentType === 'album') {
                       navigate(`/main/album?id=${content._id}`);
-                  } 
+                  }else if(content.contentType !== 'event') {
+                    navigate(`/main/track?id=${content._id}`);
+                  }
                   // else if (content.contentType === 'music' || content.contentType === 'video') {
                   //     play();
                   // }
@@ -58,9 +60,10 @@ export default function SwipeComponet({ arr }) {
                    
                     Artist -
                     <span
-                      onClick={() =>
+                      onClick={(e) =>{
+                        e.stopPropagation()
                         navigate(`/main/artist?id=${content.user._id}`)
-                      }
+                      }}
                       style={{textDecoration: 'underline', cursor: 'pointer'}}
                     >
                       {content.user.accountName}

@@ -10,9 +10,11 @@ import Shuffle from "../assets/Shuffle-blue.svg";
 import Thanks from "../assets/thanks.svg";
 import Thumb from "../assets/playlist.jpg";
 import TrackLike from "../assets/track-like.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function Album() {
   const [album, setAlbum] = useState({})
+  const navigate = useNavigate()
   async function fetchAlbum() {
     const queryParams = new URLSearchParams(window.location.search);
     const albumId = queryParams.get("id");
@@ -29,10 +31,10 @@ export default function Album() {
     <MainContainer>
       <HeadPart>
         <BackIcon>
-          <img src={BackImg} alt="not loaded"></img>
+          <img src={BackImg} alt="not loaded" onClick={() => navigate('/main/library')}></img>
         </BackIcon>
         <CoverImage>
-          <img src={artistCover} alt="not loaded"></img>
+          {/* <img src={artistCover} alt="not loaded"></img> */}
         </CoverImage>
         <HeadProfile>
           <ProfileImage>
@@ -142,6 +144,7 @@ const BackIcon = styled.div`
 const CoverImage = styled.div`
   position: relative;
   z-index: 2;
+  height: 400px;
   &::before {
     content: "";
     position: absolute;

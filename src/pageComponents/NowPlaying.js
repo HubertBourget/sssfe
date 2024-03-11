@@ -1,67 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 import MusicPlayer from "../components/MusicPlayer";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import styled from "styled-components";
-import Banner from "../assets/Image.svg";
-import Banner2 from "../assets/images.jpeg";
-import Banner3 from "../assets/download.jpeg";
-import Banner4 from "../assets/playlist.jpg";
-import MediaControl from "../components/MediaControl";
 import useAudioPlayer from "../Hooks/useAudioPlayer";
 
-const playListData = {
-  time: "",
-  volume: "",
-  muted: false,
-  playing: false,
-  filledHeart: false,
-  loop: false,
-  shuffle: false,
-  albumCoverUrl: "",
-  artistName: "",
-  queue: [],
-  song: [
-    {
-      id: 1,
-      songUrl:
-        "https://onlinetestcase.com/wp-content/uploads/2023/06/1-MB-MP3.mp3",
-      songTitle: "song-1",
-      isVideo: false,
-      img: Banner,
-    },
-    {
-      id: 2,
-      songUrl:
-        "https://cdn.simplecast.com/audio/cae8b0eb-d9a9-480d-a652-0defcbe047f4/episodes/af52a99b-88c0-4638-b120-d46e142d06d3/audio/500344fb-2e2b-48af-be86-af6ac341a6da/default_tc.mp3",
-      songTitle: "song-2",
-      isVideo: false,
-      img: Banner2,
-    },
-    {
-      id: 3,
-      songUrl:
-        "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3",
-      songTitle: "song-3",
-      isVideo: false,
-      img: Banner3,
-    },
-    {
-      id: 4,
-      songUrl:
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-      songTitle: "song-3",
-      isVideo: true,
-      img: Banner4,
-    },
-  ],
-  currentSongIndex: 0,
-  album: null,
-};
+const NowPlayingContext = createContext({});
 
-function NowPlaying() {
-  const [toggle, setToggle] = useState(false);
+const MemoizedComponent = React.memo(({ children }) => {
+  return <>{children}</>
+});
+
+function NowPlaying({ children }) {
   const [smallScreen, setSmallScreen] = useState(false);
-  const handle = useFullScreenHandle();
   const {
     state,
     setState,
@@ -77,7 +26,8 @@ function NowPlaying() {
     playPrev,
     handleShuffle,
     handlePlay,
-  } = useAudioPlayer(playListData);
+    setSongs
+  } = useAudioPlayer();
   useEffect(() => {
     const updateTimeline = () => {
       if (audioRef.current) {
@@ -95,21 +45,29 @@ function NowPlaying() {
     };
   }, [audioRef, setState, state.currentSongIndex, state.song]);
   return (
-    <FullScreenOuter className={smallScreen ? "mini-screen" : ""}>
-      <FullScreen handle={handle}>
-        <MediaControl
-          state={state}
-          audioRef={audioRef}
-          handle={handle}
-          setToggle={setToggle}
-          toggle={toggle}
-          smallScreen={smallScreen}
-          setSmallScreen={setSmallScreen}
-          playNext={playNext}
-          getCurrentTime={getCurrentTime}
-          setState={setState}
-          handlePlay={handlePlay}
-        />
+    <NowPlayingContext.Provider
+      value={{
+        state,
+        setState,
+        audioRef,
+        getCurrentTime,
+        playNext,
+        togglePlay,
+        toggleHeart,
+        handleVolume,
+        handleTimeline,
+        getSongDuration,
+        handleLoop,
+        playPrev,
+        handleShuffle,
+        handlePlay,
+        setSongs
+      }}
+    >
+      <MemoizedComponent>
+        {children}
+      </MemoizedComponent>
+      <MainContainer>
         <MusicPlayer
           audioRef={audioRef}
           setSmallScreen={setSmallScreen}
@@ -125,11 +83,18 @@ function NowPlaying() {
           getSongDuration={getSongDuration}
           handleLoop={handleLoop}
           playPrev={playPrev}
+          handlePlay={handlePlay}
           handleShuffle={handleShuffle}
         />
-      </FullScreen>
-    </FullScreenOuter>
+        </MainContainer>
+    </NowPlayingContext.Provider>
   );
+}
+
+export const usePlayingContext = (cb) => {
+ let val =  useContext(NowPlayingContext);
+ if(cb) val = cb(val);
+ return val
 }
 
 export default NowPlaying;
@@ -233,3 +198,7 @@ const FullScreenOuter = styled.div`
     }
   }
 `;
+
+const MainContainer = styled.div`
+  position: absolute;
+`

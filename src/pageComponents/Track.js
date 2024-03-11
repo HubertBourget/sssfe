@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import artistCover from "../assets/artist-cover.png";
 import BackImg from "../assets/back.svg";
 import Share from "../assets/share-android.svg";
 import PersonAdd from "../assets/person-add-outline.svg";
@@ -8,12 +7,19 @@ import Pause from "../assets/pause.svg";
 import Play from "../assets/playicon.svg";
 import Shuffle from "../assets/Shuffle-blue.svg";
 import Thanks from "../assets/thanks.svg";
-import Thumb from "../assets/playlist.jpg";
 import TrackLike from "../assets/track-like.svg";
 import SliderArrow from "../assets/slider-arrow.svg";
 import axios from 'axios'
+import picture from '../assets/picture.png'
+import { usePlayingContext } from "./NowPlaying";
+import { useNavigate } from "react-router-dom";
+import BackButton from "../components/common/BackButton";
+
 export default function Track() {
   const [track, setTrack] = useState({})
+  const navigate = useNavigate()
+  const [playButton, setPlay] = useState(true)
+  const setSong = usePlayingContext(state=>state.setSongs)
   async function fetchTrack() {
     const queryParams = new URLSearchParams(window.location.search);
     const trackId = queryParams.get("id");
@@ -26,18 +32,29 @@ export default function Track() {
   useEffect(() => {
     fetchTrack()
   }, [])
+
+  const onPlay = () => {
+    setPlay(!playButton)
+    setSong([{
+      id: 1,
+      songUrl:
+       track.fileUrl,
+      songTitle: track.title,
+      isVideo: false,
+      artistName: track.user.accountName,
+      img: track.selectedImageThumbnail,
+    }], 0)
+  }
   return (
     <MainContainer>
       <HeadPart>
-        <BackIcon>
-          <img src={BackImg} alt="not loaded"></img>
-        </BackIcon>
+<BackButton/>
         <CoverImage>
-          <img src={artistCover} alt="not loaded"></img>
+          {/* <img src={artistCover} alt="not loaded"></img> */}
         </CoverImage>
         <HeadProfile>
           <ProfileImage>
-            <img src={track.selectedImageThumbnail ? track.selectedImageThumbnail : artistCover} alt="not loaded"></img>
+            <img src={track.selectedImageThumbnail ? track.selectedImageThumbnail : picture} alt="not loaded"></img>
             <div className="artist-info">
               <span>Track</span>
               <h3>{track.title}</h3>
@@ -61,7 +78,7 @@ export default function Track() {
         <div className="music-play">
           <div className="music-icons">
             <div className="play">
-              <img className="album-cover" src={Play} alt="Album Cover" />
+              <img className="album-cover" src={playButton=== true ? Play : Pause} alt="Album Cover" onClick={onPlay}/>
             </div>
             {/* <div className="pause">
             <img className="album-cover" src={Pause} alt="Album Cover" />
@@ -82,10 +99,10 @@ export default function Track() {
         <div className="track-bar active">
           <div className="track-left">
             <div className="icon-number">
-              <img src={Play} className="track-icon" alt="track-icon"></img>
+              <img src={playButton=== true ? Play : Pause} onClick={onPlay} className="track-icon" alt="track-icon"></img>
               {/* <h5>01</h5> */}
             </div>
-            <img className="track-thumb" src={Thumb} alt="track-thumb"></img>
+            <img className="track-thumb"  src={track.selectedImageThumbnail ? track.selectedImageThumbnail : picture} alt="track-thumb"></img>
             <div className="flex-line">
               <h5 className="track-title">{track.title}</h5>
             </div>
@@ -131,6 +148,8 @@ const BackIcon = styled.div`
 const CoverImage = styled.div`
   position: relative;
   z-index: 2;
+  background-color: #D9D9D9;
+  height: 400px;
   &::before {
     content: "";
     position: absolute;

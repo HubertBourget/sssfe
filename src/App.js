@@ -22,6 +22,7 @@ const App = () => {
   const { isLoading, error } = useAuth0();
   return (
     <>
+    <NowPlaying>
       <BrowserRouter>
         <GlobalStyle></GlobalStyle>
         <Routes>
@@ -43,7 +44,7 @@ const App = () => {
           </Route>
         </Routes>
       </BrowserRouter>
-      {/* <NowPlaying/> */}
+      </NowPlaying>
     </>
 
   );

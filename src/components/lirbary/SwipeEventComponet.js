@@ -45,13 +45,8 @@ export default function SwipeEventComponet({ arr }) {
                   <img src={thumbnail} alt="Disc Thumb"></img>
                   <div style={{marginLeft: 0}}>
                     <h2 className="slider-trackname">{content.eventName}</h2>
-                    {/* <h1 className="slider-artist"> */}
-                    
-
                       <p style={{lineHeight: '5px'}}>fdjs</p>
                       <p style={{lineHeight: '5px'}}>{content.eventLocation} - {new Date(content.eventTime).toISOString().replace("T", " ").replace("Z", "").replace(/\.\d+/, "")}</p>
-                      {/* <p>fdjs</p> */}
-                  {/* </h1> */}
                   </div>
                 </div>
               </SwiperSlide>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/navigation";
-
+import { useNavigate } from "react-router-dom";
 import BackImg from "../assets/back.svg";
 import Share from "../assets/share-android.svg";
 import PersonAdd from "../assets/person-add-outline.svg";
@@ -16,9 +16,11 @@ import SliderArrow from "../assets/slider-arrow.svg";
 import axios from "axios";
 import SwipeComponet from "../components/SwipeComponet";
 import SwipeEventComponet from "../components/lirbary/SwipeEventComponet";
+import BackButton from "../components/common/BackButton";
 
 export default function Artist() {
   const [artist, setArtist] = useState({});
+  const navigate = useNavigate()
   const [featured, setFeatured] = useState([]);
   const [tab, setTab] = useState(0);
   const [contents, setContent] = useState([]);
@@ -108,9 +110,7 @@ export default function Artist() {
   return (
     <MainContainer>
       <HeadPart>
-        <BackIcon>
-          <img src={BackImg} alt="not loaded"></img>
-        </BackIcon>
+       <BackButton/>
         <CoverImage>
           <img src={artist.bannerImageUrl} alt="not loaded"></img>
         </CoverImage>
@@ -250,6 +250,7 @@ const BackIcon = styled.div`
 const CoverImage = styled.div`
   position: relative;
   z-index: 2;
+  height: 400px;
   &::before {
     content: "";
     position: absolute;

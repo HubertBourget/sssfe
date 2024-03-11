@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import ContentCard from "../components/lirbary/ContentCard";
 import axios from "axios";
-import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-
-import "swiper/css";
-import "swiper/css/navigation";
 import SwipeComponet from "../components/SwipeComponet";
 
 export default function Library() {
@@ -67,7 +61,7 @@ export default function Library() {
 
       const response = await axios.get(url);
       if (response.status === 200) {
-
+        response.data.events = response.data.events.map((content) => ({...content, contentType:'event'}))
         setEvents(response.data.events);
       } else {
         console.error(`Request failed with status: ${response.status}`);

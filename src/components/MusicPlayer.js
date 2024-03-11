@@ -21,6 +21,7 @@ function MusicPlayer({
   playNext,
   getCurrentTime,
   togglePlay,
+  handlePlay,
   toggleHeart,
   handleVolume,
   handleTimeline,
@@ -64,8 +65,8 @@ function MusicPlayer({
               alt="Album Cover"
             />
             <div className="song-info">
-              <span className="song-name">Track title</span>
-              <span className="artist-name">Artist name</span>
+              <span className="song-name">{state.song[state.currentSongIndex]?.songTitle}</span>
+              <span className="artist-name">{state.song[state.currentSongIndex]?.artistName}</span>
             </div>
           </div>
           <ActionIcons>
@@ -137,6 +138,16 @@ function MusicPlayer({
             />
           </div>
         </VolumeBar>
+        <audio
+          ref={audioRef}
+          src={state.song[state.currentSongIndex]?.songUrl}
+          id="song"
+          preload="metadata"
+          onEnded={playNext}
+          onPlay={handlePlay}
+          onTimeUpdate={getCurrentTime}
+          autoPlay
+        ></audio>
       </PlayerFooter>
     </>
   );
@@ -155,6 +166,7 @@ const PlayerFooter = styled.div`
   width: auto;
   left: 0;
   right: 0;
+  z-index: 20;
   @media (max-width: 991px) {
     flex-direction: column;
     z-index: 9;
