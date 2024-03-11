@@ -22,18 +22,23 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     h1 {
-        font-family: 'Playfair';
+        font-family: 'Playfair, sans-serif';
         font-size: var(--heading-one-font-size);
         font-weight: 500;
     }
 
     h2 {
         font-size: var(--heading-two-font-size);
+        font-family:'Playfair, sans-serif';
+        font-weight: 200;
+        color: #434289;
     }
 
 
     h3 {
         font-size: var(--heading-three-font-size);
+        font-family:'Playfair, sans-serif';
+        font-weight: 150;
     }
 
     /* Set the font family for paragraphs */
@@ -42,6 +47,7 @@ export const GlobalStyle = createGlobalStyle`
         line-height: 1.5;
         margin-bottom: 1rem;
         color: #434289;
+        font-family: 'Monteserat, sans-serif';
     }
     /* Set the font family for buttons
     button {
@@ -74,7 +80,7 @@ export const GlobalStyle = createGlobalStyle`
     div {
         font-family: 'Outfit', sans-serif;
         color: #434289;
-        background-color: #FFFFFF;
+        background-color: rgb(248, 248, 248);;
         font-size: var(--text-font-size);
     }
     label {

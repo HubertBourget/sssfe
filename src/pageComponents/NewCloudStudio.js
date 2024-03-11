@@ -276,8 +276,8 @@ const [trackDetails, setTrackDetails] = useState([]);
                     {/* <NavigationButton onClick={() => handleSectionChange('component3', false)} active={activeComponent === 'component3'}>
                         <img src={YourChanneltIcon} alt="Upload" style={{ marginRight: '8px'}}/>
                         Your Channel
-                    </NavigationButton>
-                    */}
+                    </NavigationButton> */}
+
                     <SeparatorDiv/>
                     <NavigationButton 
                         onClick={() => window.open('mailto:feedback@sacredsound.app')}>
