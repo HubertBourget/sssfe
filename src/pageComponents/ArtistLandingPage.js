@@ -40,11 +40,29 @@ const ArtistLandingPage = () => {
     alignItems: 'center',
 };
 
+    const secondSectionStyle = {
+        display: 'flex',
+        padding: '4vw',
+        boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 2px 0px',
+        marginBottom: '2px', // Add a small margin to reveal the shadow
+        backgroundColor: 'rgb(255,255,255)'
+    };
+
+    
+    const thirdSectionStyle = {
+        display: 'flex',
+        height: '77.7vh', // Ensure this section is also at least the height of the viewport
+        backgroundColor: '#f8f8f8', // Replace with your desired background color
+        padding: '4vw',
+        alignItems:'center',
+        boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 2px 0px', 
+    };
+
     const leftColumnStyle = {
         backgroundColor: '#A3C4A3',
         width: '50%',
         boxSizing: 'border-box',
-        height:'63vh',
+        height:'77.7vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -61,25 +79,7 @@ const ArtistLandingPage = () => {
         justifyContent: 'center',
         boxSizing: 'border-box',
         backgroundColor: 'transparent',
-        height: '60vh'
-    };
-
-    const secondSectionStyle = {
-        display: 'flex',
-        padding: '4vw',
-        boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 2px 0px',
-        marginBottom: '2px', // Add a small margin to reveal the shadow
-        backgroundColor: 'rgb(255,255,255)'
-    };
-
-    
-    const thirdSectionStyle = {
-        display: 'flex',
-        height: '60vh', // Ensure this section is also at least the height of the viewport
-        backgroundColor: '#f8f8f8', // Replace with your desired background color
-        padding: '4vw',
-        alignItems:'center',
-        boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 2px 0px', 
+        height: '77.7vh'
     };
 
     const leftTextStyle = {
@@ -104,7 +104,7 @@ const ArtistLandingPage = () => {
     const fourthSectionStyle = {
         display: 'flex',
         flexDirection: 'column',
-        height: '60vh',
+        height: '70vh',
         backgroundColor: '#f8f8f8',
         boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 2px 0px', 
     };
