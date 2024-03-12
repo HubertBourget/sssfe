@@ -9,6 +9,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import picture from '../assets/picture.png'
+import PlayButton from "./common/PlayButton";
 export default function SwipeComponet({ arr }) {
   let navigate = useNavigate();
   return (
@@ -54,21 +55,31 @@ export default function SwipeComponet({ arr }) {
               <SwiperSlide key={content._id}>
                 <div className="item" id="content-card" onClick={() => handleClick()} style={{ cursor: content.contentType === 'album' ? 'pointer' : 'default' }}>
                   <img src={thumbnail} alt="Disc Thumb"></img>
-                  <div style={{marginLeft: 0}}>
-                  <h1 className="slider-trackname">{content.contentType !== 'album' ? content.title: content.albumName}</h1>
-                  <h1 className="slider-artist">
-                   
-                    Artist -
-                    <span
-                      onClick={(e) =>{
-                        e.stopPropagation()
-                        navigate(`/main/artist?id=${content.user._id}`)
-                      }}
-                      style={{textDecoration: 'underline', cursor: 'pointer'}}
-                    >
-                      {content.user.accountName}
-                    </span>
-                  </h1>
+                  <div style={{marginLeft: 0, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <div>
+                      <h1 className="slider-trackname">{content.contentType !== 'album' ? content.title: content.albumName}</h1>
+                      <h1 className="slider-artist">
+                      
+                        Artist -
+                        <span
+                          onClick={(e) =>{
+                            e.stopPropagation()
+                            navigate(`/main/artist?id=${content.user._id}`)
+                          }}
+                          style={{textDecoration: 'underline', cursor: 'pointer'}}
+                        >
+                          {content.user.accountName}
+                        </span>
+                      </h1>
+                    </div>
+                      <div style={{display: 'inline'}}>
+                        {content.contentType === 'audio' || content.contentType === 'video' ? <PlayButton track={{id: 1, songUrl: content.fileUrl,
+                                  songTitle: content.title,
+                                  isVideo: false,
+                                  artistName: content.user.accountName,
+                                  img: content.selectedImageThumbnail}}/> : ''}
+
+                      </div>
                   </div>
                 </div>
               </SwiperSlide>

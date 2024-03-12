@@ -14,6 +14,7 @@ import picture from '../assets/picture.png'
 import { usePlayingContext } from "./NowPlaying";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/common/BackButton";
+import PlayButton from "../components/common/PlayButton";
 
 export default function Track() {
   const [track, setTrack] = useState({})
@@ -98,10 +99,16 @@ export default function Track() {
 
         <div className="track-bar active">
           <div className="track-left">
-            <div className="icon-number">
+            {/* <div className="icon-number">
               <img src={playButton=== true ? Play : Pause} onClick={onPlay} className="track-icon" alt="track-icon"></img>
-              {/* <h5>01</h5> */}
-            </div>
+            </div> */}
+            <PlayButton track={{id: 1,
+              songUrl:
+              track.fileUrl,
+              songTitle: track.title,
+              isVideo: false,
+              artistName: track?.user?.accountName,
+              img: track.selectedImageThumbnail,}}/>
             <img className="track-thumb"  src={track.selectedImageThumbnail ? track.selectedImageThumbnail : picture} alt="track-thumb"></img>
             <div className="flex-line">
               <h5 className="track-title">{track.title}</h5>
@@ -331,12 +338,6 @@ const MusicInfo = styled.div`
   }
 `;
 
-const HeadingText = styled.div`
-  h1 {
-    font-size: 24px;
-    font-weight: 400;
-  }
-`;
 
 const FeaturedTracks = styled.div`
   padding: 20px;
@@ -408,98 +409,3 @@ const FeaturedTracks = styled.div`
   }
 `;
 
-const Discography = styled.div`
-  padding: 20px;
-  .swiper-slider {
-    margin: 20px 0;
-    overflow: visible;
-    @media (max-width: 991px) {
-    }
-    .item {
-      h1 {
-        font-weight: 400;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-      }
-      .slider-trackname {
-        font-size: 16px;
-      }
-      .slider-artist {
-        font-size: 14px;
-      }
-      img {
-        width: 100%;
-        height: 270px;
-        object-fit: cover;
-        object-position: center center;
-      }
-    }
-    .swiper-container {
-      position: relative;
-    }
-
-    .swiper-button-prev,
-    .swiper-button-next {
-      position: absolute;
-      top: -35px;
-      right: 20px;
-      width: 35px;
-      height: 35px;
-      background-color: #fff;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      @media (max-width: 575px) {
-        top: -85px;
-      }
-      &::after {
-        content: "";
-        background-image: url(${SliderArrow});
-        background-size: contain;
-        height: 35px;
-        width: 35px;
-        background-repeat: no-repeat;
-      }
-    }
-
-    .swiper-button-next {
-      right: 0px;
-    }
-
-    .swiper-button-prev {
-      right: 50px;
-      left: auto;
-      &::after {
-        transform: rotate(180deg);
-      }
-    }
-  }
-`;
-
-const Tabs = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  @media (max-width: 575px) {
-    gap: 10px;
-    justify-content: space-between;
-  }
-  .btn-tab {
-    height: 40px;
-    background-color: #d9d9d9;
-    color: #434289;
-    transition: all 0.5s ease;
-    @media (max-width: 575px) {
-      padding: 10px 18px;
-    }
-    &:hover,
-    &.active {
-      background-color: #434289;
-      color: #fff;
-    }
-  }
-`;

@@ -2,25 +2,22 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/navigation";
-import { useNavigate } from "react-router-dom";
-import BackImg from "../assets/back.svg";
 import Share from "../assets/share-android.svg";
 import PersonAdd from "../assets/person-add-outline.svg";
-import Pause from "../assets/pause.svg";
 import Play from "../assets/playicon.svg";
 import Shuffle from "../assets/Shuffle-blue.svg";
 import Thanks from "../assets/thanks.svg";
 import Thumb from "../assets/playlist.jpg";
 import TrackLike from "../assets/track-like.svg";
-import SliderArrow from "../assets/slider-arrow.svg";
 import axios from "axios";
 import SwipeComponet from "../components/SwipeComponet";
 import SwipeEventComponet from "../components/lirbary/SwipeEventComponet";
 import BackButton from "../components/common/BackButton";
+import PlayButton from "../components/common/PlayButton";
 
 export default function Artist() {
   const [artist, setArtist] = useState({});
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [featured, setFeatured] = useState([]);
   const [tab, setTab] = useState(0);
   const [contents, setContent] = useState([]);
@@ -162,7 +159,12 @@ export default function Artist() {
             <div className="track-left">
               <div className="icon-number">
                 {/* <img src={Play} className="track-icon" alt="track-icon"></img> */}
-                <h5>{index + 1}</h5>
+                <PlayButton track={{id: 1, songUrl: element.fileUrl,
+                                  songTitle: element.title,
+                                  isVideo: false,
+                                  artistName: element.user.accountName,
+                                  img: element.selectedImageThumbnail}} />
+                {/* <h5>{index + 1}</h5> */}
               </div>
               <img
                 className="track-thumb"
