@@ -1,19 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import { usePlayingContext } from "../../pageComponents/NowPlaying";
 import Pause from "../../assets/pause.svg";
 import Play from "../../assets/playicon.svg";
-
-export default function PlayButton({track}) {
-    console.log("🚀 ~ PlayButton ~ track:", track)
-  const setSongs = usePlayingContext(state=>state.setSongs)
-  const [playButton, setPlay] = useState(true)
+export default function PlayButton({track, large}) {
+    const currentSong = usePlayingContext(state=>state.getCurrentSong)
+    const setSongs = usePlayingContext(state=>state.setSongs)
+    const playingStatus = usePlayingContext(state=>state.state)
+    const [playButton, setPlay] = useState(true)
+    useEffect(() => {
+        if(track.id !== currentSong()){
+          console.log(track.id)
+          setPlay(true)
+        }
+        if(track.id === currentSong() && playingStatus.playing === true){
+          setPlay(false)
+        }
+        if(track.id === currentSong() && playingStatus.playing === false){
+            setPlay(true)
+        }
+    }, [currentSong, track, playingStatus])
   const onPlay = (event) => {
     event.stopPropagation()
     setPlay(!playButton)
     setSongs([{
-      id: 1,
-      songUrl: track.fileUrl,
+      id: track.id,
+      songUrl: track.songUrl,
       songTitle: track.title,
       isVideo: false,
       artistName: track.accountName,
@@ -31,7 +43,7 @@ const PlayComponent = styled.div`
     // background-color: #434289;
     border-radius: 50px;
     height: 60px;
-    width: 60px;
+    width: 40px;
     display: flex;
     justify-content: center;
     align-items: center;

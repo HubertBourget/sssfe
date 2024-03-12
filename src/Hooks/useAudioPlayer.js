@@ -66,6 +66,14 @@ const useAudioPlayer = () => {
     setState({ ...state, song: songs})
     togglePlay()
   }
+
+  const getCurrentSong = () => {
+    return state.song[state.currentSongIndex].id
+  }
+
+  const getCurrentRunningStatus = () => {
+    return state.playing
+  }
   const playNext = async () => {
     const nextIndex = (state.currentSongIndex + 1) % state.song.length;
     setState((prevState) => ({
@@ -174,7 +182,9 @@ const useAudioPlayer = () => {
     playPrev,
     handleShuffle,
     handlePlay,
-    setSongs
+    setSongs,
+    getCurrentSong,
+    getCurrentRunningStatus
   };
 };
 

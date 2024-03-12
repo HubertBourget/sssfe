@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import BackImg from "../assets/back.svg";
 import Share from "../assets/share-android.svg";
 import PersonAdd from "../assets/person-add-outline.svg";
-import Pause from "../assets/pause.svg";
-import Play from "../assets/playicon.svg";
 import Shuffle from "../assets/Shuffle-blue.svg";
 import Thanks from "../assets/thanks.svg";
 import TrackLike from "../assets/track-like.svg";
-import SliderArrow from "../assets/slider-arrow.svg";
 import axios from 'axios'
 import picture from '../assets/picture.png'
-import { usePlayingContext } from "./NowPlaying";
-import { useNavigate } from "react-router-dom";
 import BackButton from "../components/common/BackButton";
 import PlayButton from "../components/common/PlayButton";
 
 export default function Track() {
   const [track, setTrack] = useState({})
-  const navigate = useNavigate()
-  const [playButton, setPlay] = useState(true)
-  const setSong = usePlayingContext(state=>state.setSongs)
   async function fetchTrack() {
     const queryParams = new URLSearchParams(window.location.search);
     const trackId = queryParams.get("id");
@@ -34,18 +25,6 @@ export default function Track() {
     fetchTrack()
   }, [])
 
-  const onPlay = () => {
-    setPlay(!playButton)
-    setSong([{
-      id: 1,
-      songUrl:
-       track.fileUrl,
-      songTitle: track.title,
-      isVideo: false,
-      artistName: track.user.accountName,
-      img: track.selectedImageThumbnail,
-    }], 0)
-  }
   return (
     <MainContainer>
       <HeadPart>
@@ -78,9 +57,17 @@ export default function Track() {
         </div>
         <div className="music-play">
           <div className="music-icons">
-            <div className="play">
-              <img className="album-cover" src={playButton=== true ? Play : Pause} alt="Album Cover" onClick={onPlay}/>
-            </div>
+            {/* <div className="play"> */}
+              {/* <img class
+              Name="album-cover" src={playButton=== true ? Play : Pause} alt="Album Cover" onClick={onPlay}/> */}
+               <PlayButton track={{id: 1,
+              songUrl:
+              track.fileUrl,
+              songTitle: track.title,
+              isVideo: false,
+              artistName: track?.user?.accountName,
+              img: track.selectedImageThumbnail,}} large={true}/>
+            {/* </div> */}
             {/* <div className="pause">
             <img className="album-cover" src={Pause} alt="Album Cover" />
           </div> */}
@@ -141,16 +128,6 @@ const HeadPart = styled.div`
   }
 `;
 
-const BackIcon = styled.div`
-  position: absolute;
-  z-index: 9;
-  padding: 15px;
-  margin: 30px 10px 10px;
-  cursor: pointer;
-  @media (max-width: 991px) {
-    top: 20px;
-  }
-`;
 
 const CoverImage = styled.div`
   position: relative;

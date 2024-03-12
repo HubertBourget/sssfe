@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 export default function BackButton() {
   const navigate = useNavigate();
   return (
-    <BackIcon>
-      <img src={BackImg} alt="not loaded" onClick={() => navigate(-1)}></img>
+    <BackIcon onClick={() => navigate(-1)}>
+      <img src={BackImg} alt="not loaded" ></img>
     </BackIcon>
   );
 }

@@ -2,13 +2,12 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import video from "../assets/footage.png";
-import music from "../assets/music-file.png";
 import SliderArrow from "../assets/slider-arrow.svg";
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import picture from '../assets/picture.png'
+import rect from '../assets/rect.png'
 import PlayButton from "./common/PlayButton";
 export default function SwipeComponet({ arr }) {
   let navigate = useNavigate();
@@ -40,16 +39,13 @@ export default function SwipeComponet({ arr }) {
             content?.selectedImageThumbnail?.length > 0
               ? content.selectedImageThumbnail
               : content.isOnlyAudio !== undefined ?
-                (content.isOnlyAudio === true ? music : video): picture;
+                (content.isOnlyAudio === true ? rect : rect): picture;
                 const handleClick = () => {
                   if (content.contentType === 'album') {
                       navigate(`/main/album?id=${content._id}`);
                   }else if(content.contentType !== 'event') {
                     navigate(`/main/track?id=${content._id}`);
                   }
-                  // else if (content.contentType === 'music' || content.contentType === 'video') {
-                  //     play();
-                  // }
               };
           return (
               <SwiperSlide key={content._id}>
@@ -72,8 +68,8 @@ export default function SwipeComponet({ arr }) {
                         </span>
                       </h1>
                     </div>
-                      <div style={{display: 'inline'}}>
-                        {content.contentType === 'audio' || content.contentType === 'video' ? <PlayButton track={{id: 1, songUrl: content.fileUrl,
+                      <div style={{display: 'inline', marginRight: '20px'}}>
+                        {content.contentType === 'audio' || content.contentType === 'video' ? <PlayButton track={{id: content._id, songUrl: content.fileUrl,
                                   songTitle: content.title,
                                   isVideo: false,
                                   artistName: content.user.accountName,
@@ -91,18 +87,19 @@ export default function SwipeComponet({ arr }) {
 }
 
 const Discography = styled.div`
-  background: rgba(0,0,0,0.0);
+  background-color: rgba(0,0,0,0);
   width: 100%;
   padding: 20px;
   .swiper-slider {
-    background: rgba(0,0,0,0.0);
+    background-color: rgba(0,0,0,0);
+    
     margin: 20px 0;
     overflow: visible;
     @media (max-width: 991px) {
     }
     .item {
         
-      background: rgba(0,0,0,0.0);
+      background-color: rgba(0, 0, 0, 0);
       h1 {
         font-weight: 400;
         overflow: hidden;
@@ -123,8 +120,7 @@ const Discography = styled.div`
       }
     }
     .swiper-container {
-      background: rgba(0,0,0,0.0);
-      
+      background-color: rgba(0, 0, 0, 0);
       position: relative;
     }
 

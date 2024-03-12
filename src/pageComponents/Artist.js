@@ -159,7 +159,7 @@ export default function Artist() {
             <div className="track-left">
               <div className="icon-number">
                 {/* <img src={Play} className="track-icon" alt="track-icon"></img> */}
-                <PlayButton track={{id: 1, songUrl: element.fileUrl,
+                <PlayButton track={{id: element._id, songUrl: element.fileUrl,
                                   songTitle: element.title,
                                   isVideo: false,
                                   artistName: element.user.accountName,

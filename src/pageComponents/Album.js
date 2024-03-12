@@ -11,6 +11,7 @@ import Thanks from "../assets/thanks.svg";
 import Thumb from "../assets/playlist.jpg";
 import TrackLike from "../assets/track-like.svg";
 import { useNavigate } from "react-router-dom";
+import PlayButton from "../components/common/PlayButton";
 
 export default function Album() {
   const [album, setAlbum] = useState({})
@@ -21,7 +22,6 @@ export default function Album() {
     const response = await axios.get(
       `${process.env.REACT_APP_API_BASE_URL}/api/getAlbum/${albumId}`
     );
-    console.log(response.data)
     setAlbum(response.data.album);
   }
   useEffect(() => {
@@ -86,8 +86,12 @@ export default function Album() {
           <div className="track-bar active" key={element._id}>
             <div className="track-left">
               <div className="icon-number">
-                {/* <img src={Play} className="track-icon" alt="track-icon"></img> */}
-                <h5>{index + 1}</h5>
+
+                <PlayButton track={{id: 1, songUrl: element.fileUrl,
+                                  songTitle: element.title,
+                                  isVideo: false,
+                                  artistName: element.user?.accountName,
+                                  img: element.selectedImageThumbnail}}/>
               </div>
               <img
                 className="track-thumb"

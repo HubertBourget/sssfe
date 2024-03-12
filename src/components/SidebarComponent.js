@@ -38,7 +38,7 @@ const SidebarComponent = () => {
             }}
           >
             <MenuItem component={<Link to="library" />}>
-              <img src={LibraryIcon} alt="Upload" /> Lirbary
+              <img src={LibraryIcon} alt="Upload" /> Library
             </MenuItem>
             <MenuItem component={<Link to="#" />}>
               <img src={Concert} alt="Upload" /> Concert Hall</MenuItem>

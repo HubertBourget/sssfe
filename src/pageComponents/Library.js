@@ -46,6 +46,17 @@ export default function Library() {
 
       const response = await axios.get(url);
       if (response.status === 200) {
+        if(type !== 'all'){
+          response.data = response.data.map((element) => ({...element, contentType: type}))
+        }else{
+          response.data = response.data.map((element) => {
+            if(element.isOnlyAudio){
+              return {...element, contentType: 'audio'}
+            }else{
+              return {...element, contentType: 'video'}
+            }
+          })
+        }
         setState(response.data);
       } else {
         console.error(`Request failed with status: ${response.status}`);
