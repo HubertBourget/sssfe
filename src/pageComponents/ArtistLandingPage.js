@@ -38,6 +38,7 @@ const ArtistLandingPage = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    fontSize: '1.4rem'
 };
 
     const secondSectionStyle = {
@@ -102,7 +103,7 @@ const ArtistLandingPage = () => {
 
     const fourthSectionStyle = {
         flexDirection: 'column',
-        height: '60vh',
+        height: '70vh',
         paddingTop: '8vh',
         backgroundColor: '#f8f8f8',
         borderBottom: '1px solid #D9D9D9'
@@ -119,7 +120,8 @@ const ArtistLandingPage = () => {
         textTransform: 'uppercase',
         letterSpacing: '1px',
         outline: 'none',
-        minWidth: '30vw'
+        minWidth: '30vw',
+        marginTop: '8vh',
     };
 
     return (
@@ -142,7 +144,7 @@ const ArtistLandingPage = () => {
                     redirectUri: process.env.REACT_APP_REDIRECTURL, //this for staging : https://staging.sacredsound.pages.dev/studio 
                     })
                 }>
-                    <p style={{ color: 'white', fontSize:'1.4rem'}}>GET STARTED</p>
+                    GET STARTED
                 </button>
                 </div>
             </div>
