@@ -69,7 +69,7 @@ const FAQsContainer = () => {
   };
 
   return (
-    <div>
+    <div style={{paddingBottom:'9vh'}}>
       {faqs.map((faq, index) => (
         <FAQItem
           key={index}
