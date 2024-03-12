@@ -22,14 +22,14 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     h1 {
-        font-family: 'Playfair, sans-serif';
+        font-family: Playfair;
         font-size: var(--heading-one-font-size);
         font-weight: 500;
     }
 
     h2 {
         font-size: var(--heading-two-font-size);
-        font-family:'Playfair, sans-serif';
+        font-family:Playfair;
         font-weight: 200;
         color: #434289;
     }
@@ -37,7 +37,7 @@ export const GlobalStyle = createGlobalStyle`
 
     h3 {
         font-size: var(--heading-three-font-size);
-        font-family:'Playfair, sans-serif';
+        font-family:Playfair;
         font-weight: 150;
     }
 
@@ -47,18 +47,11 @@ export const GlobalStyle = createGlobalStyle`
         line-height: 1.5;
         margin-bottom: 1rem;
         color: #434289;
-        font-family: 'Monteserat, sans-serif';
+        font-family: Montserrat;
     }
-    /* Set the font family for buttons
-    button {
-        font-family: 'Outfit', sans-serif;
-        font-size: var(--text-font-size);
-        font-weight: 100;
-        line-height: 1.5;
-        letter-spacing: 0.7px;
-    } */
+
     input[type=text] {
-        font-family: 'Outfit', sans-serif;
+        font-family: Outfit;
         font-size: var(--text-font-size);
         border: 2px solid #D9D9D9;
         color: #434289;
@@ -68,7 +61,7 @@ export const GlobalStyle = createGlobalStyle`
         }
     }
     textarea {
-        font-family: 'Outfit', sans-serif;
+        font-family: Outfit;
         border: 2px solid #D9D9D9;
         color: #434289;
         font-size: var(--text-font-size);
@@ -78,20 +71,20 @@ export const GlobalStyle = createGlobalStyle`
         }
     }
     div {
-        font-family: 'Outfit', sans-serif;
+        font-family: Outfit;
         color: #434289;
         background-color: rgb(248, 248, 248);;
         font-size: var(--text-font-size);
     }
     label {
         color: #434289;
-        font-family: 'Outfit', sans-serif;
+        font-family: Outfit;
         color: #434289;
         font-size: var(--text-font-size);
         margin-bottom: 16px;
     }
     span {
-        font-family: 'Montserrat', sans-serif;
+        font-family: Montserrat;
         color: #434289;
         font-size: var(--text-font-size);
     }
@@ -106,7 +99,7 @@ export const GlobalStyle = createGlobalStyle`
         opacity: 1; /* Optional: Adjust the opacity as needed */
     }
     button {
-        font-family:'Montserrat';
+        font-family: Montserrat;
         border: none;
         color: rgb(245, 245, 245);
         background-color: rgb(67, 66, 137);

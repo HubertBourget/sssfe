@@ -38,31 +38,31 @@ const ArtistLandingPage = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    fontSize: '1.4rem'
 };
 
     const secondSectionStyle = {
         display: 'flex',
         padding: '4vw',
-        boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 2px 0px',
-        marginBottom: '2px', // Add a small margin to reveal the shadow
-        backgroundColor: 'rgb(255,255,255)'
+        borderBottom: '1px solid #D9D9D9',
+        backgroundColor: 'rgb(248,248,248)'
     };
 
     
     const thirdSectionStyle = {
         display: 'flex',
-        height: '93vh', // Ensure this section is also at least the height of the viewport
-        backgroundColor: '#f8f8f8', // Replace with your desired background color
-        padding: '4vw',
+        height: '70vh', 
+        backgroundColor: '#f8f8f8', 
+        padding: '8vh 4vw 4vw',
         alignItems:'center',
-        boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 2px 0px', 
+        borderBottom: '1px solid #D9D9D9'
     };
 
     const leftColumnStyle = {
         backgroundColor: '#A3C4A3',
-        width: '50%',
+        width: '45%',
         boxSizing: 'border-box',
-        height:'93vh',
+        height:'70vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -72,14 +72,14 @@ const ArtistLandingPage = () => {
     };
 
     const rightColumnStyle = {
-        width: '50%',
+        width: '55%',
         padding: '4vw',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         boxSizing: 'border-box',
         backgroundColor: 'transparent',
-        height: '93vh'
+        height: '70vh'
     };
 
     const leftTextStyle = {
@@ -89,7 +89,7 @@ const ArtistLandingPage = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        backgroundColor: 'rgb(255,255,255)'
+        backgroundColor: 'transparent'
     };
 
     const rightVideoStyle = {
@@ -98,15 +98,15 @@ const ArtistLandingPage = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgb(255,255,255)'
+        backgroundColor: 'transparent'
     };
 
     const fourthSectionStyle = {
-        display: 'flex',
         flexDirection: 'column',
         height: '70vh',
+        paddingTop: '8vh',
         backgroundColor: '#f8f8f8',
-        boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 2px 0px', 
+        borderBottom: '1px solid #D9D9D9'
     };
 
     const ctaButtonStyle = {
@@ -120,7 +120,8 @@ const ArtistLandingPage = () => {
         textTransform: 'uppercase',
         letterSpacing: '1px',
         outline: 'none',
-        minWidth: '30vw'
+        minWidth: '30vw',
+        marginTop: '8vh',
     };
 
     return (
@@ -143,7 +144,7 @@ const ArtistLandingPage = () => {
                     redirectUri: process.env.REACT_APP_REDIRECTURL, //this for staging : https://staging.sacredsound.pages.dev/studio 
                     })
                 }>
-                    <p style={{ color: 'white', fontSize:'1.4rem'}}>GET STARTED</p>
+                    GET STARTED
                 </button>
                 </div>
             </div>
@@ -154,7 +155,7 @@ const ArtistLandingPage = () => {
         <div style={secondSectionStyle}>
             <div style={leftTextStyle}>
                 <h2 style={{fontSize:'3.3rem'}}>A platform designed for your journey as a sacred music artist.</h2>
-                <p style={{fontSize:'1.9rem'}}>We pay artists directly and provide professional support to enhance the value of what you create.</p>
+                <p style={{fontSize:'1.5rem'}}>We pay artists directly and provide professional support to enhance the value of what you create.</p>
             </div>
             <div style={rightVideoStyle}>
                     <video 
@@ -171,36 +172,36 @@ const ArtistLandingPage = () => {
         <div style={thirdSectionStyle}>
             <div style={leftColumnStyle}>
             <h1 style={{fontSize:'3.3rem', color:'white'}}>
-                Welcome to Your <br/> <ItalicText>Cloud Studio</ItalicText>
+                Welcome to Your <br/> Cloud Studio
             </h1>
-            <h2 style={{color:'white', fontSize:'1.8rem'}}>A Platform for Artists to Share Sacred Music and Connect with a Global Community.</h2>
+            <p style={{color:'white', fontSize:'1.5rem'}}>A Platform for Artists to Share Sacred Music and Connect with a Global Community.</p>
             </div>
             <div style={rightColumnStyle}>
-            <h2 style={{fontSize:'2.22rem'}}>Expand through more intimate connection.</h2>
-            <p style={{fontSize:'1.5rem'}}>Invite your listeners along deeper into your creative process through video lessons, events, behind the scenes, and more!</p>
-            <h2 style={{fontSize:'2.22rem'}}>Earn professional studio support through your music.</h2>
-            <p style={{fontSize:'1.5rem'}}>Gain tokens, ‘thanks coins,’ directly from listeners as they gain inspiration, which you can redeem for studio services.</p>
-            <h2 style={{fontSize:'2.22rem'}}>Create new revenue streams with your content.</h2>
+            <h2 style={{fontSize:'2.22rem', marginBottom:'0px'}}>Expand through more intimate connection.</h2>
+            <p style={{fontSize:'1.5rem', marginBottom:'6vh'}}>Invite your listeners along deeper into your creative process through video lessons, events, behind the scenes, and more!</p>
+            <h2 style={{fontSize:'2.22rem', marginBottom:'0px'}}>Earn professional studio support through your music.</h2>
+            <p style={{fontSize:'1.5rem', marginBottom:'6vh'}}>Gain tokens, ‘thanks coins,’ directly from listeners as they gain inspiration, which you can redeem for studio services.</p>
+            <h2 style={{fontSize:'2.22rem', marginBottom:'0px'}}>Create new revenue streams with your content.</h2>
             <p style={{fontSize:'1.5rem'}}>Upload your magic into our sacred music library, and get paid for every minute of content that gets viewed.</p>
             </div>
         </div>
         
     {/* Fourth section */}
         <div style={fourthSectionStyle}>
-            <h2 style={{color: '#434289', fontSize: '3.3em', marginLeft: '8vw', marginBottom:'0vh'}}>Let’s Create Magic Together</h2>
+            <h2 style={{color: '#434289', fontSize: '3.3em', marginLeft: '8vw', marginBottom:'0vh', marginTop: '0px'}}>Let’s Create Magic Together</h2>
             <p style={{fontSize:'1.5rem', marginLeft: '8vw', marginBottom:'6vh'}}>Share sacred music and receive support from listeners you inspire.</p>
-            <div style={{display:'flex', justifyContent: 'space-around',marginLeft: '8vw', marginRight: '3vw', marginBottom: '6vh', backgroundColor:'transparent'}}>
-                <div style={{display:'flex', flexDirection:'column', backgroundColor:'transparent', width: '32vw'}}>
+            <div style={{display:'flex', justifyContent: 'space-between',marginLeft: '8vw', marginRight: '3vw', marginBottom: '6vh', backgroundColor:'transparent'}}>
+                <div style={{display:'flex', flexDirection:'column', backgroundColor:'transparent', width: '28vw'}}>
                     <img src={userGroup} alt="userGroup" style={{width:'4vw'}}/>
                     <h2 style={{fontSize: '2rem', marginBottom: '0vh'}}>Join the Artist Collective</h2>
                     <p style={{fontSize:'1.5rem'}}>Be one of up to 100 artists selected to join the Sacred Sound Artist Collective.</p>
                 </div>
-                <div style={{display:'flex', flexDirection:'column', backgroundColor:'transparent', width: '32vw'}}>
+                <div style={{display:'flex', flexDirection:'column', backgroundColor:'transparent', width: '28vw'}}>
                     <img src={musicNote} alt="musicNote" style={{width:'4vw'}}/>
                     <h2 style={{fontSize: '2rem', marginBottom: '0vh'}}>Publish Your Magic</h2>
                     <p style={{fontSize:'1.5rem'}}>Reach the right audience for you and get paid for every minute of content that gets viewed.</p>
                 </div>
-                <div style={{display:'flex', flexDirection:'column', backgroundColor:'transparent', width: '32vw'}}>
+                <div style={{display:'flex', flexDirection:'column', backgroundColor:'transparent', width: '28vw'}}>
                     <img src={heart} alt="heart" style={{width:'4vw'}}/>
                     <h2 style={{fontSize: '2rem', marginBottom: '0vh'}}>Get Support</h2>
                     <p style={{fontSize:'1.5rem'}}>Unlock studio time and services to continue enhancing the potency of every item that you publish.</p>
@@ -215,13 +216,12 @@ const ArtistLandingPage = () => {
                 Get Started
             </button>
             </div>
-
-            {/* FAQ section */}
+        </div>
+        {/* FAQ section */}
             <div style={{height: 'auto', paddingLeft: '8vw'}}>
-                <h2 style={{color: '#434289', fontSize: '3.3em', marginBottom:'1rem', marginBottom:'4vh'}}>FAQ</h2>
+                <h2 style={{color: '#434289', fontSize: '3.3em', marginBottom:'1rem', marginBottom:'4vh', marginTop : '8vh'}}>FAQ</h2>
                 <FAQContainer/>
             </div>
-        </div>
         </>
     );
 }
