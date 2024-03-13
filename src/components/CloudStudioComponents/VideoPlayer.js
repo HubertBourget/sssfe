@@ -13,7 +13,7 @@ import axios from 'axios';
         useEffect(() => {
         const fetchVideoData = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${videoId}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadataFromVideoId/${videoId}`);
                 setVideoData(response.data);
             } catch (error) {
                 console.error('Error fetching video data:', error);
