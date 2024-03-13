@@ -276,7 +276,7 @@ const ModifySingleTrackComponent = () => {
                         <div style={{marginLeft:'3vw', marginRight:'3vw', width:'94%'}}>
 
                         </div>
-                        <TagComponent style={{width:"90%"}} id="tags" onTagsChange={handleTagsChange} value={formData.tags} />
+                        {/* <TagComponent style={{width:"90%"}} id="tags" onTagsChange={handleTagsChange} value={formData.tags} /> */}
                 </RightDiv>
             </div>
             
