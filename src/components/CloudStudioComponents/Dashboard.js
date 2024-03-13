@@ -15,11 +15,11 @@ const Dashboard = ({ user }) => {
                     console.log('user :', user);
                     const recoResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getItemToUserRecommendations/${user}`);
                     console.log("recoResponse: ", recoResponse )
-                    const videoIds = recoResponse.data.recomms.map(recomm => recomm.id);
-                    console.log("VideoIds: ", videoIds);
+                    const objectIds = recoResponse.data.recomms.map(recomm => recomm.id);
+                    console.log("objectIds: ", objectIds);
 
-                    const videosData = await Promise.all(videoIds.map(async (id) => {
-                        const videoResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${id}`);
+                    const videosData = await Promise.all(objectIds.map(async (id) => {
+                        const videoResp = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetaDataFromObjectId/${id}`);
                         const videoData = videoResp.data;
                         console.log("videoData: ", videoData);
 
