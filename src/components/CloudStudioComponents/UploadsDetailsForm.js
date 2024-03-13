@@ -176,13 +176,13 @@ useEffect(() => {
                     <option value="Behind the scenes">Behind the scenes</option>
                     <option value="Concert">Concert</option>
                 </UploadDetailsSelectInput>
-                <div style={{marginLeft:'3vw', marginRight:'3vw', width:'94%'}}>
+                {/* <div style={{marginLeft:'3vw', marginRight:'3vw', width:'94%'}}>
                 <TagComponent 
                     style={{marginLeft:'3vw'}}
                     onTagsChange={handleInputChange}
                     value={formData.tags}
                 />
-                </div>
+                </div> */}
                 </div>
             </form>
         </div>
