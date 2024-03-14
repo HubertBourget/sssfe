@@ -155,7 +155,7 @@ const ModifyAlbum = () => {
 
     const getTitleForVideoId = async (videoId) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${videoId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadataFromVideoId/${videoId}`);
             // Check if the response contains the expected video data
             if (response.data && response.data.title) {
                 return { id: videoId, title: response.data.title };
