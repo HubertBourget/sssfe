@@ -234,7 +234,7 @@ const ModifySingleTrackComponent = () => {
                 </button>
             </Header>
             <h1 style={{marginLeft:'3vw'}}>Track details</h1>
-            <div style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
+            <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', width:'100vw'}}>
                 <LeftDiv>
                 <UploadProfileImageContainer 
                     onClick={() => document.getElementById('file-input').click()}
@@ -276,7 +276,7 @@ const ModifySingleTrackComponent = () => {
                         <div style={{marginLeft:'3vw', marginRight:'3vw', width:'94%'}}>
 
                         </div>
-                        <TagComponent style={{width:"90%"}} id="tags" onTagsChange={handleTagsChange} value={formData.tags} />
+                        {/* <TagComponent style={{width:"90%"}} id="tags" onTagsChange={handleTagsChange} value={formData.tags} /> */}
                 </RightDiv>
             </div>
             
