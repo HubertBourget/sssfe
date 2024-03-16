@@ -47,25 +47,26 @@ const Dashboard = ({ user }) => {
     };
 
     return (
-        <Container>
-            <h1 style={{ marginBottom: '10vh' }}>Dashboard</h1>
-            <h2 style={{ marginBottom: '3vh', fontWeight:'400' }}>Lastest Content</h2>
-            <CardsScrollContainer>
-                {videos.map((video, index) => (
-                    <CardContainer 
-                        key={index}
-                        onClick={() => handleCardClick(video.videoId)}
-                    >
-                        <ContentCard 
-                            imageThumbnailUrl={video.selectedImageThumbnail || DefaultImageThumbnailImage} 
-                            title={video.title} 
-                            artistName={video.accountName} 
-                        />
-                    </CardContainer>
-                ))}
-            </CardsScrollContainer>
-        </Container>
-    );
+    <Container>
+        <h1 style={{ marginBottom: '10vh' }}>Dashboard</h1>
+        <h2 style={{ marginBottom: '3vh', fontWeight:'400' }}>Latest Content</h2>
+        <CardsScrollContainer>
+            {videos.map((video, index) => (
+                <Card 
+                    key={index}
+                    onClick={() => handleCardClick(video.videoId)}
+                >
+                    <ContentCard 
+                        imageThumbnailUrl={video.selectedImageThumbnail || DefaultImageThumbnailImage} 
+                        title={video.title} 
+                        artistName={video.accountName} 
+                    />
+                </Card>
+            ))}
+        </CardsScrollContainer>
+    </Container>
+);
+
 };
 
 export default Dashboard;
@@ -91,12 +92,11 @@ const CardsScrollContainer = styled.div`
 
 const Card = styled.div`
     width: calc(29.5%); // Subtract the total horizontal gap from the width
-    background-color: #f0f0f0; // Sets card background to white
+    background-color: 'transparent'; // Sets card background to white
     padding-left: 20px;
     padding-top: 80px;
     padding-bottom: 20px;
     margin-bottom: 1vw; // Adjust margin as necessary
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Adds a subtle shadow to the cards
     border-radius: 8px; // Rounds the corners of the cards
     // Ensure there is no additional margin on the sides of the cards
 `;
