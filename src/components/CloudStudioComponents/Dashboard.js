@@ -52,7 +52,7 @@ const Dashboard = ({ user }) => {
             <h2 style={{ marginBottom: '3vh', fontWeight:'400' }}>Lastest Content</h2>
             <CardContainer>
                 {videos.map((video, index) => (
-                    <ContentCardWrapper 
+                    <CardContainer 
                         key={index}
                         onClick={() => handleCardClick(video.videoId)}
                     >
@@ -61,7 +61,7 @@ const Dashboard = ({ user }) => {
                             title={video.title} 
                             artistName={video.accountName} 
                         />
-                    </ContentCardWrapper>
+                    </CardContainer>
                 ))}
             </CardContainer>
         </Container>
@@ -80,27 +80,6 @@ const CardContainer = styled.div`
     flex-wrap: wrap;
     justify-content: space-between; // This will evenly space the cards in the row
 `;
-
-const Card = styled.div`
-    width: calc(29.5%); // Subtract the total horizontal gap from the width
-    background-color: #f0f0f0; // Sets card background to white
-    padding-left: 20px;
-    padding-top: 80px;
-    padding-bottom: 20px;
-    margin-bottom: 1vw; // Adjust margin as necessary
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Adds a subtle shadow to the cards
-    border-radius: 8px; // Rounds the corners of the cards
-    // Ensure there is no additional margin on the sides of the cards
-`;
-
-const TrackName = styled.h3`
-    // Your TrackName styles...
-`;
-
-const ArtistName = styled.p`
-    // Your ArtistName styles...
-`;
-
 
 
 //For default cards use this :
