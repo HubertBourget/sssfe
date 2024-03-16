@@ -292,7 +292,7 @@ useEffect(() => {
                     b_isApproved: false,
                     isOnlyAudio: isOnlyAudio,
                     visibility: true,
-                    category: 'Music Video',
+                    category: 'Studio recording',
                 }),
             });
             return videoId; // Assuming the response contains the videoId
