@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import DefaultImageThumbnailImage from '../../assets/DefautlImageThumbnail.png';
+import ContentCard from './ContentCard';
 
 const Dashboard = ({ user }) => {
     const [videos, setVideos] = useState([]);
@@ -51,20 +52,16 @@ const Dashboard = ({ user }) => {
             <h2 style={{ marginBottom: '3vh', fontWeight:'400' }}>Lastest Content</h2>
             <CardContainer>
                 {videos.map((video, index) => (
-                    <Card 
-                        key={index} 
-                        style={{ 
-                            cursor: 'pointer', 
-                            backgroundImage: `url(${video.selectedImageThumbnail || DefaultImageThumbnailImage})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center'
-                        }} 
-                        onClick={() => handleCardClick(video.videoId)} // Pass video.videoId here
+                    <ContentCardWrapper 
+                        key={index}
+                        onClick={() => handleCardClick(video.videoId)}
                     >
-                        <TrackName>{video.title}</TrackName>
-                        <ArtistName>{video.accountName}</ArtistName>
-                    </Card>
-
+                        <ContentCard 
+                            imageThumbnailUrl={video.selectedImageThumbnail || DefaultImageThumbnailImage} 
+                            title={video.title} 
+                            artistName={video.accountName} 
+                        />
+                    </ContentCardWrapper>
                 ))}
             </CardContainer>
         </Container>
