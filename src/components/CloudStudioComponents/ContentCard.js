@@ -26,6 +26,7 @@ const Card = styled.div`
     overflow: hidden;
     margin-bottom: 20px;
     background-color: #fff;
+    cursor: pointer;
 `;
 
 const ImageContainer = styled.div`

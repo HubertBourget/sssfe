@@ -77,9 +77,18 @@ const Container = styled.div`
 
 const CardContainer = styled.div`
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between; // This will evenly space the cards in the row
+    overflow-x: auto; // Enable horizontal scrolling
+    gap: 20px; // Space between cards, adjust as needed
+    padding-bottom: 20px; // Prevents content cut-off due to scrollbar
+
+    // Optional: hide scrollbar for aesthetic reasons (this might not work in all browsers)
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none; // IE and Edge
+    scrollbar-width: none; // Firefox
 `;
+
 
 const Card = styled.div`
     width: calc(29.5%); // Subtract the total horizontal gap from the width
