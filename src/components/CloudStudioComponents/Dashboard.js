@@ -50,7 +50,7 @@ const Dashboard = ({ user }) => {
         <Container>
             <h1 style={{ marginBottom: '10vh' }}>Dashboard</h1>
             <h2 style={{ marginBottom: '3vh', fontWeight:'400' }}>Lastest Content</h2>
-            <CardContainer>
+            <CardsScrollContainer>
                 {videos.map((video, index) => (
                     <CardContainer 
                         key={index}
@@ -63,7 +63,7 @@ const Dashboard = ({ user }) => {
                         />
                     </CardContainer>
                 ))}
-            </CardContainer>
+            </CardsScrollContainer>
         </Container>
     );
 };
@@ -75,18 +75,17 @@ const Container = styled.div`
     // Rest of your Container styles...
 `;
 
-const CardContainer = styled.div`
+const CardsScrollContainer = styled.div`
     display: flex;
     overflow-x: auto; // Enable horizontal scrolling
     gap: 20px; // Space between cards, adjust as needed
-    padding-bottom: 20px; // Prevents content cut-off due to scrollbar
+    padding-bottom: 20px; // Adds padding to the bottom
 
-    // Optional: hide scrollbar for aesthetic reasons (this might not work in all browsers)
     &::-webkit-scrollbar {
         display: none;
     }
-    -ms-overflow-style: none; // IE and Edge
-    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 `;
 
 
