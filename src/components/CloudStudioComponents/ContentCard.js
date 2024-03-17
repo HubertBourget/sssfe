@@ -23,7 +23,6 @@ const Card = styled.div`
     min-width: calc(29.5% - 20px);
     background-color: 'transparent';
     padding-left: 20px;
-    padding-top: 80px;
     padding-bottom: 20px;
     margin-bottom: 1vw;
     border-radius: 8px;

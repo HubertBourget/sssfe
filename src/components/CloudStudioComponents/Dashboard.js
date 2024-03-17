@@ -91,14 +91,12 @@ const CardsScrollContainer = styled.div`
 
 
 const Card = styled.div`
-    min-width: calc(29.5%); // Subtract the total horizontal gap from the width
-    background-color: 'transparent'; // Sets card background to white
+    min-width: calc(29.5%);
+    background-color: 'transparent';
     padding-left: 20px;
-    padding-top: 80px;
     padding-bottom: 20px;
-    margin-bottom: 1vw; // Adjust margin as necessary
-    border-radius: 8px; // Rounds the corners of the cards
-    // Ensure there is no additional margin on the sides of the cards
+    margin-bottom: 1vw;
+    border-radius: 8px; 
 `;
 
 const TrackName = styled.h3`
