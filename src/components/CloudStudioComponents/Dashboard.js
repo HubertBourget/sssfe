@@ -73,14 +73,13 @@ export default Dashboard;
 
 const Container = styled.div`
     padding: 3%;
-    // Rest of your Container styles...
 `;
 
 const CardsScrollContainer = styled.div`
     display: flex;
-    overflow-x: auto; // Enable horizontal scrolling
-    gap: 20px; // Space between cards, adjust as needed
-    padding-bottom: 20px; // Adds padding to the bottom
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 20px;
 
     &::-webkit-scrollbar {
         display: none;
@@ -97,14 +96,6 @@ const Card = styled.div`
     padding-bottom: 20px;
     margin-bottom: 1vw;
     border-radius: 8px; 
-`;
-
-const TrackName = styled.h3`
-    // Your TrackName styles...
-`;
-
-const ArtistName = styled.p`
-    // Your ArtistName styles...
 `;
 
 

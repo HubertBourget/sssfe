@@ -189,7 +189,7 @@ const handleDelete = (trackId) => {
                 </div>
                 <h1 style={{marginLeft:'3vw', marginBottom:'6vh'}}>Album details</h1>
                 <div style={{display:'flex', flexDirection:'row'}}>
-                    <div style={{display:'flex', flexDirection:'column', width:'50%'}}>
+                    <div style={{display:'flex', flexDirection:'column', flex: 1}}>
                     <label style={{marginLeft:'3vw'}} htmlFor="albumName">Title</label>
                     <input
                         style={{ marginLeft: '3vw', width: '80%', padding: '22px' }}
@@ -240,7 +240,7 @@ const handleDelete = (trackId) => {
                     </select>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1, marginRight:'3vw' }}>
-                    <label htmlFor='DragDropContext' style={{marginLeft:'3vw'}}>Tracks from this album</label>
+                    <label htmlFor='DragDropContext'>Tracks from this album</label>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="albumTracks">
                             {(provided) => (
