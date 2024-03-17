@@ -186,7 +186,7 @@ return (
                         }}>
                             <Column>
                                 <TrackInfo>
-                                    <TrackName>{item.title}</TrackName>
+                                    <TrackName>{item.title || 'Unnamed Track'}</TrackName>
                                     <ArtistName>{artistName}</ArtistName>
                                 </TrackInfo>
                             </Column>
