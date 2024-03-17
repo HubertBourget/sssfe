@@ -29,6 +29,7 @@ const Card = styled.div`
     border-radius: 8px;
     box-sizing: border-box; // Ensure padding and border are included in the width calculation
     cursor: pointer;
+    min-width: calc(29.5% - 20px);;
 `;
 
 const ImageContainer = styled.div`
