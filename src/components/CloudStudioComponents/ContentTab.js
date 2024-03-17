@@ -187,7 +187,7 @@ return (
                             <Column>
                                 <TrackInfo>
                                     <TrackName>{item.title || 'Unnamed Track'}</TrackName>
-                                    <ArtistName>{artistName}</ArtistName>
+                                    {/* <ArtistName>{artistName}</ArtistName> */}
                                 </TrackInfo>
                             </Column>
                             <Column>
@@ -235,7 +235,7 @@ return (
                                 <Column>
                                     <TrackInfo>
                                         <TrackName>{album.albumName|| 'Unnamed Album'}</TrackName>
-                                        <ArtistName>{artistName}</ArtistName>
+                                        {/* <ArtistName>{artistName}</ArtistName> */}
                                     </TrackInfo>
                                 </Column>
                                 <Column>
