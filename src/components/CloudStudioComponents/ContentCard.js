@@ -20,15 +20,15 @@ const ContentCard = ({ imageThumbnailUrl, title, artistName }) => {
 export default ContentCard;
 
 const Card = styled.div`
+    min-width: calc(29.5% - 20px);
     background-color: 'transparent';
     padding-left: 20px;
     padding-top: 80px;
     padding-bottom: 20px;
     margin-bottom: 1vw;
     border-radius: 8px;
-    box-sizing: border-box; // Ensure padding and border are included in the width calculation
+    box-sizing: border-box;
     cursor: pointer;
-    min-width: calc(29.5% - 20px);
 `;
 
 const ImageContainer = styled.div`

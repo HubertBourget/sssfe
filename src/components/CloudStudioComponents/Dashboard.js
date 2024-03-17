@@ -91,7 +91,7 @@ const CardsScrollContainer = styled.div`
 
 
 const Card = styled.div`
-    width: calc(29.5%); // Subtract the total horizontal gap from the width
+    min-width: calc(29.5%); // Subtract the total horizontal gap from the width
     background-color: 'transparent'; // Sets card background to white
     padding-left: 20px;
     padding-top: 80px;
