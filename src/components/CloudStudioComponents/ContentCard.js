@@ -20,7 +20,6 @@ const ContentCard = ({ imageThumbnailUrl, title, artistName }) => {
 export default ContentCard;
 
 const Card = styled.div`
-    flex: 0 0 calc(29.5% - 20px); // Each card takes up 1/3 of the container width minus the gap
     background-color: 'transparent';
     padding-left: 20px;
     padding-top: 80px;
@@ -29,7 +28,7 @@ const Card = styled.div`
     border-radius: 8px;
     box-sizing: border-box; // Ensure padding and border are included in the width calculation
     cursor: pointer;
-    min-width: calc(29.5% - 20px);;
+    min-width: calc(29.5% - 20px);
 `;
 
 const ImageContainer = styled.div`
