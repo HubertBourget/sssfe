@@ -188,11 +188,11 @@ const handleDelete = (trackId) => {
                     <SaveButton type="submit">Save</SaveButton>
                 </div>
                 <h1 style={{marginLeft:'3vw', marginBottom:'6vh'}}>Album details</h1>
-                <div style={{display:'flex', flexDirection:'row'}}>
+                <div style={{display:'flex', flexDirection:'row', marginLeft:'3vw'}}>
                     <div style={{display:'flex', flexDirection:'column', flex: 1}}>
-                    <label style={{marginLeft:'3vw'}} htmlFor="albumName">Title</label>
+                    <label htmlFor="albumName">Title</label>
                     <input
-                        style={{ marginLeft: '3vw', width: '80%', padding: '22px' }}
+                        style={{ width: '80%', padding: '22px' }}
                         type="text"
                         name="albumName"
                         value={albumData.albumName}
@@ -288,7 +288,7 @@ const CloseButton = styled.button`
     font-size: 18px;
     color: rgb(67, 66, 137);
     text-decoration: underline;
-    margin: 3%;
+    margin-left: 3vw;
     padding: 0px;
 `;
 
