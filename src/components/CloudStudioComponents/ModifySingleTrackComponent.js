@@ -393,7 +393,8 @@ const CloseButton = styled.button`
     font-size: 18px;
     color: rgb(67, 66, 137);
     text-decoration: underline;
-    margin-left: 4vw;
+    margin-left: 3vw;
+    padding: 0px
 `;
 
 const EditCoverButton = styled.div`
