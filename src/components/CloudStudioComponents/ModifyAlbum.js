@@ -220,17 +220,17 @@ const handleDelete = (trackId) => {
                             onChange={handleCoverChange}
                         />
                     </div>
-                    <label style={{marginLeft:'3vw', marginTop:'3vh'}} htmlFor="description">Description</label>
+                    <label style={{marginTop:'3vh'}} htmlFor="description">Description</label>
                     <textarea
-                        style={{ marginLeft: '3vw', width: '80%', padding: '22px' }}
+                        style={{width: '80%', padding: '22px' }}
                         name="description"
                         value={albumData.description}
                         onChange={handleInputChange}
                         placeholder="What describes this album"
                     />
-                    <label style={{marginLeft:'3vw', marginTop:'3vh'}} htmlFor="visibility">Visibility</label>
+                    <label style={{marginTop:'3vh'}} htmlFor="visibility">Visibility</label>
                     <select
-                        style={{ marginLeft: '3vw', width: '36%', padding: '22px' }}
+                        style={{width: '36%', padding: '22px' }}
                         name="visibility"
                         value={albumData.visibility}
                         onChange={handleInputChange}
