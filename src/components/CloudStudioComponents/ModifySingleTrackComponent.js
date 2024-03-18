@@ -233,8 +233,8 @@ const ModifySingleTrackComponent = () => {
                     Publish
                 </button>
             </Header>
-            <h1 style={{marginLeft:'6vw'}}>Track details</h1>
-            <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', width:'100vw', marginLeft:'7vw'}}>
+            <h1 style={{marginLeft:'3vw'}}>Track details</h1>
+            <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', width:'100vw'}}>
                 <LeftDiv>
                 <UploadProfileImageContainer 
                     onClick={() => document.getElementById('file-input').click()}
@@ -304,6 +304,7 @@ const LeftDiv = styled.div`
     align-items: start;
     justify-content: start;
     width: 45%;
+    margin-left: 3%;
     z-index: 2;
 `;
 
