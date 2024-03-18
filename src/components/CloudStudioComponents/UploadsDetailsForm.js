@@ -163,18 +163,18 @@ useEffect(() => {
                 <div style={{display:'flex', flexDirection:'column', flex: '1', marginRight:'3vw'}}>
                 <UploadsDetailsLabel style={{marginTop:'3vh'}}>Category</UploadsDetailsLabel>
                 <UploadDetailsSelectInput style={{marginBottom:'3vh'}}
-                    type="text"
-                    name="category"
-                    value={formData.category}
-                    onChange={handleInputChange}
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
                 >
+                    <option value="Studio recording">Studio recording</option>
                     <option value="Music video">Music video</option>
-                    <option value="Integration support">Integration support</option>
-                    <option value="Live in the studio">Live in the studio</option>
-                    <option value="Spoken words">Spoken word</option>
-                    <option value="Meditation music">Meditation music</option>
+                    <option value="Meditation">Meditation</option>
+                    <option value="DJ set">DJ set</option>
                     <option value="Behind the scenes">Behind the scenes</option>
                     <option value="Concert">Concert</option>
+                    <option value="Video lesson">Video lesson</option>
                 </UploadDetailsSelectInput>
                 {/* <div style={{marginLeft:'3vw', marginRight:'3vw', width:'94%'}}>
                 <TagComponent 

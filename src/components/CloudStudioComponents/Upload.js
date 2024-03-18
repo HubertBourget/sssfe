@@ -292,7 +292,7 @@ useEffect(() => {
                     b_isApproved: false,
                     isOnlyAudio: isOnlyAudio,
                     visibility: true,
-                    category: 'Music Video',
+                    category: 'Studio recording',
                 }),
             });
             return videoId; // Assuming the response contains the videoId
@@ -592,7 +592,7 @@ const AlbumCreationView = styled.div`
 `;
 
 const AlbumDetails = styled.div`
-    flex: 1 1 0%;
+    width: 45vw;
     display: flex;
     flex-direction: column;
     margin-left: 3vw;

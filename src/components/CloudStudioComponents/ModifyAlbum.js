@@ -188,11 +188,11 @@ const handleDelete = (trackId) => {
                     <SaveButton type="submit">Save</SaveButton>
                 </div>
                 <h1 style={{marginLeft:'3vw', marginBottom:'6vh'}}>Album details</h1>
-                <div style={{display:'flex', flexDirection:'row'}}>
-                    <div style={{display:'flex', flexDirection:'column', width:'50%'}}>
-                    <label style={{marginLeft:'3vw'}} htmlFor="albumName">Title</label>
+                <div style={{display:'flex', flexDirection:'row', marginLeft:'3vw'}}>
+                    <div style={{display:'flex', flexDirection:'column', flex: 1}}>
+                    <label htmlFor="albumName">Title</label>
                     <input
-                        style={{ marginLeft: '3vw', width: '80%', padding: '22px' }}
+                        style={{ width: '80%', padding: '22px' }}
                         type="text"
                         name="albumName"
                         value={albumData.albumName}
@@ -220,17 +220,17 @@ const handleDelete = (trackId) => {
                             onChange={handleCoverChange}
                         />
                     </div>
-                    <label style={{marginLeft:'3vw', marginTop:'3vh'}} htmlFor="description">Description</label>
+                    <label style={{marginTop:'3vh'}} htmlFor="description">Description</label>
                     <textarea
-                        style={{ marginLeft: '3vw', width: '80%', padding: '22px' }}
+                        style={{width: '80%', padding: '22px' }}
                         name="description"
                         value={albumData.description}
                         onChange={handleInputChange}
                         placeholder="What describes this album"
                     />
-                    <label style={{marginLeft:'3vw', marginTop:'3vh'}} htmlFor="visibility">Visibility</label>
+                    <label style={{marginTop:'3vh'}} htmlFor="visibility">Visibility</label>
                     <select
-                        style={{ marginLeft: '3vw', width: '36%', padding: '22px' }}
+                        style={{width: '36%', padding: '22px' }}
                         name="visibility"
                         value={albumData.visibility}
                         onChange={handleInputChange}
@@ -240,7 +240,7 @@ const handleDelete = (trackId) => {
                     </select>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1, marginRight:'3vw' }}>
-                    <label htmlFor='DragDropContext' style={{marginLeft:'3vw'}}>Tracks from this album</label>
+                    <label htmlFor='DragDropContext'>Tracks from this album</label>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="albumTracks">
                             {(provided) => (
@@ -288,7 +288,8 @@ const CloseButton = styled.button`
     font-size: 18px;
     color: rgb(67, 66, 137);
     text-decoration: underline;
-    margin: 3%;
+    margin: 3vw;
+    padding: 0px;
 `;
 
 const AlbumCoverInput = styled.div`
