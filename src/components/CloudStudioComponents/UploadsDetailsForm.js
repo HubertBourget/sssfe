@@ -170,7 +170,6 @@ useEffect(() => {
                 >
                     <option value="Studio recording">Studio recording</option>
                     <option value="Music video">Music video</option>
-                    <option value="Spoken words">Spoken word</option>
                     <option value="Meditation">Meditation</option>
                     <option value="DJ set">DJ set</option>
                     <option value="Behind the scenes">Behind the scenes</option>
