@@ -289,6 +289,7 @@ const CloseButton = styled.button`
     color: rgb(67, 66, 137);
     text-decoration: underline;
     margin: 3%;
+    padding: 0px;
 `;
 
 const AlbumCoverInput = styled.div`
