@@ -2,6 +2,7 @@ import React, { useEffect, useState, createContext, useContext } from "react";
 import MusicPlayer from "../components/MusicPlayer";
 import styled from "styled-components";
 import useAudioPlayer from "../Hooks/useAudioPlayer";
+import { Outlet } from "react-router-dom";
 
 const NowPlayingContext = createContext({});
 
@@ -91,6 +92,7 @@ function NowPlaying({ children }) {
           handleShuffle={handleShuffle}
         />
         </MainContainer>
+        <Outlet/>
     </NowPlayingContext.Provider>
   );
 }

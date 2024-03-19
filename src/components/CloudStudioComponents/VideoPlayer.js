@@ -16,6 +16,7 @@ import axios from 'axios';
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${videoId}`);
                 setVideoData(response.data);
             } catch (error) {
+                setVideoData({fileUrl: 'https://firebasestorage.googleapis.com/v0/b/sacred-music-60ce6.appspot.com/o/Uploads%2Fdebug9%40debug.com%2F0bd405a9-e8c4-4386-9b87-51e010593682?alt=media&token=ca7758e2-59f7-4378-9aab-31e4cd2ddf93'})
                 console.error('Error fetching video data:', error);
             }
         };
