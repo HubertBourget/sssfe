@@ -17,12 +17,13 @@ import SidebarComponent from './components/SidebarComponent';
 import Artist from './pageComponents/Artist';
 import TrackPage from './pageComponents/Track';
 import Album from './pageComponents/Album';
+import Concert from './pageComponents/Concert';
+import PlayScreen from './pageComponents/PlayScreen';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
   return (
     <>
-    <NowPlaying>
       <BrowserRouter>
         <GlobalStyle></GlobalStyle>
         <Routes>
@@ -34,17 +35,19 @@ const App = () => {
           <Route exact path="/AccountNameSelection" element={<AccountNameSelection />} />
           <Route exact path="/play/:videoId" element={<VideoPlayer />} />
           <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
-          <Route exact path="/now-playing" element={<NowPlaying />} />
+          <Route exact path="/play-screen" element={<PlayScreen />} />
           <Route exact path="/search/:searchQuery" element={<Search/>}/>
-          <Route exact path="/main" element={<SidebarComponent/>}>
-            <Route exact path="library" element={<Library/>}/>
-            <Route exact path="artist" element={<Artist/>}/>
-            <Route exact path="track" element={<TrackPage/>}/>
-            <Route exact path="album" element={<Album/>}/>
+          <Route exact path="/" element={<NowPlaying/>}>
+            <Route exact path="/main" element={<SidebarComponent/>}>
+              <Route exact path="library" element={<Library/>}/>
+              <Route exact path="artist" element={<Artist/>}/>
+              <Route exact path="track" element={<TrackPage/>}/>
+              <Route exact path="album" element={<Album/>}/>
+              <Route exact path="concert" element={<Concert/>}/>
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
-      </NowPlaying>
     </>
 
   );

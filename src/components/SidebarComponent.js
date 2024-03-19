@@ -40,7 +40,7 @@ const SidebarComponent = () => {
             <MenuItem component={<Link to="library" />}>
               <img src={LibraryIcon} alt="Upload" /> Library
             </MenuItem>
-            <MenuItem component={<Link to="#" />}>
+            <MenuItem component={<Link to="concert" />}>
               <img src={Concert} alt="Upload" /> Concert Hall</MenuItem>
             <MenuItem component={<Link to="#" />}>
               <img src={Feed} alt="Upload" /> Feed</MenuItem>
