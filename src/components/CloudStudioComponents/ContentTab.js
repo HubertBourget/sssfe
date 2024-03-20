@@ -7,6 +7,7 @@ import TrashIcon from '../../assets/TrashIcon.png';
 import axios from 'axios';
 
 const ContentTab = ({user}) => {
+    console.log("user :", user)
     const artistId = user;
     const [contentDocuments, setContentDocuments] = useState([]);
     const [artistName, setArtistName] = useState('');
@@ -18,6 +19,7 @@ const ContentTab = ({user}) => {
     const fetchData = async () => {
         try {
             const encodedArtistId = encodeURIComponent(artistId);
+            console.log(encodedArtistId)
             let url = `${process.env.REACT_APP_API_BASE_URL}/api/getContentByArtist?artistId=${encodedArtistId}`;
             
             // If the filter is set to 'album', change the URL to fetch albums instead
@@ -26,6 +28,7 @@ const ContentTab = ({user}) => {
             }
 
             const response = await Axios.get(url);
+            console.log(response.data)
             if (response.status === 200) {
                 setContentDocuments(response.data);
             } else {
@@ -128,6 +131,7 @@ const ContentTab = ({user}) => {
 
 
     const getFilteredContent = () => {
+        console.log('ContentDocuments before filtering:', contentDocuments);
     let filteredContent = [];
     switch (filter) {
         case 'audio':
@@ -182,8 +186,8 @@ return (
                         }}>
                             <Column>
                                 <TrackInfo>
-                                    <TrackName>{item.title}</TrackName>
-                                    <ArtistName>{artistName}</ArtistName>
+                                    <TrackName>{item.title || 'Unnamed Track'}</TrackName>
+                                    {/* <ArtistName>{artistName}</ArtistName> */}
                                 </TrackInfo>
                             </Column>
                             <Column>
@@ -231,7 +235,7 @@ return (
                                 <Column>
                                     <TrackInfo>
                                         <TrackName>{album.albumName|| 'Unnamed Album'}</TrackName>
-                                        <ArtistName>{artistName}</ArtistName>
+                                        {/* <ArtistName>{artistName}</ArtistName> */}
                                     </TrackInfo>
                                 </Column>
                                 <Column>

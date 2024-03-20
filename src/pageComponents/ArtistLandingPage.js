@@ -3,6 +3,10 @@ import logo from '../assets/HorozontalLogoWhiteFont.png';
 import { useAuth0 } from '@auth0/auth0-react';
 import ExplainerVideo from '../assets/SacredSoundExplainerVideo.mp4';
 import styled from 'styled-components';
+import userGroup from '../assets/userGroup.png';
+import musicNote from '../assets/musicNote.png';
+import heart from '../assets/heart.png'
+import FAQsContainer from '../components/CloudStudioComponents/FAQsContainer';
 
 const ArtistLandingPage = () => {
     const { loginWithRedirect } = useAuth0();;
@@ -19,135 +23,129 @@ const ArtistLandingPage = () => {
     };
 
     const logoStyle = {
-        width: '20vw',
-        margin: '4vw'
-    };
-
-    const textStyle = {
-        color: 'white',
-        textAlign: 'right',
-        width: '100%',
-        backgroundColor:'transparent',
+        width: '240px',
+        height: '80px',
+        margin: '40px'
     };
 
     const buttonStyle = {
-    padding: '20px 40px', // Adjust padding to increase the button size
+    padding: '30px 60px',
     backgroundColor: '#434289',
     color: 'white',
     border: 'none',
     borderRadius: '0px',
     cursor: 'pointer',
-    marginRight: '4vw',
-    marginBottom: '10vh',
-    display: 'flex', // Flex container for centering content
-    justifyContent: 'center', // Center horizontally
-    alignItems: 'center', // Center vertically
-    fontSize: '20px, 30px', // Adjust font size as needed
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: '16px'
 };
 
-// Style for the second section
     const secondSectionStyle = {
         display: 'flex',
-        minHeight: '100vh', // Ensure this section is also at least the height of the viewport
-        backgroundColor: '#f8f8f8', // Replace with your desired background color
-        padding: '4vw',
-        alignItems:'center',
-        boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 2px 0px', 
-    };
-
-    const leftColumnStyle = {
-        backgroundColor: '#A3C4A3', // Adjust to the color used in your design
-        width: '50%', // Half the width of the container
-        padding: '4vw',
-        margin: '3vw',
-        boxSizing: 'border-box', // Ensure padding is included in the width
-        backgroundImage: 'green', // Use the green tint here if applicable
-        backgroundSize: 'cover',
-        height:'70vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-    };
-
-    const rightColumnStyle = {
-        width: '50%', // Half the width of the container
-        padding: '4vw',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        boxSizing: 'border-box',
-    };
-
-    // Style for the third section
-    const thirdSectionStyle = {
-        display: 'flex',
-        padding: '4vw',
-        boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 2px 0px',
-        marginBottom: '2px', // Add a small margin to reveal the shadow
+        paddingTop: '80px',
+        paddingBottom: '80px',
+        borderBottom: '1px solid #D9D9D9',
+        backgroundColor: 'rgb(248,248,248)',
+        paddingLeft: '80px'
     };
 
     const leftTextStyle = {
-        width: '50%', // Half the width of the container
-        padding: '4vw',
+        width: '50%', 
         boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        backgroundColor: 'transparent',
+        paddingRight: '150px'
     };
 
     const rightVideoStyle = {
-        width: '50%', // Make sure the video fills the width, // Make sure the video fills the height
-        overflow: 'hidden', // Hide any overflow
+        width: '50%', 
+        overflow: 'hidden',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'transparent'
+    };
+    
+    const thirdSectionStyle = {
+        display: 'flex',
+        height: 'auto', 
+        backgroundColor: '#f8f8f8', 
+        alignItems:'center',
+        borderBottom: '1px solid #D9D9D9',
+        paddingTop: '80px',
+        paddingBottom: '80px'
     };
 
-    const fourthSectionStyle = {
+    const leftColumnStyle = {
+        backgroundColor: '#A3C4A3',
+        width: '45%',
+        boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',
-        height: '50vh', // Adjust the height as needed
-        backgroundColor: '#f8f8f8', // Replace with the background color for this section
+        marginLeft: '80px',
+        paddingLeft: '74px',
+        paddingRight: '74px',
+        paddingTop: '131px',
+        paddingBottom: '131px'
     };
 
-    const headingStyle = {
-        color: '#434289', // Replace with the color of the heading
-        fontSize: '4em', // Adjust the font size as needed
-        margin: '20px 0', // Adjust the spacing as needed
+    const rightColumnStyle = {
+        width: '55%',
+        padding: '40px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        boxSizing: 'border-box',
+        backgroundColor: 'transparent',
+    };
+
+    const fourthSectionStyle = {
+        flexDirection: 'column',
+        paddingTop: '8vh',
+        backgroundColor: '#f8f8f8',
+        borderBottom: '1px solid #D9D9D9'
     };
 
     const ctaButtonStyle = {
         padding: '10px 20px',
-        backgroundColor: '#434289', // Replace with the button color
+        backgroundColor: '#434289',
         color: 'white',
         border: 'none',
         borderRadius: '0px',
         cursor: 'pointer',
-        fontSize: '1em', // Adjust the font size as needed
-        textTransform: 'uppercase', // Capitalize button text
-        letterSpacing: '1px', // Adjust letter spacing as needed
+        fontSize: '18px',
+        textTransform: 'uppercase',
+        letterSpacing: '1px',
         outline: 'none',
+        minWidth: '30vw',
+        marginTop: '80px',
     };
 
     return (
         <>
+        {/* First section */}
         <SectionDiv>
             <TintedOverlay/>
             <div style={contentStyle}>
             <img src={logo} alt="Logo" style={logoStyle} />
-            <div style={textStyle}>
-                <h1 style={{ color: 'white', marginRight: '3vw', fontSize:'70px', marginBottom:'10vh' }}>
-                Amplify Your Sacred <br /> Music Journey
+            <div style={{color: 'white',width: '100%', backgroundColor:'transparent'}}>
+                <h1 style={{ color: 'white',  fontSize:'48px', marginBottom:'5px', marginLeft:'80px'}}>
+                Join the Collective
                 </h1>
-                <div style={{display:'flex', flexDirection:'row-reverse', backgroundColor:'transparent'}}>
+                <h2 style={{fontSize:'26px', color:'white', marginBottom:'66px', marginLeft:'80px'}}>
+                    Connect intimately with listeners that go deep
+                </h2>
+                <div style={{display:'flex', backgroundColor:'transparent', marginLeft:'80px', marginBottom:'162px'}}>
                 <button style={buttonStyle} onClick={() =>
                     loginWithRedirect({
-                    redirectUri: "https://staging.sacredsound.pages.dev/studio", 
+                    redirectUri: process.env.REACT_APP_REDIRECTURL,
                     })
                 }>
-                    Get Starteda
+                    GET STARTED
                 </button>
                 </div>
             </div>
@@ -156,48 +154,73 @@ const ArtistLandingPage = () => {
 
         {/* Second section */}
         <div style={secondSectionStyle}>
-            <div style={leftColumnStyle}>
-            <h1 style={{fontSize:'70px', color:'white'}}>Welcome to Sacred Sound</h1>
-            <h2 style={{color:'white'}}>A Platform for Artists to Share Sacred Music and Connect with a Global Community.</h2>
-            </div>
-            <div style={rightColumnStyle}>
-            <h2 style={{fontSize:'35px'}}>Connect with a Global Audience</h2>
-            <p style={{fontSize:'22px'}}>Share your sacred music with a community that values and resonates with your art.</p>
-            <h2 style={{fontSize:'35px'}}>Monetize Your Talent</h2>
-            <p style={{fontSize:'22px'}}>Earn thanks coins for your music, redeemable for studio time to support your creative process.</p>
-            <h2 style={{fontSize:'35px'}}>Collaborate and Learn</h2>
-            <p style={{fontSize:'22px'}}>Engage with fellow artists, join lessons, and expand your musical horizons.</p>
-            </div>
-        </div>
-
-        {/* Third section */}
-        <div style={thirdSectionStyle}>
             <div style={leftTextStyle}>
-                <h2 style={{fontSize:'50px'}}>Join the Sacred Sound Community as an Artist</h2>
-                <p style={{fontSize:'22px'}}>Share your transformative creations with a global audience, earn thanks coins for your craft, and connect with like-minded creators.</p>
+                <h2 style={{fontSize:'48px', marginBottom: '21px'}}>A platform designed for your journey as a sacred music artist.</h2>
+                <p style={{fontSize:'18px', marginTop: '0px'}}>We pay artists directly and provide professional support to enhance the value of what you create.</p>
             </div>
             <div style={rightVideoStyle}>
                     <video 
                         src={ExplainerVideo} 
                         controls 
-                        style={{ width: '90%', height: 'auto', objectFit: 'cover',  marginLeft: '5vw' }} // Adjust the width and height as needed
+                        style={{ width: '90%', height: 'auto', objectFit: 'cover' }}
                     >
                         Your browser does not support the video tag.
                     </video>
                 </div>
         </div>
+
+        {/* Third section */}
+        <div style={thirdSectionStyle}>
+            <div style={leftColumnStyle}>
+            <h1 style={{fontSize:'48px', color:'white'}}>Welcome to Your <br/> <ItalicText>Cloud Studio</ItalicText> </h1>
+            <p style={{color:'white', fontSize:'18px'}}>A platform for new cash flow steams, direct connection to listeners, and professional studio support from Sacred Sound Studios.</p>
+            </div>
+            <div style={rightColumnStyle}>
+            <h2 style={{fontSize:'24px', marginBottom:'0px', fontWeight: '600'}}>Expand through more intimate connection.</h2>
+            <p style={{fontSize:'18px', marginBottom:'6vh'}}>Invite your listeners along deeper into your creative process through video lessons, events, behind the scenes, and more!</p>
+            <h2 style={{fontSize:'24px', marginBottom:'0px', fontWeight: '600'}}>Earn professional studio support through your music.</h2>
+            <p style={{fontSize:'18px', marginBottom:'6vh'}}>Gain tokens, ‘thanks coins,’ directly from listeners as they gain inspiration, which you can redeem for studio services.</p>
+            <h2 style={{fontSize:'24px', marginBottom:'0px', fontWeight: '600'}}>Create new revenue streams with your content.</h2>
+            <p style={{fontSize:'18px'}}>Upload your magic into our sacred music library, and get paid for every minute of content that gets viewed.</p>
+            </div>
+        </div>
         
     {/* Fourth section */}
         <div style={fourthSectionStyle}>
-            <h2 style={headingStyle}>Ready to Share Your Sound?</h2>
+            <h2 style={{color: '#434289', fontSize: '48px', marginLeft: '80px', marginBottom:'0px', marginTop: '0px'}}>Let’s Create Magic Together</h2>
+            <p style={{fontSize:'18px', marginLeft: '80px', marginBottom:'93px'}}>Share sacred music and receive support from listeners you inspire.</p>
+            <div style={{display:'flex', justifyContent: 'space-between', marginLeft: '80px', marginRight: '30px', marginBottom: '60px', backgroundColor:'transparent'}}>
+                <div style={{display:'flex', flexDirection:'column', backgroundColor:'transparent', width: '28vw'}}>
+                    <img src={userGroup} alt="userGroup" style={{width:'4vw'}}/>
+                    <h2 style={{fontSize: '32px', marginBottom: '0vh'}}>Join the Artist Collective</h2>
+                    <p style={{fontSize:'18px'}}>Be one of up to 100 artists selected to join the Sacred Sound Artist Collective.</p>
+                </div>
+                <div style={{display:'flex', flexDirection:'column', backgroundColor:'transparent', width: '28vw'}}>
+                    <img src={musicNote} alt="musicNote" style={{width:'4vw'}}/>
+                    <h2 style={{fontSize: '32px', marginBottom: '0vh'}}>Publish Your Magic</h2>
+                    <p style={{fontSize:'18px'}}>Reach the right audience for you and get paid for every minute of content that gets viewed.</p>
+                </div>
+                <div style={{display:'flex', flexDirection:'column', backgroundColor:'transparent', width: '28vw'}}>
+                    <img src={heart} alt="heart" style={{width:'4vw'}}/>
+                    <h2 style={{fontSize: '32px', marginBottom: '0vh'}}>Get Support</h2>
+                    <p style={{fontSize:'18px'}}>Unlock studio time and services to continue enhancing the potency of every item that you publish.</p>
+                </div>
+            </div>
+            <div style={{display:'flex', justifyContent:'center', backgroundColor:'transparent', marginBottom:'80px'}}>
             <button style={ctaButtonStyle} onClick={() =>
                     loginWithRedirect({
-                    redirectUri: "https://staging.sacredsound.pages.dev/studio", 
+                    redirectUri: process.env.REACT_APP_REDIRECTURL,  
                     })
                 }>
-                Start Your Musical Journey
+                Get Started
             </button>
+            </div>
         </div>
+        {/* FAQ section */}
+            <div style={{height: 'auto', paddingLeft: '80px'}}>
+                <h2 style={{color: '#434289', fontSize: '48px', marginBottom:'60px', marginTop : '80px'}}>FAQ</h2>
+                <FAQsContainer/>
+            </div>
         </>
     );
 }
@@ -206,7 +229,7 @@ export default ArtistLandingPage;
 
 const SectionDiv = styled.div`
     position: relative;
-    height: 100vh;
+    height:77vh;
     background-image: url('https://firebasestorage.googleapis.com/v0/b/staging-sacred-sound-f472b.appspot.com/o/Assets%2FArtistLandingPageBackgroundImage.png?alt=media&token=6896cce6-8c4a-44f3-91e6-7ef2fc2f51a7');
     background-size: cover;
     background-position: center;
@@ -214,39 +237,23 @@ const SectionDiv = styled.div`
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    overflow: hidden; // Ensures no overflow from children
-    z-index: 0; // Under the overlay
+    overflow: hidden;
 `;
 
 const TintedOverlay = styled.div`
-    position: relative;
-    display: inline-block; // or 'block' depending on your layout
-
-    &:before {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.2); // This creates the 20% black tint
-        z-index: 1;
-    }
-
-    img {
-    display: block;
-    width: 100%; // or 'auto' depending on your needs
-    height: auto; // or your custom height
-    z-index: 0;
-    }
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
 `;
 
-const LandingPageImage = styled.img`
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    width: 100vw;
-    position: relative;
-    overflow: ;
+const ItalicText = styled.span`
+    font-style: italic;
+    font-size: 3.3rem;
+    color: white;
+    letter-spacing: -3.33px;
+    font-family: Playfair;
 `;

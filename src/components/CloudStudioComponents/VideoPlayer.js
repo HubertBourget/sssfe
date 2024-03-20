@@ -1,37 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-
-const VideoPlayerHeader = styled.div`
-    width: 100%;
-    height: 12vh;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px; // Adjust padding as needed
-    box-sizing: border-box;
-    `;
-
-    const BackButton = styled.button`
-    background: transparent;
-    border: none;
-    color: #fff; // Set the color as needed
-    font-size: 18px; // Set size as needed
-    cursor: pointer;
-    // Add more styles as needed
-    `;
 
     const VideoPlayer = () => {
         const { videoId } = useParams();
         const [videoData, setVideoData] = useState(null);
         const navigate = useNavigate();
+        const [recommendations, setRecommendations] = useState([]);
+        const userId = "someUserId";
 
         useEffect(() => {
         const fetchVideoData = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${videoId}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadataFromVideoId/${videoId}`);
                 setVideoData(response.data);
             } catch (error) {
                 console.error('Error fetching video data:', error);
@@ -42,6 +24,24 @@ const VideoPlayerHeader = styled.div`
             fetchVideoData();
         }
     }, [videoId]);
+
+    // Fetch item-to-item recommendations
+    useEffect(() => {
+        const fetchItemToItemRecommendations = async () => {
+            if (videoId && userId) {
+                try {
+                    const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getItemToItemRecommendations/${userId}/${videoId}`);
+                    setRecommendations(response.data.recomms || []);
+                    console.log('Recommendations:', response.data.recomms);
+                } catch (error) {
+                    console.error('Error fetching item to item recommendations:', error);
+                }
+            }
+        };
+
+        fetchItemToItemRecommendations();
+    }, [videoId, userId]);
+
 
     if (!videoData) {
         return <div>Loading...</div>;
@@ -63,3 +63,22 @@ const VideoPlayerHeader = styled.div`
 };
 
 export default VideoPlayer;
+
+const VideoPlayerHeader = styled.div`
+    width: 100%;
+    height: 12vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px; // Adjust padding as needed
+    box-sizing: border-box;
+    `;
+
+    const BackButton = styled.button`
+    background: transparent;
+    border: none;
+    color: #fff; // Set the color as needed
+    font-size: 18px; // Set size as needed
+    cursor: pointer;
+    // Add more styles as needed
+    `;

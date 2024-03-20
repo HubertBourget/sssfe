@@ -1,15 +1,18 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import HomePage from "./pageComponents/HomePage";
-import ArtistProfilePage from "./pageComponents/ArtistProfilePage";
-import AccountNameSelection from "./pageComponents/ArtistAccountNameSelectionPage";
-import NewCloudStudio from "./pageComponents/NewCloudStudio";
-import { GlobalStyle } from "./components/GlobalStyle";
-import ModifySingleTrackComponent from "./components/CloudStudioComponents/ModifySingleTrackComponent";
-import ArtistLandingPage from "./pageComponents/ArtistLandingPage";
-import VideoPlayer from "./components/CloudStudioComponents/VideoPlayer";
-import ModifyAlbum from "./components/CloudStudioComponents/ModifyAlbum";
+import HomePage from './pageComponents/HomePage';
+import ArtistProfilePage from './pageComponents/ArtistProfilePage';
+import AccountNameSelection from './pageComponents/ArtistAccountNameSelectionPage';
+import NewCloudStudio from './pageComponents/NewCloudStudio';
+import { GlobalStyle } from './components/GlobalStyle';
+import ModifySingleTrackComponent from './components/CloudStudioComponents/ModifySingleTrackComponent';
+import ArtistLandingPage from './pageComponents/ArtistLandingPage';
+import VideoPlayer from './components/CloudStudioComponents/VideoPlayer';
+import ModifyAlbum from './components/CloudStudioComponents/ModifyAlbum';
+import NowPlaying from './pageComponents/NowPlaying';
+import Search from './components/CloudStudioComponents/Search';
+import VideoStreaming from './components/CloudStudioComponents/VideoStreaming';
 import Subscribe from "./components/Payment/Subscribe";
 import MangePlan from "./components/Payment/MangePlan";
 import OrderHistory from "./components/Payment/OrderHistory";
@@ -49,6 +52,9 @@ const App = () => {
         <Route exact path="/save-card" element={<SaveCard />} />
         <Route exact path="/checkout" element={<Checkout/>} />
         <Route exact path="/checkout-result" element={<CheckoutResult/>} />
+        <Route exact path="/now-playing" element={<NowPlaying />} />
+        <Route exact path="/search/:searchQuery" element={<Search/>}/>
+        <Route exact path="/stream" element={<VideoStreaming/>}/>
       </Routes>
     </BrowserRouter>
   );

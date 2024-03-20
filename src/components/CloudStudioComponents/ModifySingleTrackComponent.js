@@ -179,8 +179,14 @@ const ModifySingleTrackComponent = () => {
         }
     };
 
-    const handleTagsChange = (newTags) => {
-        setFormData({ ...formData, tags: newTags });
+    const handleTagsChange = (event) => {
+        const { name, value } = typeof event === 'string' ? { name: 'tags', value: event } : event.target;
+        if (name === 'tags') {
+            const tagsArray = value.split(',').map(tag => tag.trim()); // Trim whitespace
+            setFormData(prevFormData => ({ ...prevFormData, [name]: tagsArray }));
+        } else {
+            setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
+        }
     };
 
     const handleSubmit = async (event) => {
@@ -228,7 +234,7 @@ const ModifySingleTrackComponent = () => {
                 </button>
             </Header>
             <h1 style={{marginLeft:'3vw'}}>Track details</h1>
-            <div style={{display:'flex',flexDirection:'row', justifyContent:'space-between'}}>
+            <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', width:'100vw'}}>
                 <LeftDiv>
                 <UploadProfileImageContainer 
                     onClick={() => document.getElementById('file-input').click()}
@@ -259,18 +265,18 @@ const ModifySingleTrackComponent = () => {
                 <RightDiv>
                     <CustomLabel htmlFor='category'>Category</CustomLabel>
                         <CustomSelect id="category" name="category" value={formData.category} onChange={handleInputChange}>
+                            <option value="Studio recording">Studio recording</option>
                             <option value="Music video">Music video</option>
-                            <option value="Integration support">Integration support</option>
-                            <option value="Live in the studio">Live in the studio</option>
-                            <option value="Spoken words">Spoken word</option>
-                            <option value="Meditation music">Meditation music</option>
+                            <option value="Meditation">Meditation</option>
+                            <option value="DJ set">DJ set</option>
                             <option value="Behind the scenes">Behind the scenes</option>
                             <option value="Concert">Concert</option>
+                            <option value="Video lesson">Video lesson</option>
                         </CustomSelect>
                         <div style={{marginLeft:'3vw', marginRight:'3vw', width:'94%'}}>
 
                         </div>
-                        <TagComponent style={{width:"90%"}} id="tags" onTagsChange={handleTagsChange} value={formData.tags} />
+                        {/* <TagComponent style={{width:"90%"}} id="tags" onTagsChange={handleTagsChange} value={formData.tags} /> */}
                 </RightDiv>
             </div>
             
@@ -388,7 +394,8 @@ const CloseButton = styled.button`
     font-size: 18px;
     color: rgb(67, 66, 137);
     text-decoration: underline;
-    margin-left: 4vw;
+    margin-left: 3vw;
+    padding: 0px
 `;
 
 const EditCoverButton = styled.div`

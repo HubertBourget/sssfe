@@ -33,6 +33,12 @@ const Upload = ({
     const { user } = useAuth0();
     // const user = { name: "debug9@debug.com" };
 
+    // debugging AUth0
+    useEffect(() => {
+        console.log("user :", user);
+        console.log("user.name :", user.name);
+    }, [user])
+
 
     //Upload tracking:
     const [uploadProgress, setUploadProgress] = useState({});
@@ -226,6 +232,7 @@ useEffect(() => {
 
         useEffect(() => {
         if (publishClicked) {
+            console.log("Publishclicked, setFileUploadsArray :", setFileUploadsArray)
             handleUpdateReviewStatus();
         }
         }, [publishClicked]);
@@ -233,6 +240,7 @@ useEffect(() => {
     const handleUpdateReviewStatus = async () => {
         // setIsUpdating(true);
         const fileIds = fileUploadsArray.map(file => file.videoId);
+        console.log("fileIds :", fileIds);
 
         console.log("Starting the update process for review status.");
 
@@ -284,7 +292,7 @@ useEffect(() => {
                     b_isApproved: false,
                     isOnlyAudio: isOnlyAudio,
                     visibility: true,
-                    category: 'Music Video',
+                    category: 'Studio recording',
                 }),
             });
             return videoId; // Assuming the response contains the videoId
@@ -584,7 +592,7 @@ const AlbumCreationView = styled.div`
 `;
 
 const AlbumDetails = styled.div`
-    flex: 1 1 0%;
+    width: 45vw;
     display: flex;
     flex-direction: column;
     margin-left: 3vw;
