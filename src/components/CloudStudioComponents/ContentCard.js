@@ -31,10 +31,15 @@ const Card = styled.div`
 `;
 
 const ImageContainer = styled.div`
-    img {
-        width: 100%;
-        height: auto;
-    }
+  height: 200px; // Set a fixed height for the container
+  width: 100%; // Ensure the container takes the full width
+  overflow: hidden; // This will hide any parts of the image that exceed the container's bounds
+  img {
+    width: 100%;
+    height: 100%; // Make the image fill the container
+    object-fit: cover; // This will cover the area, cropping the image if necessary to maintain aspect ratio
+    object-position: center; // Center the image within the container
+  }
 `;
 
 const TextContainer = styled.div`
