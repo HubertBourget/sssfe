@@ -111,4 +111,7 @@ export const GlobalStyle = createGlobalStyle`
         height: 6vh;
         align-items: center;
     }
+    .font-montserrat{
+        font-family: 'Montserrat', sans-serif;
+    }
 `;
