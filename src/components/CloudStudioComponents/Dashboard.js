@@ -57,7 +57,7 @@ const Dashboard = ({ user }) => {
                     onClick={() => handleCardClick(video.videoId)}
                 >
                     <ContentCard 
-                        imageThumbnailUrl={video.selectedImageThumbnail || DefaultImageThumbnailImage} 
+                        imageThumbnailUrl={video.selectedImageThumbnail && video.selectedImageThumbnail !== "Null" ? video.selectedImageThumbnail : DefaultImageThumbnailImage} 
                         title={video.title} 
                         artistName={video.accountName} 
                     />
