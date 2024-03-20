@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import DefaultImageThumbnailImage from '../../assets/DefautlImageThumbnail.png';
+import ContentCard from './ContentCard';
 
 const Dashboard = ({ user }) => {
     const [videos, setVideos] = useState([]);
@@ -52,62 +53,55 @@ const Dashboard = ({ user }) => {
     };
 
     return (
-        <Container>
-            <h1 style={{ marginBottom: '10vh' }}>Dashboard</h1>
-            <h2 style={{ marginBottom: '3vh', fontWeight:'400' }}>Lastest Content</h2>
-            <CardContainer>
-                {videos?.map((video, index) => (
-                    <Card 
-                        key={index} 
-                        style={{ 
-                            cursor: 'pointer', 
-                            backgroundImage: `url(${video.selectedImageThumbnail || DefaultImageThumbnailImage})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center'
-                        }} 
-                        onClick={() => handleCardClick(video._id)} // Pass video.videoId here
-                    >
-                        <TrackName>{video.title}</TrackName>
-                        <ArtistName>{video.accountName}</ArtistName>
-                    </Card>
+    <Container>
+        <h1 style={{ marginBottom: '10vh' }}>Dashboard</h1>
+        <h2 style={{ marginBottom: '3vh', fontWeight:'400' }}>Latest Content</h2>
+        <CardsScrollContainer>
+            {videos.map((video, index) => (
+                <Card 
+                    key={index}
+                    onClick={() => handleCardClick(video.videoId)}
+                >
+                    <ContentCard 
+                        imageThumbnailUrl={video.selectedImageThumbnail || DefaultImageThumbnailImage} 
+                        title={video.title} 
+                        artistName={video.accountName} 
+                    />
+                </Card>
+            ))}
+        </CardsScrollContainer>
+    </Container>
+);
 
-                ))}
-            </CardContainer>
-        </Container>
-    );
 };
 
 export default Dashboard;
 
 const Container = styled.div`
     padding: 3%;
-    // Rest of your Container styles...
 `;
 
-const CardContainer = styled.div`
+const CardsScrollContainer = styled.div`
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between; // This will evenly space the cards in the row
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 20px;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 `;
+
 
 const Card = styled.div`
-    width: calc(29.5%); // Subtract the total horizontal gap from the width
-    background-color: #f0f0f0; // Sets card background to white
+    min-width: calc(29.5%);
+    background-color: 'transparent';
     padding-left: 20px;
-    padding-top: 80px;
     padding-bottom: 20px;
-    margin-bottom: 1vw; // Adjust margin as necessary
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Adds a subtle shadow to the cards
-    border-radius: 8px; // Rounds the corners of the cards
-    // Ensure there is no additional margin on the sides of the cards
-`;
-
-const TrackName = styled.h3`
-    // Your TrackName styles...
-`;
-
-const ArtistName = styled.p`
-    // Your ArtistName styles...
+    margin-bottom: 1vw;
+    border-radius: 8px; 
 `;
 
 

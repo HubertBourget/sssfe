@@ -276,8 +276,8 @@ const [trackDetails, setTrackDetails] = useState([]);
                     {/* <NavigationButton onClick={() => handleSectionChange('component3', false)} active={activeComponent === 'component3'}>
                         <img src={YourChanneltIcon} alt="Upload" style={{ marginRight: '8px'}}/>
                         Your Channel
-                    </NavigationButton>
-                    */}
+                    </NavigationButton> */}
+
                     <SeparatorDiv/>
                     <NavigationButton 
                         onClick={() => window.open('mailto:feedback@sacredsound.app')}>
@@ -453,7 +453,6 @@ const PopupComponentWithSlideIn = styled.div`
     bottom: 0;
     width: 100vw;
     height: 100vh;
-    background-color: white;
     z-index: 1;
     transform: translateX(${props => props.slideIn ? '0' : '100vw'});
     transition: transform 0.5s ease-out;
@@ -468,7 +467,7 @@ const PopupComponent = styled.div`
     bottom: 0;
     width: 100vw;
     height: 100vh;
-    background-color: white;
+    background-color: transparent;
     z-index: 1;
     overflow-y: auto;
 `;

@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import HomePage from './pageComponents/HomePage';
 import ArtistProfilePage from './pageComponents/ArtistProfilePage';
@@ -19,25 +19,50 @@ import TrackPage from './pageComponents/Track';
 import Album from './pageComponents/Album';
 import Concert from './pageComponents/Concert';
 import PlayScreen from './pageComponents/PlayScreen';
+import VideoStreaming from './components/CloudStudioComponents/VideoStreaming';
+import Subscribe from "./components/Payment/Subscribe";
+import MangePlan from "./components/Payment/MangePlan";
+import OrderHistory from "./components/Payment/OrderHistory";
+import SaveCard from "./components/Payment/SaveCard";
+import Checkout from "./components/Payment/Checkout";
+import CheckoutResult from "./components/Payment/CheckoutResult";
 
 const App = () => {
   const { isLoading, error } = useAuth0();
   return (
-    <>
-      <BrowserRouter>
-        <GlobalStyle></GlobalStyle>
-        <Routes>
-          <Route exact path="/" element={<HomePage />} />
-          <Route exact path="/profile/:artistId" element={<ArtistProfilePage />} />
-          <Route exact path="/prepareForQA/:videoId" element={<ModifySingleTrackComponent />} />
-          <Route exact path="/studio" element={<NewCloudStudio />} />
-          <Route exact path="/create" element={<ArtistLandingPage />} />
-          <Route exact path="/AccountNameSelection" element={<AccountNameSelection />} />
-          <Route exact path="/play/:videoId" element={<VideoPlayer />} />
-          <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
-          <Route exact path="/play-screen" element={<PlayScreen />} />
-          <Route exact path="/search/:searchQuery" element={<Search/>}/>
-          <Route exact path="/" element={<NowPlaying/>}>
+    <BrowserRouter>
+      <GlobalStyle></GlobalStyle>
+      <Routes>
+        <Route exact path="/" element={<HomePage />} />
+        <Route
+          exact
+          path="/profile/:artistId"
+          element={<ArtistProfilePage />}
+        />
+        <Route
+          exact
+          path="/prepareForQA/:videoId"
+          element={<ModifySingleTrackComponent />}
+        />
+        <Route exact path="/studio" element={<NewCloudStudio />} />
+        <Route exact path="/create" element={<ArtistLandingPage />} />
+        <Route
+          exact
+          path="/AccountNameSelection"
+          element={<AccountNameSelection />}
+        />
+        <Route exact path="/play/:videoId" element={<VideoPlayer />} />
+        <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
+        <Route exact path="/make-order" element={<Subscribe />} />
+        <Route exact path="/manage-plan" element={<MangePlan />} />
+        <Route exact path="/orders" element={<OrderHistory />} />
+        <Route exact path="/save-card" element={<SaveCard />} />
+        <Route exact path="/checkout" element={<Checkout/>} />
+        <Route exact path="/checkout-result" element={<CheckoutResult/>} />
+        <Route exact path="/play-screen" element={<PlayScreen />} />
+        <Route exact path="/search/:searchQuery" element={<Search/>}/>
+        <Route exact path="/stream" element={<VideoStreaming/>}/>
+        <Route exact path="/" element={<NowPlaying/>}>
             <Route exact path="/main" element={<SidebarComponent/>}>
               <Route exact path="library" element={<Library/>}/>
               <Route exact path="artist" element={<Artist/>}/>
@@ -46,11 +71,9 @@ const App = () => {
               <Route exact path="concert" element={<Concert/>}/>
             </Route>
           </Route>
-        </Routes>
-      </BrowserRouter>
-    </>
-
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
