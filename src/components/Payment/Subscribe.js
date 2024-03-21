@@ -67,7 +67,7 @@ function Subscribe() {
       }),
     })
       .then((res) => res.json())
-      .then((data) => {console.log(data);navigate(`/checkout?amount=${price}&plan=${currentTab}`)})
+      .then((data) => {console.log(data);navigate(`/myAccount/checkout?amount=${price}&plan=${currentTab}`)})
   }
   return (
     <SubscibeWrapper>

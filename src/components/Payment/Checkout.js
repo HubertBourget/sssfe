@@ -122,6 +122,7 @@ const Checkout = () => {
 
 export default Checkout;
 const MangePlanWrapper = styled.div`
+  margin-left: 15px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

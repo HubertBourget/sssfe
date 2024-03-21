@@ -26,6 +26,10 @@ import OrderHistory from "./components/Payment/OrderHistory";
 import SaveCard from "./components/Payment/SaveCard";
 import Checkout from "./components/Payment/Checkout";
 import CheckoutResult from "./components/Payment/CheckoutResult";
+import MyAccountSidebarComponent from "./components/MyAccountSidebar";
+import FavoriteArtists from "./pageComponents/FavoriteArtists";
+import LovedContent from "./pageComponents/LovedContent";
+import MyAccount from "./pageComponents/MyAccount";
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -53,12 +57,18 @@ const App = () => {
         />
         <Route exact path="/play/:videoId" element={<VideoPlayer />} />
         <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
-        <Route exact path="/make-order" element={<Subscribe />} />
-        <Route exact path="/manage-plan" element={<MangePlan />} />
-        <Route exact path="/orders" element={<OrderHistory />} />
-        <Route exact path="/save-card" element={<SaveCard />} />
-        <Route exact path="/checkout" element={<Checkout/>} />
-        <Route exact path="/checkout-result" element={<CheckoutResult/>} />
+        <Route exact path="/myAccount" element={<MyAccountSidebarComponent/>}>
+          <Route exact path="" element={<MyAccount/>}/>
+          <Route exact path="orders" element={<OrderHistory />} />
+          <Route exact path="make-order" element={<Subscribe />} />
+          <Route exact path="manage-plan" element={<MangePlan />} />
+          <Route exact path="save-card" element={<SaveCard />} />
+          <Route exact path="checkout" element={<Checkout/>} />
+          <Route exact path="checkout-result" element={<CheckoutResult/>} />
+          <Route exact path="favorite-artists" element={<FavoriteArtists/>}/>
+          <Route exact path="loved-content" element={<LovedContent/>}/>
+        </Route>
+
         <Route exact path="/play-screen" element={<PlayScreen />} />
         <Route exact path="/search/:searchQuery" element={<Search/>}/>
         <Route exact path="/stream" element={<VideoStreaming/>}/>

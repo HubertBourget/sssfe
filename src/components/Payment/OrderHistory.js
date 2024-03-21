@@ -59,6 +59,10 @@ export default OrderHistory;
 
 const OrderHistoryWrapper = styled.div`
   padding: 10px;
+  height: 100vh;
+  width: 100%;
+  overflow:scroll;
+  // height: 100%;
   > h1 {
     font-size: 32px;
     font-weight: 400;
@@ -67,7 +71,7 @@ const OrderHistoryWrapper = styled.div`
   }
 `;
 const TableWrapper = styled.div`
-  table {
+table {
     width: 100%;
     th,
     td {

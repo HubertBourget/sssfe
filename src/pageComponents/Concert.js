@@ -205,6 +205,8 @@ export default function Concert() {
 }
 
 const ConcertWrapper = styled.div`
+  overflow: auto;
+  height: 100vh;
   * {
     background-color: transparent;
   }

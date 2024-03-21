@@ -154,7 +154,7 @@ const MainContainer = styled.div`
 
 const CoverSection = styled.div`
   width: 100%;
-  height: 450px;
+  height: 350px;
   background-color: #d9d9d9;
 `;
 
@@ -172,6 +172,6 @@ const ButtonTabs = styled.div`
 `;
 
 const Main = styled.div`
-  margin-top: -200px;
-  background: rgba(0,0,0,0.0);
+  // margin-top: -200px;
+  background-color: rgba(0,0,0,0.0);
 `

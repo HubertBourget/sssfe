@@ -42,7 +42,7 @@ const MangePlan = () => {
               </li>
             </ul>
           </div>
-          <Link to="/make-order" className="PlanCta">
+          <Link to="/myAccount/make-order" className="PlanCta">
             Change plan
           </Link>
         </MngePlanRight>
@@ -57,7 +57,7 @@ const MangePlan = () => {
               Visa ending in 8643<p> Expires: 07/2027</p>
             </p>
           </div>
-          <Link to="/save-card">Update payment method</Link>
+          <Link to="/myAccount/save-card">Update payment method</Link>
         </MangePlanLeft>
       </ManagePlanMain>
     </MangePlanWrapper>
@@ -66,6 +66,8 @@ const MangePlan = () => {
 
 export default MangePlan;
 const MangePlanWrapper = styled.div`
+  height: 100vh;
+  margin-left: 15px;
   > h1 {
     font-size: 42px;
     font-weight: 400;

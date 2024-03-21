@@ -92,7 +92,6 @@ const Discography = styled.div`
   padding: 20px;
   .swiper-slider {
     background-color: rgba(0,0,0,0);
-    
     margin: 20px 0;
     overflow: visible;
     @media (max-width: 991px) {
