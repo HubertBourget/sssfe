@@ -28,7 +28,7 @@ export default function Library() {
             const videoData = videoResp.data;
             if (videoData) {
               list.push({
-                ...videoData,
+                ...videoData, contentType: 'recommendation',
               });
             }
           })

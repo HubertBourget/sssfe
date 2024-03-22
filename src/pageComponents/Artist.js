@@ -240,17 +240,6 @@ const HeadPart = styled.div`
   }
 `;
 
-const BackIcon = styled.div`
-  position: absolute;
-  z-index: 9;
-  padding: 15px;
-  margin: 30px 10px 10px;
-  cursor: pointer;
-  @media (max-width: 991px) {
-    top: 20px;
-  }
-`;
-
 const CoverImage = styled.div`
   position: relative;
   z-index: 2;

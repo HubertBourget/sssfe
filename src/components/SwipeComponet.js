@@ -6,9 +6,9 @@ import SliderArrow from "../assets/slider-arrow.svg";
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import picture from '../assets/picture.png'
 import rect from '../assets/rect.png'
 import PlayButton from "./common/PlayButton";
+
 export default function SwipeComponet({ arr }) {
   let navigate = useNavigate();
   return (
@@ -68,7 +68,7 @@ export default function SwipeComponet({ arr }) {
                       </h1>
                     </div>
                       <div style={{display: 'inline', marginRight: '20px'}}>
-                        {content.contentType === 'audio' || content.contentType === 'video' ? <PlayButton track={{id: content._id, songUrl: content.fileUrl,
+                        {content.contentType === 'audio' || content.contentType === 'video' || content.contentType === 'recommendation'? <PlayButton track={{id: content._id, songUrl: content.fileUrl,
                                   songTitle: content.title,
                                   isVideo: false,
                                   artistName: content.user.accountName,
