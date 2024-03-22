@@ -30,6 +30,7 @@ import MyAccountSidebarComponent from "./components/MyAccountSidebar";
 import FavoriteArtists from "./pageComponents/FavoriteArtists";
 import LovedContent from "./pageComponents/LovedContent";
 import MyAccount from "./pageComponents/MyAccount";
+import PlayBackHistory from "./pageComponents/PlaybackHistory";
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -64,6 +65,7 @@ const App = () => {
           <Route exact path="manage-plan" element={<MangePlan />} />
           <Route exact path="save-card" element={<SaveCard />} />
           <Route exact path="checkout" element={<Checkout/>} />
+          <Route exact path="playback-history" element={<PlayBackHistory/>} />
           <Route exact path="checkout-result" element={<CheckoutResult/>} />
           <Route exact path="favorite-artists" element={<FavoriteArtists/>}/>
           <Route exact path="loved-content" element={<LovedContent/>}/>

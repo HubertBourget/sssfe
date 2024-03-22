@@ -145,7 +145,10 @@ function Subscribe() {
 
 export default Subscribe;
 
-const SubscibeWrapper = styled.div``;
+const SubscibeWrapper = styled.div`
+  height: 100vh;
+  margin-left: 15px;
+`;
 const HeadingSection = styled.div`
   margin-bottom: 44px;
   h2 {

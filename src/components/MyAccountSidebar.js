@@ -49,7 +49,7 @@ const MyAccountSidebarComponent = () => {
               <img src={memberCard} alt="Upload" /> My Membership</MenuItem>
             <MenuItem component={<Link to="loved-content" />}>
               <img src={heart} alt="Upload" /> Loved Content</MenuItem>
-              <MenuItem component={<Link to="#" />}>
+              <MenuItem component={<Link to="playback-history" />}>
               <img src={time} alt="Upload" /> Playback History</MenuItem>
               <MenuItem component={<Link to="favorite-artists" />}>
               <img src={like} alt="Upload" /> Favorite Artists</MenuItem>
