@@ -38,8 +38,7 @@ export default function SwipeComponet({ arr }) {
           let thumbnail =
             content?.selectedImageThumbnail?.length > 0
               ? content.selectedImageThumbnail
-              : content.isOnlyAudio !== undefined ?
-                (content.isOnlyAudio === true ? rect : rect): picture;
+              : rect;
                 const handleClick = () => {
                   if (content.contentType === 'album') {
                       navigate(`/main/album?id=${content._id}`);

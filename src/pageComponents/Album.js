@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import artistCover from "../assets/artist-cover.png";
-import BackImg from "../assets/back.svg";
 import Share from "../assets/share-android.svg";
 import PersonAdd from "../assets/person-add-outline.svg";
 import Play from "../assets/playicon.svg";
@@ -10,12 +8,11 @@ import Shuffle from "../assets/Shuffle-blue.svg";
 import Thanks from "../assets/thanks.svg";
 import Thumb from "../assets/playlist.jpg";
 import TrackLike from "../assets/track-like.svg";
-import { useNavigate } from "react-router-dom";
 import PlayButton from "../components/common/PlayButton";
+import BackButton from "../components/common/BackButton";
 
 export default function Album() {
   const [album, setAlbum] = useState({})
-  const navigate = useNavigate()
   async function fetchAlbum() {
     const queryParams = new URLSearchParams(window.location.search);
     const albumId = queryParams.get("id");
@@ -30,9 +27,7 @@ export default function Album() {
   return (
     <MainContainer>
       <HeadPart>
-        <BackIcon>
-          <img src={BackImg} alt="not loaded" onClick={() => navigate('/main/library')}></img>
-        </BackIcon>
+        <BackButton/>
         <CoverImage>
           {/* <img src={artistCover} alt="not loaded"></img> */}
         </CoverImage>

@@ -131,9 +131,9 @@ export default function Library() {
           <h2 style={{marginLeft: '2%', marginBottom: '-10px', marginTop: '40px'}}>Recommendation</h2>
             <SwipeComponet arr={recommendations}></SwipeComponet>
 
-            <h2 style={{marginLeft: '2%'}}>All Contents</h2>
+            <h2 style={{marginLeft: '2%', marginBottom: '-10px'}}>All Contents</h2>
             <SwipeComponet arr={allContent}></SwipeComponet>
-            <h2 style={{marginLeft: '2%'}}>Events</h2>
+            <h2 style={{marginLeft: '2%', marginBottom: '-10px'}}>Events</h2>
             <SwipeComponet arr={events}></SwipeComponet>        
           </>
         )}
@@ -144,11 +144,14 @@ export default function Library() {
 
 const MainContainer = styled.div`
   width: 100%;
-  height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
   margin: 0; 
   padding: 0;
+  height: 90vh;
+  @media (max-width: 1000px) {
+    height: 80vh;
+  }
 `;
 
 

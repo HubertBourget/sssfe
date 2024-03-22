@@ -224,12 +224,14 @@ export default function Artist() {
 
 const Events = styled.div``;
 const MainContainer = styled.div`
-  min-height: 100vh;
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100vh;
   overflow-x: hidden;
+  height: 90vh;
+  @media (max-width: 1000px) {
+    height: 80vh;
+  }
 `;
 const HeadPart = styled.div`
   position: relative;

@@ -7,6 +7,7 @@ import CardIcon2 from "../../assets/credit-card-gray.svg";
 import Polygon from "../../assets/Polygon-9.svg";
 import CVV from "../../assets/CVV.svg";
 import { encryptData } from "../../utils/encryption";
+import BackButton from "../common/BackButton";
 
 function SaveCard() {
   const [toggle, setToggle] = useState(false);
@@ -67,6 +68,9 @@ function SaveCard() {
   };
   return (
     <SaveCardWrapper>
+      <div style={{marginBottom: '80px'}}>
+        <BackButton black={true}/>
+      </div>
       <Header>
         <h1>Saved payment cards</h1>
         <p>Manage your payment details for one-time purchases. </p>

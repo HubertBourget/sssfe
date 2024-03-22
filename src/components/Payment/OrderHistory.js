@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Arrowleft from "../../assets/Arrowleft.svg";
 import ArrowRight from "../../assets/Arrowright.svg";
 import { Link } from "react-router-dom";
+import BackButton from "../common/BackButton";
 
 const options = { 
   month: 'long', 
@@ -21,6 +22,10 @@ const OrderHistory = () => {
   }, []);
   return (
     <OrderHistoryWrapper>
+      <div style={{marginBottom: '80px'}}>
+        <BackButton black={true}/>
+      </div>
+      
       <h1>Order history</h1>
       <TableWrapper>
         <table>

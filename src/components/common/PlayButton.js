@@ -10,7 +10,6 @@ export default function PlayButton({track, large}) {
     const [playButton, setPlay] = useState(true)
     useEffect(() => {
         if(track.id !== currentSong()){
-          console.log(track.id)
           setPlay(true)
         }
         if(track.id === currentSong() && playingStatus.playing === true){

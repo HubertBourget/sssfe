@@ -63,6 +63,7 @@ export default CheckoutResult;
 
 const Thankyou = styled.div`
   min-height: 90vh;
+  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;

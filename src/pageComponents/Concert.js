@@ -18,13 +18,13 @@ export default function Concert() {
     >
       <ConcertVideo>
         <video
-          src={ExplainerVideo}
+          src={'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'}
           controls
           style={{ width: "100%", height: "auto", objectFit: "cover" }} // Adjust the width and height as needed
         >
           Your browser does not support the video tag.
         </video>
-        <VideoBar className="d-flex justify-between align-item-center">
+        {/* <VideoBar className="d-flex justify-between align-item-center">
           <div className="left-bar d-flex align-item-center">
             <div className="repeat-play">
               <img className="album-cover" src={Shuffle} alt="Album Cover" />
@@ -60,7 +60,7 @@ export default function Concert() {
               </div>
             </VolumeBar>
           </div>
-        </VideoBar>
+        </VideoBar> */}
       </ConcertVideo>
 
       <div className="event-outer">

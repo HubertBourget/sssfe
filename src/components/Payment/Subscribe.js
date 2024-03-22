@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AddCircle from "../../assets/add-circled-outline.svg";
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
+import BackButton from "../common/BackButton";
 
 const tabs = [
   {
@@ -71,6 +72,9 @@ function Subscribe() {
   }
   return (
     <SubscibeWrapper>
+       <div style={{marginBottom: '80px'}}>
+        <BackButton black={true}/>
+      </div>
       <HeadingSection>
         <h2>Unlock full access</h2>
         <p>

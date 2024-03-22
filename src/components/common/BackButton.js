@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import BackImg from "../../assets/back.svg";
+import BackImgBlack from "../../assets/back-black.svg";
 import { useNavigate } from "react-router-dom";
-export default function BackButton() {
+export default function BackButton({black}) {
   const navigate = useNavigate();
   return (
     <BackIcon onClick={() => navigate(-1)}>
-      <img src={BackImg} alt="not loaded" ></img>
+      <img src={black ? BackImgBlack : BackImg} alt="not loaded" ></img>
     </BackIcon>
   );
 }
@@ -15,7 +16,7 @@ const BackIcon = styled.div`
   position: absolute;
   z-index: 9;
   padding: 15px;
-  margin: 30px 10px 10px;
+  margin: 20px 0px 0px;
   cursor: pointer;
   @media (max-width: 991px) {
     top: 20px;

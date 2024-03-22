@@ -74,7 +74,7 @@ export default function TilopayPaymentForm({ selectedCard }) {
             billToTelephone: "42343242344",
             subscription: 1,
             capture: 0,
-            redirect: "http://localhost:3000/checkout-result",
+            redirect: "http://localhost:3000/myAccount/checkout-result",
             returnData: amount,
           });
           console.log(initialize);

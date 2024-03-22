@@ -6,6 +6,7 @@ import American from "../../assets/american-express.svg";
 import MasterCard from "../../assets/mastercard.svg";
 import CardIcon2 from "../../assets/credit-card-gray.svg";
 import TilopayPaymentForm from "./TilopayPaymentForm";
+import BackButton from "../common/BackButton";
 
 const Checkout = () => {
   const queryParams = new URLSearchParams(window.location.search);
@@ -26,6 +27,9 @@ const Checkout = () => {
  
   return (
     <MangePlanWrapper>
+       <div style={{marginBottom: '80px'}}>
+        <BackButton black={true}/>
+      </div>
       <div>
         <h1>Checkout</h1>
         <ManagePlanMain>
