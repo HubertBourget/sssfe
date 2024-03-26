@@ -2,10 +2,16 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import SwipeComponet from "../components/SwipeComponet";
-
+import { useOutletContext } from 'react-router-dom';
 export default function Library() {
   // const { user, isAuthenticated } = useAuth0();
   // const isAuthenticated = true;
+  
+  const context = useOutletContext();
+  const { isSearched, result } = context;
+  useEffect(() => {
+    console.log(result)
+  }, [isSearched])
   const user = { name: "debug9@debug.com" };
   const [filter, setFilter] = useState("all");
   const [contents, setContents] = useState([]);
@@ -124,11 +130,12 @@ export default function Library() {
         </ButtonTabs>
       </CoverSection>
       <Main>
+        {!isSearched ? <>
         {filter !== "all" ? (
           <SwipeComponet arr={contents}></SwipeComponet>
         ) : (
           <>
-          <h2 style={{marginLeft: '2%', marginBottom: '-10px', marginTop: '40px'}}>Recommendation</h2>
+          <h2 style={{marginLeft: '2%', marginBottom: '-10px'}}>Recommendation</h2>
             <SwipeComponet arr={recommendations}></SwipeComponet>
 
             <h2 style={{marginLeft: '2%', marginBottom: '-10px'}}>All Contents</h2>
@@ -136,7 +143,9 @@ export default function Library() {
             <h2 style={{marginLeft: '2%', marginBottom: '-10px'}}>Events</h2>
             <SwipeComponet arr={events}></SwipeComponet>        
           </>
-        )}
+        )
+        }</>: ''}
+        
       </Main>
     </MainContainer>
   );
