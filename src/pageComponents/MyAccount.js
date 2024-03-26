@@ -3,10 +3,11 @@ import styled from "styled-components";
 
 import ProfileIcon from "../assets/Profile-Icon.svg";
 import Lock from "../assets/lock.svg";
-import Thanks from "../assets/thanks.svg";
 import Receipt from "../assets/receipt.svg";
 import Credit from "../assets/credit-card.svg";
 import { Link } from "react-router-dom";
+import "react-responsive-modal/styles.css";
+import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
 
 export default function MyAccount() {
   return (
@@ -25,10 +26,8 @@ export default function MyAccount() {
             <p>Visa ending in 8643</p>
           </div>
 
-          <div className="give-thanks">
-            <img src={Thanks} alt="Album" />
-            Give More Thanks
-          </div>
+          
+          <ThanksGivingPopup/>
         </ActionBar>
         <a href="#!">Manage your subscription</a>
       </Subscription>

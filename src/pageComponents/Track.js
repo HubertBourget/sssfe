@@ -9,6 +9,7 @@ import axios from 'axios'
 import picture from '../assets/picture.png'
 import BackButton from "../components/common/BackButton";
 import PlayButton from "../components/common/PlayButton";
+import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
 
 export default function Track() {
   const [track, setTrack] = useState({})
@@ -75,10 +76,7 @@ export default function Track() {
               <img className="album-cover" src={Shuffle} alt="Album Cover" />
             </div>
           </div>
-          <div className="give-thanks">
-            <img className="album-cover" src={Thanks} alt="Album Cover" />
-            Give Thanks
-          </div>
+         <ThanksGivingPopup/>
         </div>
       </MusicInfo>
 

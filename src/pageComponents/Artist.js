@@ -14,6 +14,7 @@ import SwipeComponet from "../components/SwipeComponet";
 import SwipeEventComponet from "../components/lirbary/SwipeEventComponet";
 import BackButton from "../components/common/BackButton";
 import PlayButton from "../components/common/PlayButton";
+import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
 
 export default function Artist() {
   const [artist, setArtist] = useState({});
@@ -143,10 +144,7 @@ export default function Artist() {
               <img className="album-cover" src={Shuffle} alt="Album Cover" />
             </div>
           </div>
-          <div className="give-thanks">
-            <img className="album-cover" src={Thanks} alt="Album Cover" />
-            Give Thanks
-          </div>
+         <ThanksGivingPopup/>
         </div>
       </MusicInfo>
 

@@ -5,6 +5,7 @@ import ProfileIcon from "../assets/Profile-Icon.svg";
 import Thumb from "../assets/thumb-up.svg";
 import Thanks from "../assets/thanks.svg";
 import AlbumImg from "../assets/picture.png";
+import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
 
 export default function FavoriteArtists() {
   return (
@@ -19,10 +20,7 @@ export default function FavoriteArtists() {
         </div>
       </ProfileHead>
       <FavoriteArtist>
-        <div className="give-thanks">
-          <img src={Thanks} alt="Album" />
-          Give Thanks
-        </div>
+        <ThanksGivingPopup/>
         <ArtistList>
           <Box>
             <img src={AlbumImg} alt="Album" />

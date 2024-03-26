@@ -11,6 +11,7 @@ import Clock from "../assets/clock-outline.svg";
 import Sort from "../assets/sort.svg";
 import Like from "../assets/track-like.svg";
 import Album from "../assets/picture.png";
+import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
 
 export default function PlayBackHistory() {
   return (
@@ -35,10 +36,7 @@ export default function PlayBackHistory() {
             </div>
           </div>
 
-          <div className="give-thanks">
-            <img src={Thanks} alt="Album" />
-            Give Thanks
-          </div>
+         <ThanksGivingPopup/>
         </ActionBar>
         <Table>
           <table className="table">

@@ -10,6 +10,7 @@ import Thumb from "../assets/playlist.jpg";
 import TrackLike from "../assets/track-like.svg";
 import PlayButton from "../components/common/PlayButton";
 import BackButton from "../components/common/BackButton";
+import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
 
 export default function Album() {
   const [album, setAlbum] = useState({})
@@ -65,10 +66,7 @@ export default function Album() {
               <img className="album-cover" src={Shuffle} alt="Album Cover" />
             </div>
           </div>
-          <div className="give-thanks">
-            <img className="album-cover" src={Thanks} alt="Album Cover" />
-            Give Thanks
-          </div>
+          <ThanksGivingPopup/>
         </div>
       </MusicInfo>
 
