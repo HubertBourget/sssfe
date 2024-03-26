@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import CardIcon from "../../assets/credit-card.svg";
 import CheckIcon from "../../assets/check.svg";
+import BackButton from "../common/BackButton";
 
 const MangePlan = () => {
   const [planDetails, setPlanDetails] = useState({amount: 0, plan: null})
@@ -17,6 +18,9 @@ const MangePlan = () => {
   },[])
   return (
     <MangePlanWrapper>
+      <div style={{marginBottom: '80px'}}>
+        <BackButton black={true}/>
+      </div>
       <h1>Manage your plan</h1>
       <ManagePlanMain>
         <MngePlanRight>

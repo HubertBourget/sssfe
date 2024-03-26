@@ -29,7 +29,7 @@ export default function MyAccount() {
           
           <ThanksGivingPopup/>
         </ActionBar>
-        <a href="#!">Manage your subscription</a>
+        <Link to="/myAccount/manage-plan">Manage your subscription</Link>
       </Subscription>
       <LinkSection>
         <h4>Account</h4>
