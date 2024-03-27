@@ -31,6 +31,7 @@ import FavoriteArtists from "./pageComponents/FavoriteArtists";
 import LovedContent from "./pageComponents/LovedContent";
 import MyAccount from "./pageComponents/MyAccount";
 import PlayBackHistory from "./pageComponents/PlaybackHistory";
+import LandingPage from "./pageComponents/LandingPage";
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -58,6 +59,8 @@ const App = () => {
         />
         <Route exact path="/play/:videoId" element={<VideoPlayer />} />
         <Route exact path="/ModifyAlbum/:albumId" element={<ModifyAlbum />} />
+        <Route exact path="/landing-page" element={<LandingPage />} />
+
         <Route exact path="/myAccount" element={<MyAccountSidebarComponent/>}>
           <Route exact path="" element={<MyAccount/>}/>
           <Route exact path="orders" element={<OrderHistory />} />
