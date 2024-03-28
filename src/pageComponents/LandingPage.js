@@ -68,7 +68,7 @@ export default function LandingPage() {
                     <Seekers>
                         <Seeker>
                             <img src={harmonium} alt='not loaded' style={{width: '60px', height: '50px'}}></img>
-                            <div style={{padding: '0', margin: '0'}}>
+                            <div>
                                 <p style={{fontSize: '32px', margin: '0'}}>For sacred music seekers</p>
                                 <p style={{fontSize: '16px'}}>Discover new music and enjoy mindfully curated content on Sacred Sound’s library and online concert hall.</p> 
 
@@ -76,7 +76,7 @@ export default function LandingPage() {
                         </Seeker>
                         <Seeker>
                             <img src={workshop} alt='not loaded' style={{width: '60px', height: '50px'}}></img>
-                            <div style={{padding: '0', margin: '0'}}>
+                            <div>
                                 <p style={{fontSize: '32px', margin: '0'}}>For workshop leaders</p>
                                 <p style={{fontSize: '16px'}}>Enhance your next offering with our expansive library of meditations, sound journeys, and even DJ sets.</p> 
 
@@ -84,7 +84,7 @@ export default function LandingPage() {
                         </Seeker>
                         <Seeker>
                             <img src={user} alt='not loaded' style={{width: '60px', height: '50px'}}></img>
-                            <div style={{padding: '0', margin: '0'}}>
+                            <div>
                                 <p style={{fontSize: '32px', margin: '0'}}>For students and emerging artists</p>
                                 <p style={{fontSize: '16px'}}>Develop your craft by connecting with lessons, offerings, and events created by the artists who inspire you.</p> 
 
@@ -221,7 +221,7 @@ const CommunitySection = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 90%;
+    width: 95%;
     margin: auto;
     justify-content: space-between;
     margin-top: 30px;
@@ -252,7 +252,6 @@ const UserSection = styled.div`
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
-    height: 600px;
     margin: auto;
     background-color: #A3C4A3;
     justify-content: space-between;
@@ -275,7 +274,6 @@ const InnerSection = styled.div`
 `
 const UserContent = styled.div`
     width: 600px; 
-    margin: auto;
     .header{
         font-size: 50px;
     }
@@ -284,6 +282,7 @@ const UserContent = styled.div`
     }
 
     @media (max-width: 1100px){
+        width: 100%; 
         .header{
             font-size: 38px;
         }
@@ -292,7 +291,8 @@ const UserContent = styled.div`
         }
     }
 
-    @media (max-width: 760px){
+    @media (max-width: 880px){
+        width: 100%; 
         .header{
             font-size: 32px;
         }
@@ -303,6 +303,8 @@ const UserContent = styled.div`
 `
 
 const Seekers = styled.div`
+    margin-top: 80px;
+    margin-bottom: 80px;
     @media (max-width: 768px){
         margin-top: 60px;
     }
@@ -325,7 +327,7 @@ const RegisterForm = styled.div`
         width: 450px;
         margin: auto;
         input{
-            width: 450px;
+            width: 442px;
             height: 40px;
             margin-left: 0;
             @media (max-width: 500px) {
