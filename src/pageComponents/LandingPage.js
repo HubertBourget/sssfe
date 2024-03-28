@@ -53,7 +53,7 @@ export default function LandingPage() {
                 <p className='content'>We understand what it's like to long for a better way to connect with sacred music. We are creating a space that raises the vibration of humanity through quality and diverse sacred music, and intimate connection with artists.</p>
             </SecondarySection>
             <SecondarySection>
-                <video  src={'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'}></video>
+                <video  src={''} style={{backgroundColor: 'black'}}></video>
             </SecondarySection>    
         </CommunitySection>
         <UserSection>
