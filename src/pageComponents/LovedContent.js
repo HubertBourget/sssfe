@@ -1,18 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import axios from 'axios'
 import ProfileIcon from "../assets/Profile-Icon.svg";
 import Loved from "../assets/love.svg";
 import Thanks from "../assets/thanks.svg";
 import Play from "../assets/playicon.svg";
+import { useAuth0 } from '@auth0/auth0-react';
 import Shuffle from "../assets/Shuffle-blue.svg";
 import Clock from "../assets/clock-outline.svg";
 import Sort from "../assets/sort.svg";
-import Like from "../assets/track-like.svg";
+import Like from "../assets/track-likeed.svg";
 import Album from "../assets/picture.png";
 import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
 
 export default function LovedContent() {
+    const { user, isAuthenticated } = useAuth0();
+  // const isAuthenticated = true;
+  // const user = { name: "debug9@debug.com" };
+  const [lovedContents, setLovedContents] = useState([])
+  async function dislike(trackId){
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/updateUserLoves`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ //Maybe improve this part
+        user: user.name,
+        videoId: trackId,
+        b_isLoving: false
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => fetchLovedContent());
+    
+  }
+  async function fetchLovedContent(){
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/api/getUserLoves?user=${user.name}`
+    );
+    let videoIds = response.data.loves
+    const list = [];
+        await Promise.allSettled(
+          videoIds.map(async (id) => {
+            const videoResp = await axios.get(
+              `${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadataFromObjectId/${id}`
+            );
+            const videoData = videoResp.data;
+            if (videoData) {
+              list.push({
+                ...videoData,
+              });
+            }
+          })
+        );
+        setLovedContents(list)
+  }
+  useEffect(() => {
+    fetchLovedContent()
+  }, [])
   return (
     <PageWrapper className="concert-wrapper">
       <ProfileHead>
@@ -56,36 +102,25 @@ export default function LovedContent() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
+              {lovedContents?.map((content, index) => {
+               return <tr>
+                <td>{index + 1}</td>
                 <td>
                   <div className="album-td">
                     <img className="album-img" src={Album} alt="icon" />
-                    <p>Track title </p>
+                    <p>{content.title}</p>
                   </div>
                 </td>
-                <td>Album title</td>
+                <td>Album</td>
                 <td>Dec. 29, 2023</td>
                 <td>5:26</td>
                 <td>
-                  <img className="like-album" src={Like} alt="icon" />
+                  <img className="like-album" src={Like} alt="icon" onClick={() => dislike(content._id)}/>
                 </td>
               </tr>
-              <tr>
-                <td>1</td>
-                <td>
-                  <div className="album-td">
-                    <img className="album-img" src={Album} alt="icon" />
-                    <p>Track title </p>
-                  </div>
-                </td>
-                <td>Album title</td>
-                <td>Dec. 29, 2023</td>
-                <td>5:26</td>
-                <td>
-                  <img className="like-album" src={Like} alt="icon" />
-                </td>
-              </tr>
+              })}
+              
+
             </tbody>
           </table>
         </Table>

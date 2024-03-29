@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import { usePlayingContext } from "../../pageComponents/NowPlaying";
 import Pause from "../../assets/pause.svg";
+import { useAuth0 } from '@auth0/auth0-react';
 import Play from "../../assets/playicon.svg";
 export default function PlayButton({track, large}) {
+    const { user, isAuthenticated } = useAuth0();
+  // const isAuthenticated = true;
+  // const user = { name: "debug9@debug.com" };
     const currentSong = usePlayingContext(state=>state.getCurrentSong)
     const setSongs = usePlayingContext(state=>state.setSongs)
     const playingStatus = usePlayingContext(state=>state.state)
@@ -30,6 +34,23 @@ export default function PlayButton({track, large}) {
       artistName: track.accountName,
       img: track.selectedImageThumbnail,
     }], 0)
+    addToPlaybackHistory()
+  }
+  async function addToPlaybackHistory(){
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/updateUserPlaybackHistory`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ 
+        user: user.name,
+        videoId: track.id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+    
   }
   return (
     <PlayComponent>

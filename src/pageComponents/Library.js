@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useAuth0 } from '@auth0/auth0-react';
 import axios from "axios";
 import SwipeComponet from "../components/SwipeComponet";
 import { useOutletContext } from 'react-router-dom';
 export default function Library() {
-  // const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
   // const isAuthenticated = true;
   
   const context = useOutletContext();
@@ -12,7 +13,7 @@ export default function Library() {
   useEffect(() => {
     console.log(result)
   }, [isSearched])
-  const user = { name: "debug9@debug.com" };
+  // const user = { name: "debug9@debug.com" };
   const [filter, setFilter] = useState("all");
   const [contents, setContents] = useState([]);
   const [allContent, setAllContent] = useState([]);
@@ -29,7 +30,7 @@ export default function Library() {
         await Promise.allSettled(
           videoIds.map(async (id) => {
             const videoResp = await axios.get(
-              `${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadata/${id}`
+              `${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadataFromObjectId/${id}`
             );
             const videoData = videoResp.data;
             if (videoData) {
