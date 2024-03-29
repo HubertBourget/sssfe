@@ -1,19 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import axios from "axios";
 import ProfileIcon from "../assets/Profile-Icon.svg";
 import Loved from "../assets/love.svg";
 import Time from "../assets/time.png";
 import Thanks from "../assets/thanks.svg";
 import Play from "../assets/playicon.svg";
 import Shuffle from "../assets/Shuffle-blue.svg";
+import { useAuth0 } from '@auth0/auth0-react';
 import Clock from "../assets/clock-outline.svg";
 import Sort from "../assets/sort.svg";
-import Like from "../assets/track-like.svg";
+import LikeIcon from "../assets/track-like.svg";
+import LikedIcon from "../assets/track-likeed.svg";
 import Album from "../assets/picture.png";
 import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
 
 export default function PlayBackHistory() {
+  const { user, isAuthenticated } = useAuth0();
+  // const isAuthenticated = true; 
+  // const user = { name: "debug9@debug.com" };
+  const [playbackList, setList] = useState([]);
+  const [likedList, setLiked] = useState([]);
+
+  async function fetchLike(){
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/api/getUserLoves?user=${user.name}`
+    );
+      setLiked(response.data.loves)
+  }
+  async function fetchLovedContent() {
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/api/getUserPlaybackHistory?user=${user.name}`
+    );
+    let videoIds = response.data.playbackHistory;
+    const list = [];
+    await Promise.allSettled(
+      videoIds.map(async (video) => {
+        const videoResp = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadataFromObjectId/${video.videoId}`
+        );
+        const videoData = videoResp.data;
+        if (videoData) {
+          list.push({
+            ...videoData,
+            timestamp: video.timestamp,
+          });
+        }
+      })
+    );
+    setList(list);
+  }
+
+  useEffect(() => {
+    fetchLovedContent();
+    fetchLike()
+  }, []);
   return (
     <PageWrapper className="concert-wrapper">
       <ProfileHead>
@@ -36,7 +77,7 @@ export default function PlayBackHistory() {
             </div>
           </div>
 
-         <ThanksGivingPopup/>
+          <ThanksGivingPopup />
         </ActionBar>
         <Table>
           <table className="table">
@@ -57,36 +98,31 @@ export default function PlayBackHistory() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>
-                  <div className="album-td">
-                    <img className="album-img" src={Album} alt="icon" />
-                    <p>Track title </p>
-                  </div>
-                </td>
-                <td>Album title</td>
-                <td>Dec. 29, 2023</td>
-                <td>5:26</td>
-                <td>
-                  <img className="like-album" src={Like} alt="icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>
-                  <div className="album-td">
-                    <img className="album-img" src={Album} alt="icon" />
-                    <p>Track title </p>
-                  </div>
-                </td>
-                <td>Album title</td>
-                <td>Dec. 29, 2023</td>
-                <td>5:26</td>
-                <td>
-                  <img className="like-album" src={Like} alt="icon" />
-                </td>
-              </tr>
+              {playbackList?.map((content, index) => {
+                return (
+                  <tr>
+                    <td>{index + 1}</td>
+                    <td>
+                      <div className="album-td">
+                        <img className="album-img" src={Album} alt="icon" />
+                        <p>{content.title}</p>
+                      </div>
+                    </td>
+                    <td>Album</td>
+                    <td>
+                      {new Date(content.timestamp).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </td>
+                    <td>5:26</td>
+                    <td>
+                      <img className="like-album" src={likedList?.includes(content._id) ? LikedIcon: LikeIcon} alt="icon" />
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </Table>
@@ -257,7 +293,7 @@ const Table = styled.div`
         &:last-child {
           text-align: center;
         }
-        img{
+        img {
           cursor: pointer;
         }
         .album-td {

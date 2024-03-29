@@ -5,25 +5,57 @@ import PersonAdd from "../assets/person-add-outline.svg";
 import Shuffle from "../assets/Shuffle-blue.svg";
 import Thanks from "../assets/thanks.svg";
 import TrackLike from "../assets/track-like.svg";
+import TrackLikeed from "../assets/track-likeed.svg";
 import axios from 'axios'
+import { useAuth0 } from '@auth0/auth0-react';
 import picture from '../assets/picture.png'
 import BackButton from "../components/common/BackButton";
 import PlayButton from "../components/common/PlayButton";
 import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
 
 export default function Track() {
+   const { user, isAuthenticated } = useAuth0();
+  // const isAuthenticated = true;
+  // const user = { name: "debug9@debug.com" };
   const [track, setTrack] = useState({})
+  const [isLiked, setLiked] = useState(false)
+  const queryParams = new URLSearchParams(window.location.search);
+  const trackId = queryParams.get("id");
   async function fetchTrack() {
-    const queryParams = new URLSearchParams(window.location.search);
-    const trackId = queryParams.get("id");
     const response = await axios.get(
       `${process.env.REACT_APP_API_BASE_URL}/api/getTrack/${trackId}`
     );
-    console.log(response.data)
     setTrack(response.data.track);
+  }
+  async function fetchLike(){
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/api/getUserLoves?user=${user.name}`
+    );
+    if(response.data.loves.includes(trackId)){
+      setLiked(true)
+    }
+  }
+
+  async function likeOrDislike(){
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/updateUserLoves`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ //Maybe improve this part
+        user: user.name,
+        videoId: trackId,
+        b_isLoving: !isLiked
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => setLiked(!isLiked));
+    
   }
   useEffect(() => {
     fetchTrack()
+    fetchLike()
   }, [])
 
   return (
@@ -101,7 +133,7 @@ export default function Track() {
           </div>
           <div className="track-right">
             <h5 className="track-time">02:36</h5>
-            <img src={TrackLike} alt="track-like"></img>
+            <img src={isLiked ? TrackLikeed : TrackLike} alt="" onClick={likeOrDislike}></img>
           </div>
         </div>
       
