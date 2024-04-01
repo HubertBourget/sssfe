@@ -10,9 +10,9 @@ export default function Library() {
   
   const context = useOutletContext();
   const { isSearched, result } = context;
-  useEffect(() => {
-    console.log(result)
-  }, [isSearched])
+  // useEffect(() => {
+  //   console.log(result)
+  // }, [isSearched, result])
   // const user = { name: "debug9@debug.com" };
   const [filter, setFilter] = useState("all");
   const [contents, setContents] = useState([]);
@@ -30,7 +30,7 @@ export default function Library() {
         await Promise.allSettled(
           videoIds.map(async (id) => {
             const videoResp = await axios.get(
-              `${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadataFromObjectId/${id}`
+              `${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetaDataFromObjectId/${id}`
             );
             const videoData = videoResp.data;
             if (videoData) {
@@ -145,7 +145,16 @@ export default function Library() {
             <SwipeComponet arr={events}></SwipeComponet>        
           </>
         )
-        }</>: ''}
+        }</>: <>
+           <h2 style={{marginLeft: '1%', marginBottom: '-10px'}}>Tracks</h2>
+            <SwipeComponet arr={result.tracks}></SwipeComponet>
+
+            <h2 style={{marginLeft: '1%', marginBottom: '-10px'}}>Artists</h2>
+            <SwipeComponet arr={result.artists}></SwipeComponet>
+
+            <h2 style={{marginLeft: '1%', marginBottom: '-10px'}}>Albums</h2>
+            <SwipeComponet arr={result.albums}></SwipeComponet>
+        </>}
         
       </Main>
     </MainContainer>
