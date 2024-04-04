@@ -16,7 +16,8 @@ import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
 export default function Track() {
    const { user, isAuthenticated } = useAuth0();
   // const isAuthenticated = true;
-  // const user = { name: "debug9@debug.com" };
+  // const user = { name: "test@test.com" };
+  // const userId = "660cf5ca9fb6fc7838cc611e"
   const [track, setTrack] = useState({})
   const [isLiked, setLiked] = useState(false)
   const queryParams = new URLSearchParams(window.location.search);
@@ -108,7 +109,7 @@ export default function Track() {
               <img className="album-cover" src={Shuffle} alt="Album Cover" />
             </div>
           </div>
-         <ThanksGivingPopup/>
+         <ThanksGivingPopup track={track} userId={user?._Id} user={user?.name}/>
         </div>
       </MusicInfo>
 

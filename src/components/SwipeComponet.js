@@ -42,7 +42,9 @@ export default function SwipeComponet({ arr }) {
                 const handleClick = () => {
                   if (content.contentType === 'album') {
                       navigate(`/main/album?id=${content._id}`);
-                  }else if(content.contentType !== 'event') {
+                  }else if(content.contentType === 'artist') {
+                    navigate(`/main/artist?id=${content.user._id}`);
+                  }else{
                     navigate(`/main/track?id=${content._id}`);
                   }
               };
@@ -87,11 +89,12 @@ export default function SwipeComponet({ arr }) {
 
 const Discography = styled.div`
   background-color: rgba(0,0,0,0);
-  width: 100%;
-  padding: 20px;
+  width: 98%;
+  padding: 5px;
+  margin-top: 15px;
   .swiper-slider {
     background-color: rgba(0,0,0,0);
-    margin: 20px 0;
+    // margin: 20px 0;
     overflow: visible;
     @media (max-width: 991px) {
     }
@@ -126,7 +129,6 @@ const Discography = styled.div`
     .swiper-button-next {
       position: absolute;
       top: -35px;
-      right: 30px;
       width: 35px;
       height: 35px;
       background-color: #fff;
@@ -153,7 +155,7 @@ const Discography = styled.div`
     // }
 
     .swiper-button-prev {
-      right: 80px;
+      right: 60px;
       left: auto;
       &::after {
         transform: rotate(180deg);

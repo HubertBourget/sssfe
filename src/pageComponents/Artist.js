@@ -10,6 +10,7 @@ import Thanks from "../assets/thanks.svg";
 import Thumb from "../assets/playlist.jpg";
 import TrackLike from "../assets/track-like.svg";
 import axios from "axios";
+import { useAuth0 } from '@auth0/auth0-react';
 import SwipeComponet from "../components/SwipeComponet";
 import SwipeEventComponet from "../components/lirbary/SwipeEventComponet";
 import BackButton from "../components/common/BackButton";
@@ -23,6 +24,10 @@ export default function Artist() {
   const [tab, setTab] = useState(0);
   const [contents, setContent] = useState([]);
   const [events, setEvents] = useState([]);
+  // const user = { name: "debug9@debug.com" };
+  // const userId = "660cf4f69fb6fc7838cc611d"
+  const { user, isAuthenticated } = useAuth0();
+  // const isAuthenticated = true;
   async function fetchArtist() {
     const queryParams = new URLSearchParams(window.location.search);
     const artistId = queryParams.get("id");
@@ -53,7 +58,9 @@ export default function Artist() {
 
         const response = await axios.get(url);
         if (response.status === 200) {
-          response.data = response.data.map((ele) => {return {...ele, contentType: type}});
+          response.data = response.data.map((ele) => {
+            return { ...ele, contentType: type };
+          });
           setContent(response.data);
         } else {
           console.error(`Request failed with status: ${response.status}`);
@@ -62,7 +69,9 @@ export default function Artist() {
         let url = `${process.env.REACT_APP_API_BASE_URL}/api/getAlbumsByArtist?artistId=${artist.email}`;
 
         const response = await axios.get(url);
-        response.data = response.data.map((ele) => {return {...ele, contentType: type}});
+        response.data = response.data.map((ele) => {
+          return { ...ele, contentType: type };
+        });
         if (response.status === 200) {
           setContent(response.data);
         } else {
@@ -79,8 +88,7 @@ export default function Artist() {
 
       const response = await axios.get(url);
       if (response.status === 200) {
-        console.log(response.data);
-        setFeatured(response.data)
+        setFeatured(response.data);
       } else {
         console.error(`Request failed with status: ${response.status}`);
       }
@@ -108,7 +116,7 @@ export default function Artist() {
   return (
     <MainContainer>
       <HeadPart>
-       <BackButton/>
+        <BackButton />
         <CoverImage>
           <img src={artist.bannerImageUrl} alt="not loaded"></img>
         </CoverImage>
@@ -144,7 +152,7 @@ export default function Artist() {
               <img className="album-cover" src={Shuffle} alt="Album Cover" />
             </div>
           </div>
-         <ThanksGivingPopup/>
+          <ThanksGivingPopup artist={artist} userId={user?._id} user={user?.name} />
         </div>
       </MusicInfo>
 
@@ -157,11 +165,16 @@ export default function Artist() {
             <div className="track-left">
               <div className="icon-number">
                 {/* <img src={Play} className="track-icon" alt="track-icon"></img> */}
-                <PlayButton track={{id: element._id, songUrl: element.fileUrl,
-                                  songTitle: element.title,
-                                  isVideo: false,
-                                  artistName: element.user.accountName,
-                                  img: element.selectedImageThumbnail}} />
+                <PlayButton
+                  track={{
+                    id: element._id,
+                    songUrl: element.fileUrl,
+                    songTitle: element.title,
+                    isVideo: false,
+                    artistName: element.user.accountName,
+                    img: element.selectedImageThumbnail,
+                  }}
+                />
                 {/* <h5>{index + 1}</h5> */}
               </div>
               <img

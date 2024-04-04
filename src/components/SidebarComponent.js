@@ -4,6 +4,7 @@ import { Link, Outlet } from "react-router-dom";
 import SacredSoundLogo from "../assets/Logo.png";
 import LibraryIcon from "../assets/library-icon.png";
 import Feed from "../assets/Vector.png";
+import { useAuth0 } from '@auth0/auth0-react';
 import Concert from "../assets/Group 189.png";
 import MenuBar from "../assets/menubar.svg";
 import styled from "styled-components";
@@ -11,6 +12,9 @@ import axios from "axios";
 import { useLocation } from 'react-router-dom';
 
 const SidebarComponent = () => {
+  const { user, isAuthenticated } = useAuth0();
+  // const isAuthenticated = true;
+   // const user = { name: "debug9@debug.com" };
   const [toggled, setToggled] = React.useState(false);
   const location = useLocation();
   const [broken, setBroken] = React.useState(
@@ -31,11 +35,75 @@ const SidebarComponent = () => {
 
   const fetchSearchResult = async (searchQuery) => {
     try {
-      let url = `${process.env.REACT_APP_API_BASE_URL}/api/getSearchResult/debug9@debug.com/${searchQuery}`;
+      let url = `${process.env.REACT_APP_API_BASE_URL}/api/getSearchResult/${user.name}/${searchQuery}`;
 
       const response = await axios.get(url);
       if (response.status === 200) {
-        setResult(response.data);
+        // let data = {
+        //   tracks: ['65e86b2fc36e577d0ad7dcc8', '65eab5186300c6e4285f0ae1'],
+        //   albums: ['65eac9a5aaa244ed32c5229a', '65eb078fb499bd61022878a2'],
+        //   artists: ['65e81221faffe0217f791b44']
+        // };
+        let data = response.data
+        if(data.tracks.length > 0){
+          let list = []
+          await Promise.allSettled(
+            data.tracks.map(async (id) => {
+              const videoResp = await axios.get(
+                `${process.env.REACT_APP_API_BASE_URL}/api/getTrack/${id}`
+              );
+              const videoData = videoResp.data.track;
+              if (videoData) {
+                list.push({
+                  ...videoData, contentType: videoData.isOnlyAudio ? 'audio' : 'video'
+                });
+              }
+            })
+          );
+          data.tracks = list; 
+        }else{
+          data.tracks = []
+        }
+        if(data.albums.length > 0){
+          let list = []
+          await Promise.allSettled(
+            data.albums.map(async (id) => {
+              const albumResp = await axios.get(
+                `${process.env.REACT_APP_API_BASE_URL}/api/getAlbum/${id}`
+              );
+              const albumData = albumResp.data.album;
+              if (albumData) {
+                list.push({
+                  ...albumData,contentType: 'album'
+                });
+              }
+            })
+          );
+          data.albums = list; 
+        }else{
+          data.albums = []
+        }
+        if(data.artists.length > 0){
+          let list = []
+          await Promise.allSettled(
+            data.artists.map(async (id) => {
+              const artistResp = await axios.get(
+                `${process.env.REACT_APP_API_BASE_URL}/api/getUserProfileById/${id}`
+              );
+              const artistData = artistResp.data;
+              if (artistData) {
+                list.push({
+                  title: artistData.accountName, user: artistData, selectedImageThumbnail: artistData.profileImageUrl, contentType: 'artist'
+                });
+              }
+            })
+          );
+          data.artists = list; 
+        }else{
+          data.artists = []
+        }
+        
+        setResult(data)
       } else {
         console.error(`Request failed with status: ${response.status}`);
       }
@@ -47,8 +115,8 @@ const SidebarComponent = () => {
   const handleKeyDown = async (e) => {
     if (e.key === 'Enter') {
       if(searchTerm.length > 0){
+        await fetchSearchResult(searchTerm)
         setIsSearched(true)
-        await fetchSearchResult(setSearchTerm)
       }else{
         setIsSearched(false)
       }
