@@ -1,13 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import ProfileIcon from "../assets/Profile-Icon.svg";
 import Thumb from "../assets/thumb-up.svg";
 import Thanks from "../assets/thanks.svg";
+import axios from "axios";
 import AlbumImg from "../assets/picture.png";
-import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
+// import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
+import { useNavigate } from "react-router";
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function FavoriteArtists() {
+  const [favoriteArtistsDetails, setFavoriteArtistsDetails] = useState([]);
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth0();
+  // const user = {name: "debug9@debug.com"};
+
+  const fetchFavorite = async () => {
+    const favorites = await axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/api/getUserFavorites?user=${user.name}`
+    );
+    const favoritesDetails = favorites.data?.favorites;
+    const artists = [];
+    await Promise.all(
+      favoritesDetails.map(async (artistId) => {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/api/getUserProfileById/${artistId}`
+        );
+        artists.push({ ...response.data });
+      })
+    );
+    setFavoriteArtistsDetails(artists);
+  };
+
+  useEffect(() => {
+    // Make an Axios GET request to your backend API
+    fetchFavorite();
+  }, []);
+
   return (
     <PageWrapper className="concert-wrapper">
       <ProfileHead>
@@ -20,36 +50,22 @@ export default function FavoriteArtists() {
         </div>
       </ProfileHead>
       <FavoriteArtist>
-        <ThanksGivingPopup/>
+        {/* <ThanksGivingPopup  /> */}
         <ArtistList>
-          <Box>
-            <img src={AlbumImg} alt="Album" />
-            <p>Artist Name</p>
-          </Box>
-          <Box>
-            <img src={AlbumImg} alt="Album" />
-            <p>Artist Name</p>
-          </Box>
-          <Box>
-            <img src={AlbumImg} alt="Album" />
-            <p>Artist Name</p>
-          </Box>
-          <Box>
-            <img src={AlbumImg} alt="Album" />
-            <p>Artist Name</p>
-          </Box>
-          <Box>
-            <img src={AlbumImg} alt="Album" />
-            <p>Artist Name</p>
-          </Box>
-          <Box>
-            <img src={AlbumImg} alt="Album" />
-            <p>Artist Name</p>
-          </Box>
-          <Box>
-            <img src={AlbumImg} alt="Album" />
-            <p>Artist Name</p>
-          </Box>
+          {favoriteArtistsDetails.map((artist) => (
+            <Box
+              key={artist._id}
+              onClick={() => navigate(`/main/artist?id=${artist._id}`)}
+            >
+              <img
+                src={
+                  artist?.profileImageUrl ? artist?.profileImageUrl : AlbumImg
+                }
+                alt="Album"
+              />
+              <p>{`${artist.accountName}`}</p>
+            </Box>
+          ))}
         </ArtistList>
       </FavoriteArtist>
     </PageWrapper>

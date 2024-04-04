@@ -6,6 +6,7 @@ import PersonAdd from "../assets/person-add-outline.svg";
 import Play from "../assets/playicon.svg";
 import Shuffle from "../assets/Shuffle-blue.svg";
 import Thanks from "../assets/thanks.svg";
+import { useAuth0 } from '@auth0/auth0-react';
 import Thumb from "../assets/playlist.jpg";
 import TrackLike from "../assets/track-like.svg";
 import PlayButton from "../components/common/PlayButton";
@@ -14,6 +15,10 @@ import ThanksGivingPopup from "../components/common/ThanksGivingPopup";
 
 export default function Album() {
   const [album, setAlbum] = useState({})
+  // const user = { name: "test@test.com" };
+  // const userId = "660cf5ca9fb6fc7838cc611e"
+   const { user, isAuthenticated } = useAuth0();
+  // const isAuthenticated = true;
   async function fetchAlbum() {
     const queryParams = new URLSearchParams(window.location.search);
     const albumId = queryParams.get("id");
@@ -66,7 +71,7 @@ export default function Album() {
               <img className="album-cover" src={Shuffle} alt="Album Cover" />
             </div>
           </div>
-          <ThanksGivingPopup/>
+          <ThanksGivingPopup album={album} userId={user?._id} user={user?.name}/>
         </div>
       </MusicInfo>
 
