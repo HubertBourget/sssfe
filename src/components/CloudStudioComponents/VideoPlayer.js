@@ -8,9 +8,25 @@ import axios from 'axios';
         const [videoData, setVideoData] = useState(null);
         const navigate = useNavigate();
         const [recommendations, setRecommendations] = useState([]);
+        // const user = {name : "debug9@debug.com"};
+        // const [userId, setUserId] =useState(user.name) 
         const userId = "someUserId";
 
         useEffect(() => {
+        const userLog = async () => {
+          try {
+            const response  = await axios.post(
+              `${process.env.REACT_APP_API_BASE_URL}/api/logContentUsage/`,
+              {
+                user: userId,
+                videoId,
+              }
+            );
+          } catch (error) {
+            console.log("error creating userLog", error);
+          }
+        };
+
         const fetchVideoData = async () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadataFromVideoId/${videoId}`);
@@ -23,6 +39,8 @@ import axios from 'axios';
 
         if (videoId) {
             fetchVideoData();
+            const intervalId = setInterval(userLog, 60000); // 60000 milliseconds = 1 minute
+            return () => clearInterval(intervalId);
         }
     }, [videoId]);
 

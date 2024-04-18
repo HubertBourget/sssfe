@@ -32,6 +32,9 @@ import LovedContent from "./pageComponents/LovedContent";
 import MyAccount from "./pageComponents/MyAccount";
 import PlayBackHistory from "./pageComponents/PlaybackHistory";
 import LandingPage from "./pageComponents/LandingPage";
+import Welcome from "./pageComponents/Welcome";
+import Topics from "./pageComponents/Topics"
+import PaymentDetail from "./pageComponents/PaymentDetails";
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -40,6 +43,9 @@ const App = () => {
       <GlobalStyle></GlobalStyle>
       <Routes>
         <Route exact path="/" element={<HomePage />} />
+        <Route exact path="/welcome" element={<Welcome />} />
+        <Route exact path="/topics" element={<Topics />} />
+        <Route exact path="/payment-details" element={<PaymentDetail/>}/>
         <Route
           exact
           path="/profile/:artistId"
@@ -52,6 +58,7 @@ const App = () => {
         />
         <Route exact path="/studio" element={<NewCloudStudio />} />
         <Route exact path="/create" element={<ArtistLandingPage />} />
+        <Route exact path="/payment-details" element={<PaymentDetail />} />
         <Route
           exact
           path="/AccountNameSelection"

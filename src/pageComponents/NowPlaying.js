@@ -3,6 +3,11 @@ import MusicPlayer from "../components/MusicPlayer";
 import styled from "styled-components";
 import useAudioPlayer from "../Hooks/useAudioPlayer";
 import { Outlet } from "react-router-dom";
+import axios from "axios";
+import { useAuth0 } from '@auth0/auth0-react';
+
+// const isAuthenticated = true;
+// const user = { name: "debug9@debug.com" };
 
 const NowPlayingContext = createContext({});
 
@@ -11,6 +16,8 @@ const MemoizedComponent = React.memo(({ children }) => {
 });
 
 function NowPlaying({ children }) {
+const { user, isAuthenticated } = useAuth0();
+
   const [smallScreen, setSmallScreen] = useState(false);
   const {
     state,
@@ -47,6 +54,31 @@ function NowPlaying({ children }) {
       currentAudioRef.removeEventListener("timeupdate", updateTimeline);
     };
   }, [audioRef, setState, state.currentSongIndex, state.song]);
+
+  useEffect(() => {    
+
+    const userLog = async () => {
+      try {
+        const response  = await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}/api/logContentUsage/`,
+          {
+            user: user.name,  
+            videoId: state.song[0].id,
+          }
+        );
+      } catch (error) {
+        console.log("error creating userLog", error);
+      }
+    };
+
+    if(state.playing){
+      const intervalId = setInterval(userLog, 60000)
+      return () => {
+        clearInterval(intervalId)
+      };
+    }
+  }, [state.playing]);
+
   return (
     <NowPlayingContext.Provider
       value={{

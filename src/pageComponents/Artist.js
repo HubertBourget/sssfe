@@ -25,7 +25,7 @@ export default function Artist() {
   const [contents, setContent] = useState([]);
   const [events, setEvents] = useState([]);
   // const user = { name: "debug9@debug.com" };
-  // const userId = "660cf4f69fb6fc7838cc611d"
+  const userId = "660cf4f69fb6fc7838cc611d"
   const { user, isAuthenticated } = useAuth0();
   // const isAuthenticated = true;
   async function fetchArtist() {
@@ -152,7 +152,7 @@ export default function Artist() {
               <img className="album-cover" src={Shuffle} alt="Album Cover" />
             </div>
           </div>
-          <ThanksGivingPopup artist={artist} userId={user?._id} user={user?.name} />
+          <ThanksGivingPopup artist={artist} userId={userId} user={user?.name} />
         </div>
       </MusicInfo>
 
