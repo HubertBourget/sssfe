@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SacredSoundLogo from "../assets/WelcomeLogo.svg";
 import LeftImage from "../assets/welcome.webp";
@@ -8,15 +7,47 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router";
 
 export default function Welcome() {
-  const { user, isAuthenticated } = useAuth0();
-  // const user = { name: "debug9@debug.com" };
-  // const isAuthenticated = true;
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
+    useAuth0();
+  const [userMetadata, setUserMetadata] = useState(null);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getUserMetadata = async () => {
+      try {
+        const accessToken = await getAccessTokenSilently({
+          audience: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/`,
+          scope: "read:current_user",
+        });
+
+        const userDetailsByIdUrl = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/users/${user.name}`;
+
+        const metadataResponse = await fetch(userDetailsByIdUrl, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        const { user_metadata } = await metadataResponse.json();
+
+        setUserMetadata(user_metadata);
+      } catch (e) {
+        console.log("🚀 ~ getUserMetadata ~ e:", e);
+        console.log(e.message);
+      }
+    };
+    if (isLoading == false) {
+      getUserMetadata();
+    }
+    console.log(userMetadata);
+  }, [isLoading]);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        if (user && user.name) {
+        if (isAuthenticated && user) {
+          // Check if user is authenticated and exists
           const response = await axios.get(
             `${process.env.REACT_APP_API_BASE_URL}/api/b_getUserExist/${user.name}`
           );
@@ -28,7 +59,6 @@ export default function Welcome() {
               `${process.env.REACT_APP_API_BASE_URL}/api/PostUserOnboardingProgress`,
               {
                 userId: user.name,
-                
                 currentStep: 1,
                 isOnboardingStepsPending: true,
               }
@@ -46,7 +76,7 @@ export default function Welcome() {
       }
     };
     fetchUser();
-  }, []);
+  }, [isAuthenticated, user, navigate]);
 
   return (
     <WelcomeWrapper>

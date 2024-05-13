@@ -30,7 +30,7 @@ export default function PlayButton({track, large}) {
       id: track.id,
       songUrl: track.songUrl,
       songTitle: track.title,
-      isVideo: false, 
+      isVideo: track.isVideo, 
       artistName: track.accountName,
       img: track.selectedImageThumbnail,
     }], 0)

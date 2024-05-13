@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MusicPlayer from "../components/MusicPlayer";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import axios from "axios";
 import styled from "styled-components";
 import Banner from "../assets/Image.svg";
 import Banner2 from "../assets/images.jpeg";
@@ -58,6 +59,9 @@ const playListData = {
   album: null,
 };
 
+const isAuthenticated = true;
+const user = { name: "debug9@debug.com" };
+
 function PlayScreen() {
   const [toggle, setToggle] = useState(false);
   const [smallScreen, setSmallScreen] = useState(false);
@@ -94,6 +98,30 @@ function PlayScreen() {
       currentAudioRef.removeEventListener("timeupdate", updateTimeline);
     };
   }, [audioRef, setState, state.currentSongIndex, state.song]);
+
+  useEffect(() => {
+    const userLog = async () => {
+      try {
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}/api/logContentUsage/`,
+          {
+            user: user.name,
+            videoId: state.song[0].id,
+          }
+        );
+      } catch (error) {
+        console.log("error creating userLog", error);
+      }
+    };
+
+    if (state.playing) {
+      const intervalId = setInterval(userLog, 60000);
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [state.playing]);
+
   return (
     <FullScreenOuter className={smallScreen ? "mini-screen" : ""}>
       <FullScreen handle={handle}>

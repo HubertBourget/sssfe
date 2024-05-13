@@ -438,7 +438,6 @@ const MusicInfo = styled.div`
 
 const HeadingText = styled.div`
   h1 {
-    margin-left: 2%;
     font-size: 24px;
     font-weight: 400;
   }
@@ -519,7 +518,6 @@ const Tabs = styled.div`
   align-items: center;
   gap: 15px;
   margin-bottom: 0;
-  margin-left: 2%;
   @media (max-width: 575px) {
     gap: 10px;
     justify-content: space-between;

@@ -1,32 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
+import { useRef } from 'react';
 
     const VideoPlayer = () => {
         const { videoId } = useParams();
         const [videoData, setVideoData] = useState(null);
+        const [interval, setIntervalId] = useState('')
         const navigate = useNavigate();
         const [recommendations, setRecommendations] = useState([]);
-        // const user = {name : "debug9@debug.com"};
-        // const [userId, setUserId] =useState(user.name) 
-        const userId = "someUserId";
+        // const { user, isAuthenticated } = useAuth0();
+        const user = {name : "debug9@debug.com"};
+        const userId = user.name;
 
-        useEffect(() => {
+        const videoRef = useRef(null);
+
         const userLog = async () => {
-          try {
-            const response  = await axios.post(
-              `${process.env.REACT_APP_API_BASE_URL}/api/logContentUsage/`,
-              {
-                user: userId,
-                videoId,
-              }
-            );
-          } catch (error) {
-            console.log("error creating userLog", error);
-          }
+            try {
+              await axios.post(
+                `${process.env.REACT_APP_API_BASE_URL}/api/logContentUsage/`,
+                {
+                  user: userId,
+                  videoId,
+                }
+              );
+            } catch (error) {
+              console.log("error creating userLog", error);
+            }
         };
 
+        const handlePlay = () => {
+          const intervalId = setInterval(userLog, 30000); // 60000 milliseconds = 1 minute
+          setIntervalId(intervalId);
+        };
+
+        const handlePause = () => {
+          clearInterval(interval);
+        };
+    
+
+        useEffect(() => {
         const fetchVideoData = async () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getVideoMetadataFromVideoId/${videoId}`);
@@ -39,8 +54,6 @@ import axios from 'axios';
 
         if (videoId) {
             fetchVideoData();
-            const intervalId = setInterval(userLog, 60000); // 60000 milliseconds = 1 minute
-            return () => clearInterval(intervalId);
         }
     }, [videoId]);
 
@@ -72,7 +85,7 @@ import axios from 'axios';
             <BackButton onClick={() => navigate(-1)} style={{color:'black'}}>Close</BackButton>
         </VideoPlayerHeader>
         <div id="videoPlayerContainer" style={{display:'flex', justifyContent:'center'}}>
-        <video width="80%" height="auto" controls>
+        <video ref={videoRef} width="80%" height="auto" controls onPlay={handlePlay} onPause={handlePause}>
             <source src={videoData.fileUrl} type="video/mp4" />
             <p>Your browser does not support HTML5 video. Here is a <a href={videoData.fileUrl}>link to the video</a> instead.</p>
         </video>

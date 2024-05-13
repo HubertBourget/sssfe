@@ -38,8 +38,9 @@ export default function PaymentDetail() {
   }, []);
 
   const navigate = useNavigate();
-  const user = { name: "debug9@debug.com" };
-  const isAuthenticated = true;
+  // const user = { name: "debug9@debug.com" };
+  // const isAuthenticated = true;
+  const {user, isAuthenticated } = useAuth0
 
   const onSubmit = async (event) => {
     event.preventDefault();

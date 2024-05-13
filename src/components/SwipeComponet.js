@@ -51,7 +51,7 @@ export default function SwipeComponet({ arr }) {
           return (
               <SwiperSlide key={content._id}>
                 <div className="item" id="content-card" onClick={() => handleClick()} style={{ cursor: content.contentType === 'album' ? 'pointer' : 'default' }}>
-                  <img src={thumbnail} alt="Disc Thumb"></img>
+                  <img className="swiper-thumb-img" src={thumbnail} alt="Item Thumb"></img>
                   <div style={{marginLeft: 0, display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                     <div>
                       <h1 className="slider-trackname">{content.contentType !== 'album' ? content.title: content.albumName}</h1>
@@ -72,7 +72,7 @@ export default function SwipeComponet({ arr }) {
                       <div style={{display: 'inline', marginRight: '20px'}}>
                         {content.contentType === 'audio' || content.contentType === 'video' || content.contentType === 'recommendation'? <PlayButton track={{id: content._id, songUrl: content.fileUrl,
                                   songTitle: content.title,
-                                  isVideo: false,
+                                  isVideo: content.contentType == "video",
                                   artistName: content.user.accountName,
                                   img: content.selectedImageThumbnail}}/> : ''}
 
@@ -89,9 +89,8 @@ export default function SwipeComponet({ arr }) {
 
 const Discography = styled.div`
   background-color: rgba(0,0,0,0);
-  width: 98%;
   padding: 5px;
-  margin-top: 15px;
+  margin:20px;
   .swiper-slider {
     background-color: rgba(0,0,0,0);
     // margin: 20px 0;
@@ -117,6 +116,9 @@ const Discography = styled.div`
       img {
         width: 100%;
         text-align: center;
+      }
+      .swiper-thumb-img{
+        object-fit:cover;
         height: 250px;
       }
     }
@@ -128,7 +130,7 @@ const Discography = styled.div`
     .swiper-button-prev,
     .swiper-button-next {
       position: absolute;
-      top: -35px;
+      top: -32px;
       width: 35px;
       height: 35px;
       background-color: #fff;
@@ -137,9 +139,9 @@ const Discography = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      @media (max-width: 575px) {
-        top: -85px;
-      }
+      // @media (max-width: 575px) {
+      //   top: -85px;
+      // }
       &::after {
         content: "";
         background-image: url(${SliderArrow});

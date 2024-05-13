@@ -38,7 +38,7 @@ const Dashboard = ({ user }) => {
                         };
                     }));
                     
-                    console.log("🚀 ~ fetchRecommendations ~ list:", list)
+                    console.log("🚀 ~ fetchRecommendations ~ list:", list)  
                     setVideos(list);
                 }
             } catch (error) {

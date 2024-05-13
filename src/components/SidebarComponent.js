@@ -4,12 +4,14 @@ import { Link, Outlet } from "react-router-dom";
 import SacredSoundLogo from "../assets/Logo.png";
 import LibraryIcon from "../assets/library-icon.png";
 import Feed from "../assets/Vector.png";
-import { useAuth0 } from '@auth0/auth0-react';
+import MyAcc from "../assets/profile.png";
+import { useAuth0 } from "@auth0/auth0-react";
 import Concert from "../assets/Group 189.png";
 import MenuBar from "../assets/menubar.svg";
 import styled from "styled-components";
 import axios from "axios";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
+import MyAccount from "../pageComponents/MyAccount";
 
 const SidebarComponent = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -135,7 +137,8 @@ const SidebarComponent = () => {
           <Logo>
             <img src={SacredSoundLogo} alt="logo"></img>
           </Logo>
-          {location.pathname === '/main/library' && <SearchContainer>
+          {/* {location.pathname === "/main/library" && ( */}
+            <SearchContainer>
             <SearchInput
               type="text"
               placeholder="Search"
@@ -143,9 +146,11 @@ const SidebarComponent = () => {
               onChange={handleSearch}
               onKeyDown={handleKeyDown}
             />
-          </SearchContainer>}
+            </SearchContainer>
+          {/* )} */}
           
           <Menu
+            className="side-menu"
             menuItemStyles={{
               button: {
                 [`&.active`]: {
@@ -159,9 +164,16 @@ const SidebarComponent = () => {
               <img src={LibraryIcon} alt="Upload" /> Library
             </MenuItem>
             <MenuItem component={<Link to="concert" />}>
-              <img src={Concert} alt="Upload" /> Concert Hall</MenuItem>
+              <img src={Concert} alt="Upload" /> Concert Hall
+            </MenuItem>
             <MenuItem component={<Link to="#" />}>
-              <img src={Feed} alt="Upload" /> Feed</MenuItem>
+              <img src={Feed} alt="Upload" /> Feed
+            </MenuItem>
+
+            <MenuItem className="sidebar-bottom-menu" component={<Link to="/MyAccount" />}>
+              <img src={MyAcc} alt="Upload" /> My Account
+            </MenuItem>
+
           </Menu>
         </Sidebar>
 
@@ -172,7 +184,7 @@ const SidebarComponent = () => {
             </div>
           )}
         </MenuButton>
-        <Outlet context={{ isSearched, result }}/>
+        <Outlet context={{ isSearched, result }} />
       </Main>
     </>
   );
@@ -185,9 +197,9 @@ const Main = styled.div`
   .sidebar {
     .ps-sidebar-container {
       background-color: #fff;
-      .ps-menuitem-root{
-        a{
-          .ps-menu-label{
+      .ps-menuitem-root {
+        a {
+          .ps-menu-label {
             gap: 15px;
             display: flex;
             align-items: center;
@@ -195,12 +207,21 @@ const Main = styled.div`
         }
     }
     }
+    .side-menu{
+      li{
+        margin:15px 0
+      }
+      .sidebar-bottom-menu{
+        position: absolute;
+        bottom: 30px;
+    }
+    }
   }
 `;
 
 const Logo = styled.div`
 padding: 18px;
-img{
+  img {
   width: 100%;
 }
 `;
@@ -209,24 +230,26 @@ const MenuButton = styled.div`
 position: absolute;
 z-index: 99;
 background-color: transparent !important;
-*{
+  * {
   background-color: transparent !important;
 }
-img{
+  img {
   padding: 10px;
   margin: 10px;
   cursor: pointer;
 }
 `;
 
-
 const SearchContainer = styled.div`
   display: flex;
-  width: 90%;
+  width: 100%;
   margin: auto;
   align-items: center;
   justify-content: center;
   margin-top: 20px;
+  margin-bottom: 15px;
+  padding: 0 20px;
+  box-sizing: border-box;
 `;
 
 const SearchInput = styled.input`

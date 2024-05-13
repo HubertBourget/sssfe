@@ -25,7 +25,7 @@ export default function FavoriteArtists() {
     await Promise.all(
       favoritesDetails.map(async (artistId) => {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/api/getUserProfileById/${artistId}`
+          `${process.env.REACT_APP_API_BASE_URL}/api/getUserProfileById/${artistId}`  
         );
         artists.push({ ...response.data });
       })
