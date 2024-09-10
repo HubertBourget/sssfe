@@ -42,7 +42,7 @@ export default function ArtistLandingPage() {
 
             </SecondarySection>
             <SecondarySection>
-                <video  src={'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'}></video>
+                <video controls muted src={'https://storage.googleapis.com/staging-sacred-sound-f472b.appspot.com/introduction-video/Sacred-Sound-Explainer-Video.mp4'} type="video/mp4"></video>
             </SecondarySection>    
         </CommunitySection>
         <hr style={{color: '#D9D9D9', marginTop: '50px'}}></hr>
